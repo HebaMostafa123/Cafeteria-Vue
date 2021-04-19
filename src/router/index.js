@@ -1,10 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import CreateOrder from '../components/public/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
+
 
 const routes = [
   {
     path: '/register',
     component: Register
+  },
+  {
+    path: '/order',
+    component: CreateOrder
   },
   {
     path: '/about',
