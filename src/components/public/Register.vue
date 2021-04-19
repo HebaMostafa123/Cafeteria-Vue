@@ -40,8 +40,8 @@
           <select id="room_id" class="form-control" v-model="form.room_id">
             <option v-for="room in rooms" :value="room.id">{{room.number}}</option>
           </select>
-          <span class="text-danger" v-if="errors.room_no">
-            {{ errors.room_no[0] }}
+          <span class="text-danger" v-if="errors.room_id">
+            {{ errors.room_id[0] }}
           </span>
         </div>
 
