@@ -1,7 +1,7 @@
 import Api from './Api';
 
 export default{
-  getProducts(){
-    return Api.get('/products');
+  getProducts(page = 1){
+    return Api.get(`/products?page=${page}`);
   }
 }

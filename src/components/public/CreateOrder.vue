@@ -1,33 +1,41 @@
 <template>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi"
+      rel="stylesheet"
+    />
+  </head>
   <div class="card m-4">
     <div class="grid-container">
       <div class="order-desc card m-4"><orderDesc></orderDesc></div>
       <div class="card latest-order mt-4 mb-2 mr-2 ">
-        <p>{{count}}</p>
+        <p>{{ count }} {{ page }} {{ lastPage }}</p>
       </div>
-      <div class="products flex-container ml-3 mr-3">
-      
-        <product-card
-          class="flex-item "
-          v-for="product in products"
-          v-bind:product="product"
-          @setParentComponentDetails="setDetailsForComponent"
-          :count="iscount"
-        ></product-card>
+      <div class="products ml-3 mr-3">
+        <div class="flex-container ">
+          <product-card
+            class="flex-item m-1"
+            v-for="product in products"
+            v-bind:product="product"
+            @setParentComponentDetails="setDetailsForComponent"
+            :count="iscount"
+          ></product-card>
+        </div>
+        <div>
+          <ul class="pagination">
+            <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+            <li>|</li>
+            <li><a type="button" @click="next" class="next">Next</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-}
-
 .grid-container {
-    border-radius: 7px 7px 7px 7px;
+  border-radius: 7px 7px 7px 7px;
   -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
@@ -46,16 +54,24 @@ body {
 .latest-order {
   grid-area: latest-order;
 }
-.products {
-  grid-area: products;
-}
+
 .flex-container {
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-content: flex-start;
   align-items: flex-start;
+}
+
+.products {
+  grid-area: products;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
 }
 
 .flex-item {
@@ -63,8 +79,41 @@ body {
   flex: 0 2 auto;
   align-self: auto;
 }
-</style>
 
+.pagination {
+  width: 8rem;
+  height: 3rem;
+  align-items: center;
+}
+ul {
+  position: relative;
+  background: #fff;
+  display: flex;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+ul li:first-child {
+  margin-left: 1.2rem;
+  font-weight: 700;
+  font-size: 2rem;
+}
+ul li {
+  list-style: none;
+  line-height: 50px;
+  margin: 0 5px;
+}
+
+ul li a {
+  font-size: 1rem;
+  display: block;
+  text-decoration: none;
+  color: #383838;
+  font-weight: 600;
+  border-radius: 50%;
+}
+</style>
 
 <script>
 import ProductCard from "./productCard.vue";
@@ -87,8 +136,9 @@ export default {
     return {
       products: [],
       message: "Thinking in components",
-      count:0,
-      
+      count: 0,
+      page: 1,
+      lastPage: 0,
     };
   },
 
@@ -100,14 +150,29 @@ export default {
 
   /* Component methods */
   methods: {
-            setDetailsForComponent() {    
-      this.count++; 
-      }   },
+    setDetailsForComponent() {
+      this.count++;
+    },
+    async next() {
+      if (this.page === this.lastPage) return;
+      this.page++;
+      await this.load();
+    },
+    async prev() {
+      if (this.page === 1) return;
+      this.page--;
+      await this.load();
+    },
+    load() {
+      Product.getProducts(this.page).then((response) => {
+        this.products = response.data.data;
+        this.lastPage = response.data.meta.last_page;
+      });
+    },
+  },
   created() {},
   mounted() {
-    Product.getProducts().then((response) => {
-      this.products = response.data.data;
-    });
+    this.load();
   },
   updated() {},
   unmounted() {},

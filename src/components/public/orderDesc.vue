@@ -14,7 +14,7 @@
 
       <div align="center" class="notes">
         <h5>Notes</h5>
-        <textarea name="w3review" rows="4" cols="30"> </textarea>
+        <textarea style="resize: none;" name="w3review" rows="4" cols="27"> </textarea>
         <hr />
         <label>Room number</label>
         <select class="form-control">
@@ -75,7 +75,7 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
 body {
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #E7F1F9;
 }
 .grid-container {

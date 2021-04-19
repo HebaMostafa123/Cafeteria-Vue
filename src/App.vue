@@ -7,9 +7,12 @@
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap");
+
 body {
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 #app {
   font-family: "Nunito Sans", sans-serif;
