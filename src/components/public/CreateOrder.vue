@@ -12,9 +12,9 @@
         <p>{{ count }} {{ page }} {{ lastPage }}</p>
       </div>
       <div class="products ml-3 mr-3">
-        <div class="flex-container ">
+        <div class="flex-container mb-3">
           <product-card
-            class="flex-item m-1"
+            class="flex-item ml-2 mt-2"
             v-for="product in products"
             v-bind:product="product"
             @setParentComponentDetails="setDetailsForComponent"
@@ -135,7 +135,6 @@ export default {
   data() {
     return {
       products: [],
-      message: "Thinking in components",
       count: 0,
       page: 1,
       lastPage: 0,

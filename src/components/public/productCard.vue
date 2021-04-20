@@ -1,13 +1,13 @@
 <template>
   <body>
     <div class="wrapper">
+      <div class="product-text">
+        <h1 align="center">{{ product.name.slice(0, 18) }}</h1>
+      </div>
       <div class="product-img">
         <img :src="product.image" />
       </div>
       <div class="product-info">
-        <div class="product-text">
-          <h1 align="center">{{ product.name }}</h1>
-        </div>
         <div class="product-price-btn">
           <p align="center">
             <span>{{ product.price }}</span
@@ -59,9 +59,7 @@ export default {
   },
 
   created() {},
-  mounted() {
-    console.log(this.product);
-  },
+  mounted() {},
   updated() {},
   unmounted() {},
 };
@@ -73,9 +71,9 @@ body {
 }
 
 .wrapper {
-  height: 9rem;
+  height: 10.1rem;
   width: 7rem;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 5px;
   -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
@@ -95,18 +93,18 @@ body {
   float: left;
   height: 1.5rem;
   width: 7rem;
-  border-radius: 0 7px 10px 7px;
+  border-radius: 7px;
   background-color: #ffffff;
 }
 
 .product-text {
-  height: 1.5rem;
+  height: 2.5rem;
   width: 7rem;
   background-color: #fcfcfc;
 }
 
 .product-text h1 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #474747;
 }
 
