@@ -1,10 +1,18 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app" class="bg-light h-screen">
+    <Navigation />
+    <router-view />
   </div>
-  <router-view/>
 </template>
+
+<script>
+import Navigation from './components/layout/Navigation'
+export default {
+  components:{
+    Navigation
+  }
+}
+</script>
 
 <style>
 #app {
@@ -27,4 +35,5 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
 </style>
