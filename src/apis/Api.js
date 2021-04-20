@@ -5,5 +5,6 @@ let Api = axios.create({
 });
 
 Api.defaults.withCredentials = true;
+Api.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
 export default Api;

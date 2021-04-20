@@ -45,13 +45,17 @@ export default {
       Csrf.getCookie().then(()=>{
         User.login(this.form).then((response)=>{
           var emitter = require('tiny-emitter/instance');
+          localStorage.setItem('token', response.data.jwt)
           emitter.emit('login', true);
-          this.user = response.data;
+        User.auth().then((response)=>{
           localStorage.setItem("auth", "true")
-          if(this.user.is_admin){
+          this.user = response.data;
+          if(response.data.is_admin){
             localStorage.setItem("is_admin", "true")
+            this.isAdmin = true;
           }
           this.$router.push({name:"About"})
+        })
         }).catch((errors)=>{
           if(errors.response.status === 422){
             this.errors = errors.response.data.errors;

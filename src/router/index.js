@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Unauthorized from '../components/error/Unauthorized.vue';
 import Login from '../components/public/Login.vue';
 import Register from '../components/public/Register.vue';
+import Trial from '../components/Trial.vue';
 import User from '../components/User.vue';
 
+
 const routes = [
-  {
-    path:'/admin',
-    
-  },
   {
     path: '/register',
     name: "Register",
@@ -24,55 +23,73 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: function () {
-    //   return import(/* webpackChunkName: "about" */ '../views/About.vue')
-    // }
     component: User,
+    meta: {adminOnly: true}
+  },
+  {
+    path: '/unauthorized',
+    name: 'Unauthorized',
+    component: Unauthorized
+  },
+  {
+    path: '/trial',
+    name: 'Trial',
+    component: Trial,
+    meta: {authOnly: true}
   }
 ]
-
-// function isLoggedIn(){
-//   return localStorage.getItem('auth');
-// }
-
-// function isAdmin(){
-//   return localStorage.getItem('is_admin');
-// }
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.authOnly)) {
-//     // this route requires auth, check if logged in
-//     // if not, redirect to login page.
-//     if (!isLoggedIn()) {
-//       next({
-//         path: "/login",
-//         query: { redirect: to.fullPath }
-//       });
-//     } else {
-//       next();
-//     }
-//   } else if (to.matched.some(record => record.meta.guestOnly)) {
-//     // this route requires auth, check if logged in
-//     // if not, redirect to login page.
-//     if (isLoggedIn()) {
-//       next({
-//         path: "/dashboard",
-//         query: { redirect: to.fullPath }
-//       });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     next(); // make sure to always call next()!
-//   }
-// });
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+function isLoggedIn(){
+  return localStorage.getItem('auth');
+}
+
+function isAdmin(){
+  return localStorage.getItem('is_admin');
+}
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.authOnly)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!isLoggedIn()) {
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  } else if (to.matched.some(record => record.meta.adminOnly)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!isAdmin()) {
+      next({
+        path: "/unauthorized",
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  } 
+  else if (to.matched.some(record => record.meta.guestOnly)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (isLoggedIn()) {
+      next({
+        path: "/about",
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  }else {
+    next(); // make sure to always call next()!
+  }
+});
 
 export default router

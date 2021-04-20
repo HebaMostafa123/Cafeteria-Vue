@@ -26,15 +26,18 @@
       <!--End of admin navbar-->
       <!--Start of Normal User navbar-->
       <li class="nav-item">
-        <router-link class="nav-link" v-if="isLoggedIn" to="/about">Home</router-link>
+        <router-link class="nav-link" v-if="isLoggedIn && !isAdmin" to="/about">Home</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" v-if="isLoggedIn" to="/about">My Orders</router-link>
+        <router-link class="nav-link" v-if="isLoggedIn && !isAdmin" to="/about">My Orders</router-link>
       </li>
       <!--End of Normal User navbar-->
     </ul>
     <ul class="nav navbar-nav"> 
-      <li v-if="isLoggedIn" class="nav-item nav-link">
+      <li v-if="user && isLoggedIn" class="nav-item">
+          <img :src="user.avatar" class="avatar"/>
+      </li>
+      <li v-if="user && isLoggedIn" class="nav-item nav-link mt-2">
           {{user.name}}
       </li>
       <router-link v-if="!isLoggedIn" class="nav-item nav-link" :to="{ name: 'Login' }">
@@ -43,7 +46,7 @@
         <router-link v-if="!isLoggedIn" class="nav-item nav-link" :to="{ name: 'Register' }">
           Register
         </router-link>
-        <a class="nav-item nav-link" v-if="isLoggedIn" @click.prevent="logout"
+        <a class="nav-item nav-link m-2" v-if="isLoggedIn" @click.prevent="logout"
           >Logout</a>
       </ul>
   </div>
@@ -64,8 +67,8 @@ export default {
   mounted(){
     var emitter = require('tiny-emitter/instance');
     emitter.on('login', ()=>{
-      this.isLoggedIn = true;
       User.auth().then((response)=>{
+      this.isLoggedIn = true;
       this.user = response.data;
       if(response.data.is_admin){
         this.isAdmin = true;
@@ -79,8 +82,10 @@ export default {
       Csrf.getCookie().then(()=>{
         User.logout().then(()=>{
           this.isLoggedIn = false;
+          this.isAdmin = false;
           localStorage.removeItem("auth");
           localStorage.removeItem("is_admin");
+          localStorage.removeItem("token");
           this.$router.push({name: "Login"})
         })
       })
@@ -90,6 +95,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.avatar{
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+}
 </style>
