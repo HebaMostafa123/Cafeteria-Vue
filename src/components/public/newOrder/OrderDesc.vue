@@ -3,14 +3,36 @@
     <form>
       <div class="grid-container">
         <div class="items flex-items">
-          <orderItem
-            class="card"
-            v-for="item in items"
-            v-bind:item="item"
-          ></orderItem>
+          <div class="card" v-for="item in items">
+            <div class="flex-container">
+              <div class="flex-item name">
+                <p>{{ item.name.slice(0, 18) }}</p>
+              </div>
+              <div class="flex-item">
+                <input
+                  class=" quantity form-control"
+                  type="number"
+                  max="20"
+                  min="0"
+                  value="0"
+                />
+              </div>
+              <div>
+                <p>{{ item.price }} EGP</p>
+              </div>
+              <div class="flex-item">
+                <a
+                  @click="removeItem($event)"
+                  :id="item.id"
+                  class="delete btn btn-warning"
+                  ><p>🗑️</p></a
+                >
+              </div>
+            </div>
+          </div>
         </div>
         <div align="center" class="notes">
-          <hr style="margin-top:0;">
+          <hr style="margin-top:0;" />
           <h5>Notes</h5>
           <textarea
             style="resize: none;"
@@ -31,7 +53,7 @@
           <hr />
         </div>
         <div class="footer" align="center">
-          <p>Price : {{getTotalPrice}} EGP</p>
+          <p>Price : {{ getTotalPrice }} EGP</p>
           <button class="btn btn-info">Send Order</button>
         </div>
       </div>
@@ -42,7 +64,6 @@
 <script>
 import User from "../../../apis/User";
 import OrderDesc from "./OrderDesc.vue";
-import OrderItem from "./OrderItem.vue";
 export default {
   /* Child component registration */
   components: {
@@ -67,20 +88,22 @@ export default {
 
   /* Computed properties */
   computed: {
-    getTotalPrice: function () {
-      return this.items.reduce((total, obj) => obj.price + total,0)
-    }
+    getTotalPrice: function() {
+      return this.items.reduce((total, obj) => obj.price + total, 0);
+    },
   },
 
   /* Component methods */
 
-  methods: {},
-
+  methods: {
+    removeItem(event) {
+      this.$emit("removeProduct",event.currentTarget.id);
+    },
+  },
   created() {},
   mounted() {
     User.getRooms().then((response) => {
       this.rooms = response.data;
-      console.log(this.rooms);
     });
   },
   updated() {},
@@ -124,16 +147,16 @@ body {
   align-content: flex-start;
   overflow: scroll;
   overflow-x: hidden;
-  padding:0.3rem;
-  margin-left:0.5rem;
-  margin-top:0.3rem;
+  padding: 0.3rem;
+  margin-left: 0.5rem;
+  margin-top: 0.3rem;
 }
 
 .card {
   width: 100%;
-  height:2.3rem;
-  background-color:white;
-  margin-top:0.1rem;
+  height: 2.3rem;
+  background-color: white;
+  margin-top: 0.1rem;
 }
 /* custom scrollbar */
 ::-webkit-scrollbar {
@@ -153,5 +176,34 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
+}
+.flex-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 0.1rem;
+  padding-right: 0.1rem;
+}
+
+.quantity {
+  width: 3.7rem;
+  height: 2rem;
+}
+.delete {
+  width: 1.6rem;
+  height: 1.6rem;
+  text-align: center;
+  margin-right: 0.2rem;
+}
+
+.delete p {
+  margin-left: -0.6rem;
+  margin-top: -0.3rem;
+}
+
+.name {
+  width: 8rem;
+  margin-left: 0.3rem;
 }
 </style>

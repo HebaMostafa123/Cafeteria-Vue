@@ -9,7 +9,7 @@
   <div class="card m-4">
     <div class="grid-container">
       <div class="order-desc card m-4">
-        <orderDesc :items="orderItems"></orderDesc>
+        <orderDesc :items="orderItems" @removeProduct="removeProductFromOrder"></orderDesc>
       </div>
       <div class="card latest-order mt-4 mb-2 mr-2 ">
         <p>Latest Order</p>
@@ -21,7 +21,6 @@
             v-for="product in products"
             v-bind:product="product"
             @addProduct="addProductToOrder"
-            :count="count"
           ></product-card>
         </div>
         <div>
@@ -159,9 +158,11 @@ export default {
     addProductToOrder(value) {
       const exists = this.orderItems.some(x => x.id === +value);
       if (!exists) this.orderItems.push(this.products.find(x => x.id === +value));
-      console.log(this.orderItems);
     },
-
+    removeProductFromOrder(value) {
+      const index = this.orderItems.map((item) => item.id).indexOf(+value);
+      this.orderItems.splice(index, 1);
+    },
     async next() {
       if (this.page === this.lastPage) return;
       this.page++;
