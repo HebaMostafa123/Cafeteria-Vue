@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Register from '../components/public/Register.vue';
+import Adduser from '../components/admin/Adduser.vue';
+import Showuser from '../components/admin/Showuser.vue';
+import Edituser from '../components/admin/Edituser.vue';
+
 
 const routes = [
   {
@@ -15,7 +19,24 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
-  }
+  },
+  {
+    path: '/Adduser',
+    name: 'Adduser',
+    component: Adduser
+  },
+  {
+    path: '/Showuser',
+    name: 'Showuser',
+    component: Showuser
+  },
+
+  {
+    path: '/Edituser/:id',
+    name: 'Edituser',
+    component: Edituser
+  },
+
 ]
 
 const router = createRouter({
