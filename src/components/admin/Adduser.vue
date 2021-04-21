@@ -67,22 +67,27 @@
       </div>
       <div class="form-group">
         <label for="avatar">Avatar</label>
-        <div class="input-group-append">
-          <input
-            type="text"
-            class="form-control-file"
-            name="Avatar"
-            v-model="form.avatar"
-          />
+        <div class="row">
+          <div class="col-9">
+            <input
+              type="text"
+              class="form-control"
+              name="Avatar"
+              readonly
+              v-model="form.avatar"
+            />
+          </div>
+          <div class="col-3">
+            <label class="btn btn-primary">
+              Upload
+              <input
+                type="file"
+                hidden
+                @change="changeImage($event.target.files)"
+              />
+            </label>
+          </div>
         </div>
-        <label class="btn btn-primary">
-          Upload
-          <input
-            type="file"
-            hidden
-            @change="changeImage($event.target.files)"
-          />
-        </label>
       </div>
     </div>
 
@@ -135,32 +140,21 @@ export default {
       // console.log(this.rooms);
       // })
     },
-    //  onChange(e) {
-    //             this.formimg.file = e.target.files[0];
-    //         },
-    //         formSubmit(e) {
-    //             e.preventDefault();
-    //             let existingObj = this;
+    async changeImage(files) {
+      const file = files[0];
 
-    //             const config = {
-    //                 headers: {
-    //                     'content-type': 'multipart/form-data'
-    //                 }
-    //             }
+      const data = new FormData();
+      data.append("avatar", file);
 
-    //             let data = new FormData();
-    //             data.append('file', this.file);
-
-    //             axios.post('/upload', data, config)
-    //                 .then(function (res) {
-    //                     existingObj.success = res.data.success;
-    //                 })
-    //                 .catch(function (err) {
-    //                     existingObj.output = err;
-    //                 });
-
-    //                 Admin.adduser(this.formimg)
-    //         },
+      const response = await axios.post(
+        "http://localhost:8000/api/upload",
+        data
+      );
+      this.form.avatar = response.data.url;
+    },
+    // catch (error) {
+    //   this.errors = error.response.data.errors;
+    // }
   },
 };
 </script>
