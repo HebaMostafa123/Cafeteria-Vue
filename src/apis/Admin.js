@@ -23,7 +23,7 @@ export default {
 
 
         Api.patch(`/pages/${id}`, user);
-        router.push('/Showuser');
+        // router.push('/Showuser');
 
         // api / pages / { page }
 
