@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Unauthorized from '../components/error/Unauthorized.vue';
 import Login from '../components/public/Login.vue';
 import Register from '../components/public/Register.vue';
+import Secure from '../components/Secure.vue';
 import Trial from '../components/Trial.vue';
 import User from '../components/User.vue';
 
@@ -19,13 +20,14 @@ const routes = [
     component: Login,
     meta: {guestOnly: true}
   },
-  
   {
-    path: '/about',
-    name: 'About',
-    component: User,
-    meta: {adminOnly: true}
+    path: '/',
+    component: Secure,
+    children:[
+      {path:'', name:'AdminHome', component:User, meta:{authOnly: true}}
+    ]
   },
+  
   {
     path: '/unauthorized',
     name: 'Unauthorized',
@@ -35,7 +37,7 @@ const routes = [
     path: '/trial',
     name: 'Trial',
     component: Trial,
-    meta: {authOnly: true}
+    meta: {adminOnly: true}
   }
 ]
 

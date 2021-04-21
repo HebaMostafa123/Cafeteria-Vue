@@ -1,5 +1,6 @@
 <template>
 <div class="home">
+  <Navbar/>
   <div class="col-5 mx-auto py-5 mt-5">
       <h1 class="text-center">Please Register</h1>
       <div class="card shadow">
@@ -82,6 +83,7 @@
 import User from '../../apis/User';
 import Csrf from '../../apis/Csrf';
 import axios from 'axios';
+import Navbar from '../layout/Navigation.vue'
 axios.defaults.withCredentials = true;
 export default {
   data(){
@@ -97,6 +99,9 @@ export default {
       rooms: [],
       errors: []
     };
+  },
+  components:{
+    Navbar
   },
   mounted () {
     User.getRooms().then(response => {
