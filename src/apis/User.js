@@ -1,10 +1,13 @@
 import Api from './Api';
 
-export default{
-  register(form){
-    return Api.post("/register", form); 
+
+export default {
+  register(form) {
+    return Api.post("/register", form);
   },
-  getRooms(){
+  getRooms() {
     return Api.get('/rooms');
-  }
+  },
+
+
 }
