@@ -4,7 +4,7 @@
       <div class="grid-container">
         <div class="items flex-items">
           <orderItem
-            class="flex-item p-2 card"
+            class="card"
             v-for="item in items"
             v-bind:item="item"
           ></orderItem>
@@ -120,12 +120,14 @@ body {
   align-content: flex-start;
   overflow: scroll;
   overflow-x: hidden;
-  padding-left: 0.8rem;
-  padding-top:0.3rem;
+  padding:0.3rem;
 }
 
-.flex-item {
+.card {
   width: 100%;
+  height:2.3rem;
+  background-color:white;
+  margin-top:0.1rem;
 }
 /* custom scrollbar */
 ::-webkit-scrollbar {

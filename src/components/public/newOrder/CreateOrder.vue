@@ -4,6 +4,7 @@
       href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi"
       rel="stylesheet"
     />
+    
   </head>
   <div class="card m-4">
     <div class="grid-container">
