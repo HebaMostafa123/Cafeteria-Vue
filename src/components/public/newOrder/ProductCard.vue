@@ -10,14 +10,12 @@
       <div class="product-info">
         <div class="product-price-btn">
           <p align="center">
-            <span>{{ product.price }}</span
-            >EGP
+            <span>{{ product.price }}</span>EGP
           </p>
           <button
-            @click="callingParentComponentMethod"
+            @click="addProduct($event)"
             :id="product.id"
-            type="button"
-          >
+            type="button">
             add
           </button>
         </div>
@@ -34,7 +32,7 @@ export default {
   /* Properties */
   props: {
     product: Object,
-    iscount: Number,
+    count: Number,
   },
 
   /* Component's local data */
@@ -52,9 +50,9 @@ export default {
   /* Component methods */
 
   methods: {
-    callingParentComponentMethod() {
-      // emit the event and call the parent component
-      this.$emit("setParentComponentDetails");
+    addProduct(event) {
+            event.currentTarget.disabled = true;
+      this.$emit("addProduct",event.currentTarget.id);
     },
   },
 

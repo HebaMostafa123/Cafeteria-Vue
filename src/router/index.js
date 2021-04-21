@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import CreateOrder from '../components/public/CreateOrder.vue';
+import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
 
 

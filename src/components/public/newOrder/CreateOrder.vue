@@ -7,18 +7,20 @@
   </head>
   <div class="card m-4">
     <div class="grid-container">
-      <div class="order-desc card m-4"><orderDesc></orderDesc></div>
+      <div class="order-desc card m-4">
+        <orderDesc :items="orderItems"></orderDesc>
+      </div>
       <div class="card latest-order mt-4 mb-2 mr-2 ">
         <p>{{ count }} {{ page }} {{ lastPage }}</p>
       </div>
       <div class="products ml-3 mr-3">
-        <div class="flex-container mb-3">
+        <div class="flex-products mb-3">
           <product-card
             class="flex-item ml-2 mt-2"
             v-for="product in products"
             v-bind:product="product"
-            @setParentComponentDetails="setDetailsForComponent"
-            :count="iscount"
+            @addProduct="addProductToOrder"
+            :count="count"
           ></product-card>
         </div>
         <div>
@@ -55,7 +57,7 @@
   grid-area: latest-order;
 }
 
-.flex-container {
+.flex-products {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -113,12 +115,13 @@ ul li a {
   font-weight: 600;
   border-radius: 50%;
 }
+
 </style>
 
 <script>
-import ProductCard from "./productCard.vue";
-import OrderDesc from "./orderDesc.vue";
-import Product from "../../apis/Product";
+import ProductCard from "./ProductCard.vue";
+import OrderDesc from "./OrderDesc.vue";
+import Product from "../../../apis/Product";
 import axios from "axios";
 
 export default {
@@ -135,6 +138,7 @@ export default {
   data() {
     return {
       products: [],
+      orderItems: [],
       count: 0,
       page: 1,
       lastPage: 0,
@@ -149,9 +153,12 @@ export default {
 
   /* Component methods */
   methods: {
-    setDetailsForComponent() {
-      this.count++;
+    addProductToOrder(value) {
+      const exists = this.orderItems.some(x => x.id === +value);
+      if (!exists) this.orderItems.push(this.products.find(x => x.id === +value));
+      console.log(this.orderItems);
     },
+
     async next() {
       if (this.page === this.lastPage) return;
       this.page++;
@@ -169,7 +176,6 @@ export default {
       });
     },
   },
-  created() {},
   mounted() {
     this.load();
   },
