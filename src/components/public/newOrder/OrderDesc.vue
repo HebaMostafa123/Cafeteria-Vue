@@ -10,6 +10,7 @@
           ></orderItem>
         </div>
         <div align="center" class="notes">
+          <hr style="margin-top:0;">
           <h5>Notes</h5>
           <textarea
             style="resize: none;"
@@ -30,7 +31,7 @@
           <hr />
         </div>
         <div class="footer" align="center">
-          <p>Price : EGP</p>
+          <p>Price : {{getTotalPrice}} EGP</p>
           <button class="btn btn-info">Send Order</button>
         </div>
       </div>
@@ -65,7 +66,11 @@ export default {
   watch: {},
 
   /* Computed properties */
-  computed: {},
+  computed: {
+    getTotalPrice: function () {
+      return this.items.reduce((total, obj) => obj.price + total,0)
+    }
+  },
 
   /* Component methods */
 
@@ -83,7 +88,6 @@ export default {
 };
 </script>
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
 body {
   font-family: "Poppins", sans-serif;
   background-color: #e7f1f9;
@@ -121,6 +125,8 @@ body {
   overflow: scroll;
   overflow-x: hidden;
   padding:0.3rem;
+  margin-left:0.5rem;
+  margin-top:0.3rem;
 }
 
 .card {

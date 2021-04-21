@@ -12,7 +12,7 @@
         <orderDesc :items="orderItems"></orderDesc>
       </div>
       <div class="card latest-order mt-4 mb-2 mr-2 ">
-        <p>{{ count }} {{ page }} {{ lastPage }}</p>
+        <p>Latest Order</p>
       </div>
       <div class="products ml-3 mr-3">
         <div class="flex-products mb-3">
@@ -37,6 +37,8 @@
 </template>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
+
 .grid-container {
   border-radius: 7px 7px 7px 7px;
   -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
@@ -44,7 +46,7 @@
   box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   display: grid;
   grid-template-columns: 1fr 0.7fr 1.1fr 1.2fr;
-  grid-template-rows: 0.9fr 1.3fr 0.9fr;
+  grid-template-rows: 0.5fr 1.3fr 0.9fr;
   gap: 0px 0px;
   grid-template-areas:
     "order-desc order-desc latest-order latest-order"
@@ -56,6 +58,7 @@
 }
 .latest-order {
   grid-area: latest-order;
+  font-family: "Poppins", sans-serif;
 }
 
 .flex-products {
@@ -140,7 +143,6 @@ export default {
     return {
       products: [],
       orderItems: [],
-      count: 0,
       page: 1,
       lastPage: 0,
     };
