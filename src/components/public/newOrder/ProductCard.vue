@@ -10,12 +10,10 @@
       <div class="product-info">
         <div class="product-price-btn">
           <p align="center">
-            <span>{{ product.price }}</span>EGP
+            <span>{{ product.price }}</span
+            >EGP
           </p>
-          <button
-            @click="addProduct($event)"
-            :id="product.id"
-            type="button">
+          <button @click="addProduct($event)" :id="product.id" type="button">
             add
           </button>
         </div>
@@ -48,11 +46,9 @@ export default {
   computed: {},
 
   /* Component methods */
-
   methods: {
     addProduct(event) {
-            event.currentTarget.disabled = true;
-      this.$emit("addProduct",event.currentTarget.id);
+      this.$emit("addProduct", event.currentTarget.id);
     },
   },
 

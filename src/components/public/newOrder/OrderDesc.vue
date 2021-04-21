@@ -1,6 +1,6 @@
 <template>
   <body>
-    <form>
+    <form @submit.prevent @submit="submitOrder">
       <div class="grid-container">
         <div class="items flex-items">
           <div class="card" v-for="item in items">
@@ -15,6 +15,8 @@
                   max="20"
                   min="0"
                   value="0"
+                  :id="item.id"
+                  @change="changeQuantity($event)"
                 />
               </div>
               <div>
@@ -39,10 +41,11 @@
             name="w3review"
             rows="4"
             cols="20"
+            @change="changeNotes($event)"
           ></textarea>
           <hr />
           <label>Room number</label>
-          <select class="form-control" required>
+          <select @change="setRoomId($event)" class="form-control" required>
             <option value="" disabled selected hidden
               >Choose your room number</option
             >
@@ -54,7 +57,9 @@
         </div>
         <div class="footer" align="center">
           <p>Price : {{ getTotalPrice }} EGP</p>
-          <button class="btn btn-info">Send Order</button>
+          <button @click="sumbitOrder" class="btn btn-info">Send Order</button>
+          <p style="color:green;margin-top:1rem;">{{ error }}</p>
+          <p></p>
         </div>
       </div>
     </form>
@@ -64,11 +69,10 @@
 <script>
 import User from "../../../apis/User";
 import OrderDesc from "./OrderDesc.vue";
+import Order from "../../../apis/Order";
 export default {
   /* Child component registration */
-  components: {
-    OrderItem,
-  },
+  components: {},
 
   /* Properties */
   props: {
@@ -81,6 +85,10 @@ export default {
     return {
       message: "Thinking in components",
       rooms: [],
+      room_id: 0,
+      user_id: 1,
+      notes: "",
+      error: "",
     };
   },
   /* Watchers */
@@ -94,10 +102,45 @@ export default {
   },
 
   /* Component methods */
-
   methods: {
     removeItem(event) {
-      this.$emit("removeProduct",event.currentTarget.id);
+      this.$emit("removeProduct", event.currentTarget.id);
+    },
+    changeQuantity(event) {
+      const index = this.items
+        .map((item) => item.id)
+        .indexOf(+event.currentTarget.id);
+      this.items[index].quantity = event.currentTarget.value;
+    },
+    changeNotes(event) {
+      this.notes = event.currentTarget.value;
+    },
+    setRoomId(event) {
+      this.room_id = event.currentTarget.value;
+    },
+    submitOrder() {
+      if (this.items.length === 0) {
+        this.error = "Please add items to your order";
+      } else {
+        this.items.forEach((v) => {
+          v.product_id = v.id;
+          delete v.image;
+          delete v.price;
+          delete v.name;
+          delete v.id;
+        });
+        const request = {
+          order: {
+            user_id: this.user_id,
+            room_id: this.room_id,
+            notes: this.notes,
+          },
+          products: this.items,
+        };
+        Order.sendOrder(request).then((response) => {
+          console.log(response.request.status);
+        });
+      }
     },
   },
   created() {},
@@ -109,6 +152,7 @@ export default {
   updated() {},
   unmounted() {},
 };
+
 </script>
 <style scoped>
 body {
@@ -203,7 +247,7 @@ body {
 }
 
 .name {
-  width: 8rem;
+  width: 10rem;
   margin-left: 0.3rem;
 }
 </style>

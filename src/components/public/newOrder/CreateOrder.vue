@@ -68,6 +68,7 @@
   justify-content: flex-start;
   align-content: flex-start;
   align-items: flex-start;
+  padding-top:1rem;
 }
 
 .products {
