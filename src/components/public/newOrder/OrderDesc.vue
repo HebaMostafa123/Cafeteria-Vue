@@ -1,6 +1,7 @@
 <template>
   <body>
     <form @submit.prevent @submit="submitOrder">
+      <h4 align="center">Your Order</h4>
       <div class="grid-container">
         <div class="items flex-items">
           <div class="card" v-for="item in items">
@@ -78,6 +79,7 @@ export default {
   props: {
     product: Object,
     items: Array,
+    userId: Number,
   },
 
   /* Component's local data */
@@ -86,7 +88,6 @@ export default {
       message: "Thinking in components",
       rooms: [],
       room_id: 0,
-      user_id: 1,
       notes: "",
       error: "",
     };
@@ -131,7 +132,7 @@ export default {
         });
         const request = {
           order: {
-            user_id: this.user_id,
+            user_id: userId,
             room_id: this.room_id,
             notes: this.notes,
           },
@@ -152,7 +153,6 @@ export default {
   updated() {},
   unmounted() {},
 };
-
 </script>
 <style scoped>
 body {

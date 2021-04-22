@@ -4,15 +4,27 @@
       href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi"
       rel="stylesheet"
     />
-    
   </head>
+  <h1 v-if="admin">Vue is awesome!</h1>
   <div class="card m-4">
     <div class="grid-container">
       <div class="order-desc card m-4">
-        <orderDesc :items="orderItems" @removeProduct="removeProductFromOrder"></orderDesc>
+        <orderDesc
+          :items="orderItems"
+          :userId="user_id"
+          @removeProduct="removeProductFromOrder"
+        ></orderDesc>
       </div>
       <div class="card latest-order mt-4 mb-2 mr-2 ">
-        <p>Latest Order</p>
+        <h4 class="mb-0">Latest Order</h4>
+        <div class="flex-products mb-3">
+          <product-card
+            class="flex-item ml-2 mt-2 latest-item"
+            v-for="item in latestOrderItems"
+            v-bind:product="item"
+            @addProduct="addProductToOrder"
+          ></product-card>
+        </div>
       </div>
       <div class="products ml-3 mr-3">
         <div class="flex-products mb-3">
@@ -68,7 +80,7 @@
   justify-content: flex-start;
   align-content: flex-start;
   align-items: flex-start;
-  padding-top:1rem;
+  padding-top: 1rem;
 }
 
 .products {
@@ -120,12 +132,16 @@ ul li a {
   border-radius: 50%;
 }
 
+.latest-item {
+}
 </style>
 
 <script>
 import ProductCard from "./ProductCard.vue";
 import OrderDesc from "./OrderDesc.vue";
 import Product from "../../../apis/Product";
+import Order from "../../../apis/Order";
+import User from "../../../apis/User";
 import axios from "axios";
 
 export default {
@@ -145,6 +161,9 @@ export default {
       orderItems: [],
       page: 1,
       lastPage: 0,
+      latestOrderItems: [],
+      users: [],
+      admin: 1,
     };
   },
 
@@ -157,8 +176,9 @@ export default {
   /* Component methods */
   methods: {
     addProductToOrder(value) {
-      const exists = this.orderItems.some(x => x.id === +value);
-      if (!exists) this.orderItems.push(this.products.find(x => x.id === +value));
+      const exists = this.orderItems.some((x) => x.id === +value);
+      if (!exists)
+        this.orderItems.push(this.products.find((x) => x.id === +value));
     },
     removeProductFromOrder(value) {
       const index = this.orderItems.map((item) => item.id).indexOf(+value);
@@ -167,22 +187,36 @@ export default {
     async next() {
       if (this.page === this.lastPage) return;
       this.page++;
-      await this.load();
+      await this.loadProducts();
     },
     async prev() {
       if (this.page === 1) return;
       this.page--;
-      await this.load();
+      await this.loadProducts();
     },
-    load() {
+    loadProducts() {
       Product.getProducts(this.page).then((response) => {
         this.products = response.data.data;
         this.lastPage = response.data.meta.last_page;
       });
     },
+    async getLatestItems() {
+      this.latestOrderItems = await Order.getLatestOrder(this.user_id).then(
+        (response) => response.data.data
+      );
+    },
   },
   mounted() {
-    this.load();
+    this.loadProducts();
+    User.auth().then((response) => {
+      this.user_id = response.data.id;
+      this.getLatestItems();
+    });
+    this.users = Order.getUsers().then((response) => {
+      this.users = response.data.data;
+      console.log(this.users);
+    });
+    this.admin = localStorage.getItem("is_admin");
   },
   updated() {},
   unmounted() {},

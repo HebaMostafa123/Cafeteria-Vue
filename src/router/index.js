@@ -17,10 +17,6 @@ const routes = [
     meta: {guestOnly: true}
   },
   {
-    path: '/order',
-    component: CreateOrder
-  },
-  {
     path: "/login",
     name: "Login",
     component: Login,
@@ -30,7 +26,8 @@ const routes = [
     path: '/',
     component: Secure,
     children:[
-      {path:'', name:'AdminHome', component:User, meta:{authOnly: true}}
+      {path:'', name:'AdminHome', component:User, meta:{authOnly: true}},
+      {path:'/order', name:'CreateOrder', component:CreateOrder, meta:{authOnly: true}}
     ]
   },
   
