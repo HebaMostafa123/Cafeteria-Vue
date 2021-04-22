@@ -12,7 +12,7 @@
   <table class="table table-secondary">
     <thead>
       <tr class="table-secondary">
-        <th scope="col">Name</th>
+        <th cscope="col">Name</th>
         <th scope="col">Email</th>
         <th scope="col">Avatar</th>
         <th scope="col">room_id</th>
@@ -29,9 +29,9 @@
         </td>
         <td>
           <img
-            :src="require(`../../assets/avatars/${user.avatar}`)"
-            width="70"
-            height="50"
+            v-bind:src="require(`../${user.avatar}`)"
+            class="profile-user-img img-fluid img-circle"
+            style="height: 40px; width: 40px"
           />
         </td>
         <td class="text-center">
