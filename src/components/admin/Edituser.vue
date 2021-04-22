@@ -65,28 +65,21 @@
 
         <div class="invalid-feedback">Please select a validRoom number.</div>
       </div>
-      <div class="form-group">
-        <label for="avatar">Avatar</label>
-        <div class="row">
-          <div class="col-9">
-            <input
-              type="text"
-              class="form-control"
-              name="Avatar"
-              readonly
-              v-model="form.avatar"
-            />
-          </div>
-          <div class="col-3">
-            <label class="btn btn-primary">
-              Upload
-              <input
-                type="file"
-                hidden
-                @change="changeImage($event.target.files)"
-              />
-            </label>
-          </div>
+      <div class="custom-file mb-3">
+        <input
+          type="file"
+          class="custom-file-input"
+          v-on:change="onChange"
+          id="validatedCustomFile"
+          accept="image/*"
+          required
+        />
+        <label class="custom-file-label" for="validatedCustomFile">{{
+          imageName
+        }}</label>
+        <div class="invalid-feedback">Cover Photo</div>
+        <div id="preview" style="margin-top: 1%">
+          <img v-if="url" :src="url" />
         </div>
       </div>
     </div>
@@ -136,23 +129,24 @@ export default {
   methods: {
     Edituser() {
       // Csrf.getCookie().then(()=>{
+      const formData = new FormData();
+      formData.append("name", this.form.name);
+      formData.append("email", this.form.email);
+      formData.append("password", this.form.password);
+      formData.append("room_id", this.form.room_id);
+      formData.append("avatar", this.form.avatar);
       Admin.edituser(`${this.$route.params.id}`, this.form, this.$router);
       console.log(`${this.$route.params.id}`);
 
       // })
     },
-    async changeImage(files) {
-      const file = files[0];
+    // onChange(e) {
+    //   this.form.avatar = e.target.files[0];
+    //   this.imageName = e.target.files[0].name;
+    //   this.url = URL.createObjectURL(this.form.avatar);
+    //   console.log(this.form);
+    // },
 
-      const data = new FormData();
-      data.append("avatar", file);
-
-      const response = await axios.post(
-        "http://localhost:8000/api/upload",
-        data
-      );
-      this.form.avatar = response.data.url;
-    },
     // catch (error) {
     //   this.errors = error.response.data.errors;
     // }
