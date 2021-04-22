@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Check from '../components/check/Check.vue';
 import Unauthorized from '../components/error/Unauthorized.vue';
 import Login from '../components/public/Login.vue';
 import Register from '../components/public/Register.vue';
@@ -24,7 +25,8 @@ const routes = [
     path: '/',
     component: Secure,
     children:[
-      {path:'', name:'AdminHome', component:User, meta:{authOnly: true}}
+      {path:'', name:'AdminHome', component:User, meta:{authOnly: true}},
+      {path:'/checks', name:'AdminChecks', component:Check, meta:{authOnly: true}}
     ]
   },
   

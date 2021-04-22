@@ -23,6 +23,11 @@ export default {
       console.log(response.data);
     })
   },
+  destroyed(){
+    alert('hey');
+    localStorage.removeItem('auth');
+    localStorage.removeItem('is_admin');
+  }
 }
 </script>
 
