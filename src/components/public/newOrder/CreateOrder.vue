@@ -5,7 +5,7 @@
       rel="stylesheet"
     />
   </head>
-  <h1 v-if="admin">Vue is awesome!</h1>
+
   <div class="card m-4">
     <div class="grid-container">
       <div class="order-desc card m-4">
@@ -15,32 +15,49 @@
           @removeProduct="removeProductFromOrder"
         ></orderDesc>
       </div>
-      <div class="card latest-order mt-4 mb-2 mr-2 ">
-        <h4 class="mb-0">Latest Order</h4>
-        <div class="flex-products mb-3">
-          <product-card
-            class="flex-item ml-2 mt-2 latest-item"
-            v-for="item in latestOrderItems"
-            v-bind:product="item"
-            @addProduct="addProductToOrder"
-          ></product-card>
+      <div class="card latest-order mt-4 mb-2 mr-4 ">
+        <div class="select-user" v-if="admin">
+          <form>
+            <h5>Select a User</h5>
+            <select @change="setUserId($event)" class="form-control" required>
+              <option value="" disabled selected hidden>Select User</option>
+              <option v-for="user in users" :value="user.id">
+                {{ user.name }}
+              </option>
+            </select>
+          </form>
+        </div>
+        <div v-else>
+          <h4 class="mb-0">Latest Order</h4>
+          <div class="flex-products mb-3">
+            <product-card
+              class="flex-item ml-2 mt-2 latest-item"
+              v-for="item in latestOrderItems"
+              v-bind:product="item"
+              @addProduct="addProductToOrder"
+            ></product-card>
+          </div>
         </div>
       </div>
       <div class="products ml-3 mr-3">
-        <div class="flex-products mb-3">
-          <product-card
-            class="flex-item ml-2 mt-2"
-            v-for="product in products"
-            v-bind:product="product"
-            @addProduct="addProductToOrder"
-          ></product-card>
-        </div>
-        <div>
-          <ul class="pagination">
-            <li><a type="button" @click="prev" class="prev"> Prev</a></li>
-            <li>|</li>
-            <li><a type="button" @click="next" class="next">Next</a></li>
-          </ul>
+        <div class="products-flex">
+          <h4>Menu</h4>
+
+          <div class="flex-products mb-2">
+            <product-card
+              class="flex-item ml-2 mt-2"
+              v-for="product in products"
+              v-bind:product="product"
+              @addProduct="addProductToOrder"
+            ></product-card>
+          </div>
+          <div>
+            <ul class="pagination">
+              <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+              <li>|</li>
+              <li><a type="button" @click="next" class="next">Next</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -49,6 +66,10 @@
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
+
+h4 {
+  font-family: "Poppins", sans-serif;
+}
 
 .grid-container {
   border-radius: 7px 7px 7px 7px;
@@ -70,6 +91,7 @@
 .latest-order {
   grid-area: latest-order;
   font-family: "Poppins", sans-serif;
+  align-items: center;
 }
 
 .flex-products {
@@ -84,6 +106,10 @@
 }
 
 .products {
+  grid-area: products;
+}
+
+.products-flex {
   grid-area: products;
   display: flex;
   flex-direction: column;
@@ -132,7 +158,9 @@ ul li a {
   border-radius: 50%;
 }
 
-.latest-item {
+.select-user {
+  width: 25rem;
+  margin-top: 1.5rem;
 }
 </style>
 
@@ -164,6 +192,7 @@ export default {
       latestOrderItems: [],
       users: [],
       admin: 1,
+      user_id: -1,
     };
   },
 
@@ -204,19 +233,26 @@ export default {
       this.latestOrderItems = await Order.getLatestOrder(this.user_id).then(
         (response) => response.data.data
       );
+      console.log(this.latestOrderItems);
+    },
+    setUserId($event) {
+      this.user_id = +event.currentTarget.value;
+      console.log(this.user_id);
     },
   },
   mounted() {
     this.loadProducts();
-    User.auth().then((response) => {
-      this.user_id = response.data.id;
-      this.getLatestItems();
-    });
+    User.auth()
+      .then((response) => {
+        this.user_id = response.data.id;
+        this.admin = response.data.is_admin;
+      })
+      .then(() => {
+        if (!this.admin) this.getLatestItems();
+      });
     this.users = Order.getUsers().then((response) => {
       this.users = response.data.data;
-      console.log(this.users);
     });
-    this.admin = localStorage.getItem("is_admin");
   },
   updated() {},
   unmounted() {},

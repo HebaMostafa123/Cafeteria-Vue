@@ -47,9 +47,7 @@
           <hr />
           <label>Room number</label>
           <select @change="setRoomId($event)" class="form-control" required>
-            <option value="" disabled selected hidden
-              >Choose your room number</option
-            >
+            <option value="" disabled selected hidden>Choose your room number</option>
             <option v-for="room in rooms" :value="room.id">
               {{ room.number }}
             </option>
@@ -122,6 +120,8 @@ export default {
     submitOrder() {
       if (this.items.length === 0) {
         this.error = "Please add items to your order";
+      } else if (this.userId === -1) {
+        this.error = "Please assign the order to a user";
       } else {
         this.items.forEach((v) => {
           v.product_id = v.id;
@@ -132,7 +132,7 @@ export default {
         });
         const request = {
           order: {
-            user_id: userId,
+            user_id: this.userId,
             room_id: this.room_id,
             notes: this.notes,
           },
