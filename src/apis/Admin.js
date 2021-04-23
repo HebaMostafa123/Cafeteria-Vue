@@ -22,7 +22,7 @@ export default {
     edituser(id, user, router) {
 
 
-        Api.patch(`/pages/${id}`, user);
+        Api.post(`/pages/${id}`, user);
         // router.push('/Showuser');
 
         // api / pages / { page }
