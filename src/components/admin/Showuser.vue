@@ -1,65 +1,80 @@
 <template>
   <!-- On tables -->
 
-  <router-link
-    class="btn btn-success float-right m-4"
-    :to="{
-      name: 'Adduser',
-    }"
-    >Add User</router-link
-  >
-
-  <table class="table table-secondary">
-    <thead>
-      <tr class="table-secondary">
-        <th cscope="col">Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Avatar</th>
-        <th scope="col">room_id</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="table-success" v-for="user in users" :key="user.id">
-        <td class="text-center">
-          {{ user.name }}
-        </td>
-        <td class="text-center">
-          {{ user.email }}
-        </td>
-        <td>
-          <img
-            v-bind:src="user.avatar"
-            class="profile-user-img img-fluid img-circle"
-            style="height: 40px; width: 40px"
-          />
-        </td>
-        <td class="text-center">
-          {{ user.room_id }}
-        </td>
-        <td>
-          <router-link
-            class="btn btn-warning m-2 w-25"
-            :to="{
-              name: 'Edituser',
-              params: { id: user.id },
-            }"
-            >Edit</router-link
-          >
-          <a class="btn btn-danger" @click="deleteuser(user.id)">Delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <nav>
-    <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" href="javascript:void(0)" @click="prev"
-          >Previouse</a
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-10 col-md-offset-1">
+        <router-link
+          style="width: 15%; border: 1px solid #007bff; color: #007bff"
+          class="btn float-right m-3"
+          :to="{
+            name: 'Adduser',
+          }"
+          ><strong>Add User</strong></router-link
         >
+        <table class="table table-hover">
+          <thead>
+            <tr class="table-secondary">
+              <th style="color: #007bff" scope="col">Avatar</th>
+              <th style="color: #007bff" cscope="col">Name</th>
+              <th style="color: #007bff" scope="col">Email</th>
+              <th style="color: #007bff" scope="col">room_id</th>
+              <th style="color: #007bff" scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-success" v-for="user in users" :key="user.id">
+              <td>
+                <img
+                  v-bind:src="user.avatar"
+                  class="profile-user-img img-fluid img-circle"
+                  style="width: 50px; height: 50px; border-radius: 25px"
+                />
+              </td>
+              <td class="text-center">
+                <strong> {{ user.name }}</strong>
+              </td>
+              <td class="text-center">
+                <strong> {{ user.email }}</strong>
+              </td>
+
+              <td class="text-center">
+                <strong> {{ user.room_id }}</strong>
+              </td>
+              <td>
+                <router-link
+                  class="btn btn-warning m-2"
+                  style="border-radius: 25px; width: 35%; color: white"
+                  :to="{
+                    name: 'Edituser',
+                    params: { id: user.id },
+                  }"
+                  >Edit</router-link
+                >
+                <a
+                  class="btn btn-danger"
+                  @click="deleteuser(user.id)"
+                  style="border-radius: 25px"
+                  >Remove</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <nav>
+    <ul class="pagination" style="margin-left: 38%">
+      <li class="page-item">
+        <a class="page-link" href="javascript:void(0)" @click="prev">
+          <strong> Prev </strong>
+        </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="javascript:void(0)" @click="next">Next</a>
+        <a class="page-link" href="javascript:void(0)" @click="next">
+          <strong> Next </strong>
+        </a>
       </li>
     </ul>
   </nav>
