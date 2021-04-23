@@ -1,98 +1,130 @@
 <template>
-  <form class="needs-validation" @submit.prevent="Edituser" novalidate>
-    <div class="form">
-      <div class="col-md-4 mb-3">
-        <label for="validationCustom01">Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="validationCustom01"
-          required
-          v-model="form.name"
-        />
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-
-      <div class="col-md-4 mb-3">
-        <label for="validationCustomUsername"> Email</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroupPrepend">@</span>
-          </div>
-          <input
-            type="email"
-            class="form-control"
-            id="validationCustomUsername"
-            aria-describedby="inputGroupPrepend"
-            required
-            v-model="form.email"
-          />
-          <div class="invalid-feedback">Please choose a emanil.</div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <label for="validationCustom02">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          id="validationCustom02"
-          required
-          v-model="form.password"
-        />
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-
-      <div class="col-md-6 mb-3">
-        <label for="validationCustom03">Password Confirmation</label>
-        <input
-          type="Password"
-          class="form-control"
-          id="validationCustom03"
-          required
-        />
-        <div class="invalid-feedback">
-          Please provide a valid Password Confirmation.
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <label for="room_id">Room number</label>
-        <select id="room_id" class="form-control" v-model="form.room_id">
-          <option selected>Choose your room number</option>
-          <option v-for="room in rooms" :key="room.id" :value="room.id">
-            {{ room.number }}
-          </option>
-        </select>
-
-        <div class="invalid-feedback">Please select a validRoom number.</div>
-      </div>
-      <div class="form-group">
-        <label for="avatar">Avatar</label>
-        <div class="row">
-          <div class="col-9">
+  <div class="home">
+    <Navbar />
+    <div class="col-5 mx-auto py-5 mt-5">
+      <h1 class="text-center">Update User Details</h1>
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="name">Name</label>
             <input
               type="text"
               class="form-control"
-              name="Avatar"
+              id="name"
+              placeholder="Name"
+              v-model="form.name"
+            />
+            <span class="text-danger" v-if="errors.name">
+              {{ errors.name[0] }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Email address"
+              required
+              v-model="form.email"
+            />
+            <span class="text-danger" v-if="errors.email">
+              {{ errors.email[0] }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+              required
+              v-model="form.password"
+            />
+            <span class="text-danger" v-if="errors.password">
+              {{ errors.password[0] }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="password_confirmation">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password_confirmation"
+              placeholder="Password Confirmation"
+              v-model="form.password_confirmation"
+            />
+            <span class="text-danger" v-if="errors.password_confirmation">
+              {{ errors.password_confirmation[0] }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="room_id">Room number</label>
+            <select id="room_id" class="form-control" v-model="form.room_id">
+              <option v-for="room in rooms" :value="room.id" :key="room.id">
+                {{ room.number }}
+              </option>
+            </select>
+            <span class="text-danger" v-if="errors.room_id">
+              {{ errors.room_id[0] }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="ext">Extension</label>
+            <input
+              type="text"
+              class="form-control"
+              name="ext"
+              :value="getCurrentRoomExtension()"
               readonly
-              v-model="form.avatar"
             />
           </div>
-          <div class="col-3">
-            <label class="btn btn-primary">
-              Upload
-              <input
-                type="file"
-                hidden
-                @change="changeImage($event.target.files)"
-              />
-            </label>
+
+          <div class="form-group">
+            <label for="avatar">Avatar</label>
+            <div class="row">
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="Avatar"
+                  readonly
+                  v-model="form.avatar"
+                />
+              </div>
+              <div class="col-3">
+                <label class="btn btn-primary">
+                  Upload
+                  <input
+                    type="file"
+                    hidden
+                    @change="changeImage($event.target.files)"
+                  />
+                </label>
+              </div>
+            </div>
+            <span class="text-danger" v-if="errors.avatar">
+              {{ errors.avatar[0] }}
+            </span>
           </div>
+
+          <button
+            type="submit"
+            @click.prevent="Edituser"
+            class="btn btn-primary btn-block"
+          >
+            Update
+          </button>
         </div>
       </div>
     </div>
-
-    <button class="btn btn-primary" type="submit">Update</button>
-  </form>
+  </div>
 </template>
 
 
@@ -114,10 +146,7 @@ export default {
         avatar: "",
       },
       rooms: [],
-      formimg: {
-        name: "",
-        file: "",
-      },
+      errors: [],
       success: "",
     };
   },
@@ -135,7 +164,6 @@ export default {
   },
   methods: {
     Edituser() {
-      // Csrf.getCookie().then(()=>{
       const formData = new FormData();
       formData.append("name", this.form.name);
       formData.append("email", this.form.email);
@@ -143,10 +171,17 @@ export default {
       formData.append("room_id", this.form.room_id);
       formData.append("avatar", this.form.avatar);
       formData.append("_method", "PATCH");
-      Admin.edituser(`${this.$route.params.id}`, formData, this.$router);
-      console.log(`${this.$route.params.id}`);
-
-      // })
+      Csrf.getCookie().then(() => {
+        Admin.edituser(`${this.$route.params.id}`, formData)
+          .then(() => {
+            this.$router.push({ name: "Showuser" });
+          })
+          .catch((error) => {
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+            }
+          });
+      });
     },
     getCurrentRoomExtension() {
       const currentRoom = this.rooms.find(
@@ -174,5 +209,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>
