@@ -20,7 +20,6 @@ export default {
   mounted(){
     User.auth().then((response)=>{
       this.user = response.data;
-      console.log(response.data);
     })
   },
   destroyed(){

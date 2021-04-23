@@ -2,30 +2,65 @@
 <div class="container-fluid mt-2">
   <form>
   <div class="form-row">
-    <div class="form-group col-md-5">
-      <input type="date" class="form-control" id="inputDateFrom" placeholder="Date From">
-    </div>
-    <div class="form-group col-md-5">
-      <input type="date" class="form-control" id="inputPassword4">
-    </div>
-  </div>
-  <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputState">State</label>
-      <select id="inputState" class="form-control">
-        <option selected>Choose...</option>
-        <option>...</option>
-      </select>
+      <label for="dateFrom">Date From</label>
+      <input type="date" class="form-control" id="dateFrom" placeholder="Date From" v-model="form.date_from">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="dateTo">Date To</label>
+      <input type="date" class="form-control" id="dateTO" v-model="form.date_to">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="user">User</label>
+      <div class='d-flex'>
+        <select id="user" class="form-control" v-model='form.selected_user_id'>
+          <option>All User</option>
+          <option v-for="oneUser in users" :value="oneUser.id">{{oneUser.name}}</option>
+        </select>
+        <button type="submit" @click.prevent="search" class="btn btn-primary ml-2">Search</button>
+      </div>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Sign in</button>
 </form>
 </div>
 </template>
 
 <script>
+import Csrf from '../../apis/Csrf';
+import Check from '../../apis/Check';
+import User from '../../apis/User';
 export default {
-
+  data(){
+    return{
+      form:{
+        date_from:'',
+        date_to:'',
+        selected_user_id:''
+      },
+      users:[],
+      loggedUser:''
+    }
+  },
+  beforeMount() {
+  },
+  mounted(){
+    User.getAllUsers().then(response => {
+      this.users = response.data;
+    })
+    User.auth().then((response)=>{
+      this.loggedUser = response.data;
+    }).then(()=>{
+      const filteredUsers = this.users.filter((oneUser)=>oneUser.id!==this.loggedUser.id);
+      this.users = filteredUsers;
+    });
+  },
+  methods:{
+    search(){
+      Csrf.getCookie().then(()=>{
+        Check.searchDate(this.form);
+      })
+    },
+  }
 }
 </script>
 

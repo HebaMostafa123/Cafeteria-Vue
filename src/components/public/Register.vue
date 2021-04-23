@@ -106,7 +106,7 @@ export default {
   mounted () {
     User.getRooms().then(response => {
       this.rooms = response.data;
-    })
+    });
   },
   methods:{
     register(){
