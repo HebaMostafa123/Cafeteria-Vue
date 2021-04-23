@@ -1,12 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Unauthorized from '../components/error/Unauthorized.vue';
-<<<<<<< HEAD
 import Login from '../components/public/Login.vue';
-=======
 import NotFound from '../components/public/404.vue';
 import Login from '../components/public/Login.vue';
 import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
->>>>>>> dev
 import Register from '../components/public/Register.vue';
 import Adduser from '../components/admin/Adduser.vue';
 import Showuser from '../components/admin/Showuser.vue';
@@ -24,8 +21,6 @@ const routes = [
     meta: { guestOnly: true }
   },
   {
-<<<<<<< HEAD
-=======
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -39,7 +34,6 @@ const routes = [
 
 
   {
->>>>>>> dev
     path: "/login",
     name: "Login",
     component: Login,
@@ -49,13 +43,6 @@ const routes = [
     path: '/',
     component: Secure,
     children: [
-<<<<<<< HEAD
-      //edit to adminontly
-      { path: '', name: 'AdminHome', component: User, meta: { authOnly: true } },
-      { path: '/Edituser/:id', name: 'Edituser', component: Edituser, meta: { authOnly: true } },
-      { path: '/Showuser', name: 'Showuser', component: Showuser, meta: { authOnly: true } },
-      { path: '/Adduser', name: 'Adduser', component: Adduser, meta: { authOnly: true } },]
-=======
       { path: '', name: 'AdminHome', component: User, meta: { authOnly: true } },
       { path: '/order', name: 'CreateOrder', component: CreateOrder, meta: { authOnly: true } },
       { path: '/Showuser', name: 'Showuser', component: Showuser, meta: { authOnly: true } },
@@ -67,7 +54,6 @@ const routes = [
       },
 
     ]
->>>>>>> dev
   },
 
   {
@@ -80,14 +66,11 @@ const routes = [
     name: 'Trial',
     component: Trial,
     meta: { adminOnly: true }
-<<<<<<< HEAD
-=======
   },
   {
     path: '/notfound',
     name: 'NotFound',
     component: NotFound
->>>>>>> dev
   }
 ]
 
