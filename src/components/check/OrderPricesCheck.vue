@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="isOrdersExist()">
+  <div class="container-fluid" v-if="isOrdersExist()">
     <table class="table table-bordered border-5 table-striped mt-2 text-center">
       <thead>
         <th>Order Date</th>
