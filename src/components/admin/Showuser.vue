@@ -29,7 +29,7 @@
         </td>
         <td>
           <img
-            v-bind:src="`../${user.avatar}`"
+            v-bind:src="user.avatar"
             class="profile-user-img img-fluid img-circle"
             style="height: 40px; width: 40px"
           />
