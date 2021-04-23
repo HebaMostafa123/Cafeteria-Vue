@@ -7,11 +7,12 @@ export default {
     },
     adduser(form, router) {
         Api.post("/pages", form);
-        // router.push('/Showuser');
+        router.push('/Showuser');
     },
     getuser() {
 
-        return Api.get('/pages');
+        // return Api.get('/pages');
+
     },
     deleteuser(id, users) {
         let i = users.map((data) => data.id).indexOf(id);
@@ -23,7 +24,7 @@ export default {
 
 
         Api.post(`/pages/${id}`, user);
-        // router.push('/Showuser');
+        router.push('/Showuser');
 
         // api / pages / { page }
 
