@@ -4,11 +4,11 @@
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="dateFrom">Date From</label>
-      <input type="date" class="form-control" id="dateFrom" placeholder="Date From" v-model="form.date_from">
+      <input type="date" class="form-control" id="dateFrom" placeholder="Date From" v-model="form.date_from" required>
     </div>
     <div class="form-group col-md-4">
       <label for="dateTo">Date To</label>
-      <input type="date" class="form-control" id="dateTO" v-model="form.date_to">
+      <input type="date" class="form-control" id="dateTO" required v-model="form.date_to">
     </div>
     <div class="form-group col-md-4">
       <label for="user">User</label>
@@ -22,6 +22,7 @@
     </div>
   </div>
 </form>
+  <NamePricesCheck :usersPrices='usersPrices' :form='form'/>
 </div>
 </template>
 
@@ -29,6 +30,7 @@
 import Csrf from '../../apis/Csrf';
 import Check from '../../apis/Check';
 import User from '../../apis/User';
+import NamePricesCheck from './NamePricesCheck.vue'
 export default {
   data(){
     return{
@@ -38,10 +40,9 @@ export default {
         selected_user_id:''
       },
       users:[],
-      loggedUser:''
+      loggedUser:'',
+      usersPrices:[]
     }
-  },
-  beforeMount() {
   },
   mounted(){
     User.getAllUsers().then(response => {
@@ -54,10 +55,21 @@ export default {
       this.users = filteredUsers;
     });
   },
+  components:{
+    NamePricesCheck,
+  },
   methods:{
     search(){
       Csrf.getCookie().then(()=>{
-        Check.searchDate(this.form);
+        Check.searchUsersDate(this.form).then((response)=>{
+          if(response.data.length === undefined){
+            this.usersPrices = [];
+            this.usersPrices.push(response.data);
+          }
+          else{
+            this.usersPrices = response.data;
+          }
+      });
       })
     },
   }
