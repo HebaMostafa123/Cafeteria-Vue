@@ -5,9 +5,9 @@ export default {
     getRooms() {
         return Api.get('/rooms');
     },
-    adduser(form, router) {
+    async adduser(form) {
         Api.post("/pages", form);
-        router.push('/Showuser');
+        // router.push('/Showuser');
     },
     getuser() {
 
@@ -20,11 +20,11 @@ export default {
         // users.slice(id, 1);
         return Api.delete(`/pages/${id}`);
     },
-    edituser(id, user, router) {
+    async edituser(id, user) {
 
 
         Api.post(`/pages/${id}`, user);
-        router.push('/Showuser');
+        // router.push('/Showuser');
 
         // api / pages / { page }
 
