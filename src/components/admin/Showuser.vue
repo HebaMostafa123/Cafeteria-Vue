@@ -33,7 +33,6 @@
             class="profile-user-img img-fluid img-circle"
             style="height: 40px; width: 40px"
           />
-          {{ user.avatar }}
         </td>
         <td class="text-center">
           {{ user.room_id }}
@@ -52,44 +51,64 @@
       </tr>
     </tbody>
   </table>
+  <nav>
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="javascript:void(0)" @click="prev"
+          >Previouse</a
+        >
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="javascript:void(0)" @click="next">Next</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
-<script>
+<script lang="ts">
 import Admin from "../../apis/Admin";
 import Csrf from "../../apis/Csrf";
+import { ref, onMounted } from "@vue/runtime-core";
 
 import axios from "axios";
 export default {
-  data() {
+  setup() {
+    const users = ref([]);
+    const page = ref(1);
+    const lastpage = ref(0);
+    const load = async () => {
+      const response = await axios.get(
+        `http://localhost:8000/api/pages?page=${page.value}`
+      );
+      users.value = response.data.data;
+      console.log(users.value);
+
+      lastpage.value = response.data.data.last_page;
+    };
+    onMounted(load);
+    const next = async () => {
+      if (page.value === lastpage.value) return;
+      page.value++;
+      await load();
+    };
+    const prev = async () => {
+      if (page.value === 1) return;
+      page.value--;
+      await load();
+    };
+
     return {
-      form: {
-        name: "",
-        email: "",
-        password: "",
-        // password_confirmation: "",
-        room_id: "",
-        avatar: "",
-      },
-      users: [],
+      users,
+      // userspage,
+      next,
+      prev,
       // id: 0,
     };
-  },
-  mounted() {
-    Admin.getuser().then((response) => {
-      this.users = response.data;
-    });
-    // axios
-    // .get("http://localhost:8000/api/rooms")
-    // .then((data) => (this.rooms = data.data))
-    // .catch(() => {
-    // console.log("Error...");
-    // });
   },
   methods: {
     deleteuser(id) {
       // Csrf.getCookie().then(()=>{
       Admin.deleteuser(id, this.users);
-
       // })
     },
   },
