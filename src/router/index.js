@@ -1,97 +1,106 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Unauthorized from '../components/error/Unauthorized.vue';
-import Login from '../components/public/Login.vue';
-import Register from '../components/public/Register.vue';
-import Secure from '../components/Secure.vue';
-import Trial from '../components/Trial.vue';
-import User from '../components/User.vue';
-
-
+import { createRouter, createWebHistory } from "vue-router";
+import Unauthorized from "../components/error/Unauthorized.vue";
+import Orders from "../components/public/listOrder/proccessedOrders.vue";
+import Login from "../components/public/Login.vue";
+import Register from "../components/public/Register.vue";
+import Secure from "../components/Secure.vue";
+import Trial from "../components/Trial.vue";
+import User from "../components/User.vue";
 const routes = [
   {
-    path: '/register',
+    path: "/register",
     name: "Register",
     component: Register,
-    meta: {guestOnly: true}
+    meta: { guestOnly: true },
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
-    meta: {guestOnly: true}
+    meta: { guestOnly: true },
   },
   {
-    path: '/',
+    path: "/",
     component: Secure,
-    children:[
-      {path:'', name:'AdminHome', component:User, meta:{authOnly: true}}
-    ]
+    children: [
+      {
+        path: "",
+        name: "AdminHome",
+        component: User,
+        meta: { authOnly: true },
+      },
+      {
+        path: "/orders",
+        name: "Orders",
+        component: Orders,
+        meta: { adminOnly: true },
+      },
+    ],
   },
-  
+
   {
-    path: '/unauthorized',
-    name: 'Unauthorized',
-    component: Unauthorized
+    path: "/unauthorized",
+    name: "Unauthorized",
+    component: Unauthorized,
   },
   {
-    path: '/trial',
-    name: 'Trial',
+    path: "/trial",
+    name: "Trial",
     component: Trial,
-    meta: {adminOnly: true}
-  }
-]
+    meta: { adminOnly: true },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-function isLoggedIn(){
-  return localStorage.getItem('auth');
+function isLoggedIn() {
+  return localStorage.getItem("auth");
 }
 
-function isAdmin(){
-  return localStorage.getItem('is_admin');
+function isAdmin() {
+  return localStorage.getItem("is_admin");
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.authOnly)) {
+  if (to.matched.some((record) => record.meta.authOnly)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!isLoggedIn()) {
       next({
         path: "/login",
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     } else {
       next();
     }
-  } else if (to.matched.some(record => record.meta.adminOnly)) {
+  } else if (to.matched.some((record) => record.meta.adminOnly)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!isAdmin()) {
       next({
         path: "/unauthorized",
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     } else {
       next();
     }
-  } 
-  else if (to.matched.some(record => record.meta.guestOnly)) {
+  } else if (to.matched.some((record) => record.meta.guestOnly)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (isLoggedIn()) {
       next({
         path: "/about",
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     } else {
       next();
     }
-  }else {
+  } else {
     next(); // make sure to always call next()!
   }
 });
 
-export default router
+export default router;
