@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Unauthorized from '../components/error/Unauthorized.vue';
+import NotFound from '../components/public/404.vue';
 import Login from '../components/public/Login.vue';
 import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
 import Secure from '../components/Secure.vue';
 import Trial from '../components/Trial.vue';
 import User from '../components/User.vue';
-
 
 
 const routes = [
@@ -41,6 +41,11 @@ const routes = [
     name: 'Trial',
     component: Trial,
     meta: {adminOnly: true}
+  },
+  {
+    path: '/notfound',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 

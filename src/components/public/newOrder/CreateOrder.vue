@@ -4,6 +4,10 @@
       href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
   </head>
 
   <div class="card m-4">
@@ -40,24 +44,23 @@
         </div>
       </div>
       <div class="products ml-3 mr-3">
-        <div class="products-flex">
+        <div class="menu-header">
           <h4>Menu</h4>
-
-          <div class="flex-products mb-2">
-            <product-card
-              class="flex-item ml-2 mt-2"
-              v-for="product in products"
-              v-bind:product="product"
-              @addProduct="addProductToOrder"
-            ></product-card>
-          </div>
-          <div>
-            <ul class="pagination">
-              <li><a type="button" @click="prev" class="prev"> Prev</a></li>
-              <li>|</li>
-              <li><a type="button" @click="next" class="next">Next</a></li>
-            </ul>
-          </div>
+        </div>
+        <div class="menu-items flex-products">
+          <product-card
+            class="flex-item ml-2 mt-2"
+            v-for="product in products"
+            v-bind:product="product"
+            @addProduct="addProductToOrder"
+          ></product-card>
+        </div>
+        <div class="menu-footer mt-5">
+          <ul class="pagination">
+            <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+            <li>|</li>
+            <li><a type="button" @click="next" class="next">Next</a></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -78,7 +81,7 @@ h4 {
   box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   display: grid;
   grid-template-columns: 1fr 0.7fr 1.1fr 1.2fr;
-  grid-template-rows: 0.5fr 1.3fr 0.9fr;
+  grid-template-rows: 0.5fr 1.2fr 0.3fr;
   gap: 0px 0px;
   grid-template-areas:
     "order-desc order-desc latest-order latest-order"
@@ -87,6 +90,7 @@ h4 {
 }
 .order-desc {
   grid-area: order-desc;
+    background-color: #e7f1f9;
 }
 .latest-order {
   grid-area: latest-order;
@@ -107,17 +111,25 @@ h4 {
 
 .products {
   grid-area: products;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.1fr 1.6fr 0.4fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "menu-header menu-header menu-header menu-header"
+    "menu-items menu-items menu-items menu-items"
+    "menu-footer menu-footer menu-footer menu-footer";
 }
 
-.products-flex {
-  grid-area: products;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
+.menu-header {
+  grid-area: menu-header;
 }
-
+.menu-items {
+  grid-area: menu-items;
+}
+.menu-footer {
+  grid-area: menu-footer;
+}
 .flex-item {
   order: 0;
   flex: 0 2 auto;
@@ -137,6 +149,7 @@ ul {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
   font-family: "Poppins", sans-serif;
+  margin:auto;
 }
 ul li:first-child {
   margin-left: 1.2rem;
@@ -206,8 +219,11 @@ export default {
   methods: {
     addProductToOrder(value) {
       const exists = this.orderItems.some((x) => x.id === +value);
-      if (!exists)
-        this.orderItems.push(this.products.find((x) => x.id === +value));
+      if (!exists) {
+        const newItem = this.products.find((x) => x.id === +value);
+        newItem.quantity = 0;
+        this.orderItems.push(newItem);
+      }
     },
     removeProductFromOrder(value) {
       const index = this.orderItems.map((item) => item.id).indexOf(+value);
