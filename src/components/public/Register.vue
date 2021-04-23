@@ -1,13 +1,19 @@
 <template>
-<div class="home">
-  <Navbar/>
-  <div class="col-5 mx-auto py-5 mt-5">
+  <div class="home">
+    <Navbar />
+    <div class="col-5 mx-auto py-5 mt-5">
       <h1 class="text-center">Please Register</h1>
       <div class="card shadow">
         <div class="card-body">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Name" v-model="form.name">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Name"
+              v-model="form.name"
+            />
             <span class="text-danger" v-if="errors.name">
               {{ errors.name[0] }}
             </span>
@@ -15,7 +21,14 @@
 
           <div class="form-group">
             <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="Email address" required v-model="form.email">
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Email address"
+              required
+              v-model="form.email"
+            />
             <span class="text-danger" v-if="errors.email">
               {{ errors.email[0] }}
             </span>
@@ -23,7 +36,14 @@
 
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" required v-model="form.password">
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+              required
+              v-model="form.password"
+            />
             <span class="text-danger" v-if="errors.password">
               {{ errors.password[0] }}
             </span>
@@ -31,7 +51,13 @@
 
           <div class="form-group">
             <label for="password_confirmation">Confirm Password</label>
-            <input type="password" class="form-control" id="password_confirmation" placeholder="Password Confirmation" v-model="form.password_confirmation">
+            <input
+              type="password"
+              class="form-control"
+              id="password_confirmation"
+              placeholder="Password Confirmation"
+              v-model="form.password_confirmation"
+            />
             <span class="text-danger" v-if="errors.password_confirmation">
               {{ errors.password_confirmation[0] }}
             </span>
@@ -40,7 +66,9 @@
           <div class="form-group">
             <label for="room_id">Room number</label>
             <select id="room_id" class="form-control" v-model="form.room_id">
-              <option v-for="room in rooms" :value="room.id">{{room.number}}</option>
+              <option v-for="room in rooms" :value="room.id">
+                {{ room.number }}
+              </option>
             </select>
             <span class="text-danger" v-if="errors.room_id">
               {{ errors.room_id[0] }}
@@ -49,18 +77,35 @@
 
           <div class="form-group">
             <label for="ext">Extension</label>
-            <input type="text" class="form-control" name="ext" :value="getCurrentRoomExtension()" readonly/>
+            <input
+              type="text"
+              class="form-control"
+              name="ext"
+              :value="getCurrentRoomExtension()"
+              readonly
+            />
           </div>
 
           <div class="form-group">
             <label for="avatar">Avatar</label>
             <div class="row">
               <div class="col-9">
-                <input type="text" class="form-control" name="Avatar" readonly v-model="form.avatar"/>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="Avatar"
+                  readonly
+                  v-model="form.avatar"
+                />
               </div>
               <div class="col-3">
                 <label class="btn btn-primary">
-                  Upload <input type="file" hidden @change="changeImage($event.target.files)"/>
+                  Upload
+                  <input
+                    type="file"
+                    hidden
+                    @change="changeImage($event.target.files)"
+                  />
                 </label>
               </div>
             </div>
@@ -69,84 +114,93 @@
             </span>
           </div>
 
-          <button type="submit" @click.prevent="register" class="btn btn-primary btn-block">
+          <button
+            type="submit"
+            @click.prevent="register"
+            class="btn btn-primary btn-block"
+          >
             Register
           </button>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-import User from '../../apis/User';
-import Csrf from '../../apis/Csrf';
-import axios from 'axios';
-import Navbar from '../layout/Navigation.vue'
+import User from "../../apis/User";
+import Csrf from "../../apis/Csrf";
+import axios from "axios";
+import Navbar from "../layout/Navigation.vue";
 axios.defaults.withCredentials = true;
 export default {
-  data(){
-    return{
-      form:{
+  data() {
+    return {
+      form: {
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
         room_id: "",
-        avatar: ""
+        avatar: "",
       },
       rooms: [],
-      errors: []
+      errors: [],
     };
   },
-  components:{
-    Navbar
+  components: {
+    Navbar,
   },
-  mounted () {
-    User.getRooms().then(response => {
+  mounted() {
+    User.getRooms().then((response) => {
       this.rooms = response.data;
-    })
+    });
   },
-  methods:{
-    register(){
-      Csrf.getCookie().then(()=>{
-        User.register(this.form).then(()=>{
-          this.$router.push({ name: "Login" });
-        }).catch((error)=>{
-          if (error.response.status === 422) {
-            this.errors = error.response.data.errors;
-          }
-        })
-      })
+  methods: {
+    register() {
+      Csrf.getCookie().then(() => {
+        User.register(this.form)
+          .then(() => {
+            this.$router.push({ name: "Login" });
+          })
+          .catch((error) => {
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+            }
+          });
+      });
     },
-    getCurrentRoomExtension(){
-      const currentRoom = this.rooms.find(element => element.id===this.form.room_id);
-      if(currentRoom) return currentRoom.ext;
+    getCurrentRoomExtension() {
+      const currentRoom = this.rooms.find(
+        (element) => element.id === this.form.room_id
+      );
+      if (currentRoom) return currentRoom.ext;
     },
-    async changeImage(files){
+    async changeImage(files) {
       try {
         const file = files[0];
-  
+
         const data = new FormData();
-        data.append('avatar', file);
-    
-        const response = await axios.post('http://localhost:8000/api/upload', data);
+        data.append("avatar", file);
+
+        const response = await axios.post(
+          "http://localhost:8000/api/upload",
+          data
+        );
         this.form.avatar = response.data.url;
       } catch (error) {
         this.errors = error.response.data.errors;
       }
-
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped>
-.home{
+.home {
   width: 100%;
   height: 100%;
-  background-image: url('~@/assets/registration-background.jpeg');
+  background-image: url("~@/assets/registration-background.jpeg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
