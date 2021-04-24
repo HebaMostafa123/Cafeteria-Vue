@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Adduser from '../components/admin/Adduser.vue';
+import Edituser from '../components/admin/Edituser.vue';
+import Showuser from '../components/admin/Showuser.vue';
 import Check from '../components/check/Check.vue';
 import Unauthorized from '../components/error/Unauthorized.vue';
 import NotFound from '../components/public/404.vue';
@@ -15,13 +18,17 @@ const routes = [
     path: '/register',
     name: "Register",
     component: Register,
-    meta: {guestOnly: true}
+    meta: { guestOnly: true }
   },
+
+
+
+
   {
     path: "/login",
     name: "Login",
     component: Login,
-    meta: {guestOnly: true}
+    meta: { guestOnly: true }
   },
   {
     path: '/',
@@ -29,10 +36,13 @@ const routes = [
     children:[
       {path:'', name:'AdminHome', component:User, meta:{authOnly: true}},
       {path:'/checks', name:'AdminChecks', component:Check, meta:{authOnly: true}},
-      {path:'/order', name:'CreateOrder', component:CreateOrder, meta:{authOnly: true}}
+      {path:'/order', name:'CreateOrder', component:CreateOrder, meta:{authOnly: true}},
+      {path: '/Showuser', name: 'Showuser', component: Showuser, meta: { adminOnly: true }},
+      {path: '/Edituser/:id', name: 'Edituser', component: Edituser, meta: { adminOnly: true }},
+      {path: '/Adduser', name: 'Adduser', component: Adduser, meta: { adminOnly: true }},
     ]
   },
-  
+
   {
     path: '/unauthorized',
     name: 'Unauthorized',
@@ -42,7 +52,7 @@ const routes = [
     path: '/trial',
     name: 'Trial',
     component: Trial,
-    meta: {adminOnly: true}
+    meta: { adminOnly: true }
   },
   {
     path: '/notfound',
@@ -56,11 +66,11 @@ const router = createRouter({
   routes
 })
 
-function isLoggedIn(){
+function isLoggedIn() {
   return localStorage.getItem('auth');
 }
 
-function isAdmin(){
+function isAdmin() {
   return localStorage.getItem('is_admin');
 }
 
@@ -87,7 +97,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  } 
+  }
   else if (to.matched.some(record => record.meta.guestOnly)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
@@ -99,7 +109,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  }else {
+  } else {
     next(); // make sure to always call next()!
   }
 });

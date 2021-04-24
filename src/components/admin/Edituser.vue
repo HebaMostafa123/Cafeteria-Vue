@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center">Please Register</h1>
+      <h1 class="text-center">Update User Details</h1>
       <div class="card shadow">
         <div class="card-body">
           <div class="form-group">
@@ -66,7 +66,7 @@
           <div class="form-group">
             <label for="room_id">Room number</label>
             <select id="room_id" class="form-control" v-model="form.room_id">
-              <option v-for="room in rooms" :value="room.id">
+              <option v-for="room in rooms" :value="room.id" :key="room.id">
                 {{ room.number }}
               </option>
             </select>
@@ -99,8 +99,13 @@
                 />
               </div>
               <div class="col-3">
-                <label class="btn btn-warning">
-                  Upload <input type="file" hidden @change="changeImage($event.target.files)"/>
+                <label class="btn btn-primary">
+                  Upload
+                  <input
+                    type="file"
+                    hidden
+                    @change="changeImage($event.target.files)"
+                  />
                 </label>
               </div>
             </div>
@@ -109,8 +114,12 @@
             </span>
           </div>
 
-          <button type="submit" @click.prevent="register" class="btn btn-info btn-block">
-            Register
+          <button
+            type="submit"
+            @click.prevent="Edituser"
+            class="btn btn-primary btn-block"
+          >
+            Update
           </button>
         </div>
       </div>
@@ -118,12 +127,13 @@
   </div>
 </template>
 
+
 <script>
-import User from "../../apis/User";
+import Admin from "../../apis/Admin";
+import Uplode from "../../apis/Image";
 import Csrf from "../../apis/Csrf";
+
 import axios from "axios";
-import Navbar from "../layout/Navigation.vue";
-axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
@@ -131,28 +141,40 @@ export default {
         name: "",
         email: "",
         password: "",
-        password_confirmation: "",
+        // password_confirmation: "",
         room_id: "",
         avatar: "",
       },
       rooms: [],
       errors: [],
+      success: "",
     };
   },
-  components: {
-    Navbar,
-  },
   mounted() {
-    User.getRooms().then((response) => {
+    Admin.getRooms().then((response) => {
       this.rooms = response.data;
     });
+    // ax
+    // axios
+    // .get("http://localhost:8000/api/rooms")
+    // .then((data) => (this.rooms = data.data))
+    // .catch(() => {
+    // console.log("Error...");
+    // });
   },
   methods: {
-    register() {
+    Edituser() {
+      const formData = new FormData();
+      formData.append("name", this.form.name);
+      formData.append("email", this.form.email);
+      formData.append("password", this.form.password);
+      formData.append("room_id", this.form.room_id);
+      formData.append("avatar", this.form.avatar);
+      formData.append("_method", "PATCH");
       Csrf.getCookie().then(() => {
-        User.register(this.form)
+        Admin.edituser(`${this.$route.params.id}`, formData)
           .then(() => {
-            this.$router.push({ name: "Login" });
+            this.$router.push({ name: "Showuser" });
           })
           .catch((error) => {
             if (error.response.status === 422) {
@@ -188,12 +210,4 @@ export default {
 </script>
 
 <style scoped>
-.home{
-background-color: #605d86;
-  font-family: "Poppins", sans-serif;
-}
-
-.home h1{
-color: white;
-}
 </style>
