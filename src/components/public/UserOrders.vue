@@ -46,7 +46,34 @@
       </div>
     </form>
     <p class="error">{{ error }}</p>
-    <div class="card m-4"></div>
+    <div class="card m-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Order Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="order in orders" :value="order.id">
+            <th scope="row">{{ order.created_at }}</th>
+            <td>{{ order.status }}</td>
+            <td>{{ order.total }}</td>
+            <td>
+              <button
+                @click="cancelOrder"
+                v-if="order.status == 'processing'"
+                class="btn btn-warning"
+              >
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -93,6 +120,7 @@ export default {
     this.toDate = new Date().toJSON().slice(0, 10);
     User.auth().then((response) => {
       this.user_id = response.data.id;
+      this.getOrders();
     });
   },
   methods: {
@@ -103,7 +131,7 @@ export default {
         this.error = "Invalid time frame";
       }
       if (this.error.length === 0) {
-        console.log("send el request");
+        this.getOrders();
       }
     },
     changeFromDate($event) {
@@ -113,14 +141,19 @@ export default {
         this.error = "Invalid time frame";
       }
       if (this.error.length === 0) {
-        this.orders = Order.getUserOrders(
-          this.user_id,
-          this.fromDate,
-          this.toDate
-        ).then((response) => {
-          console.log(response.data.data);
-        });
+        this.getOrders();
       }
+    },
+    cancelOrder($event) {},
+    getOrders() {
+      this.orders = Order.getUserOrders(
+        this.user_id,
+        this.fromDate,
+        this.toDate
+      ).then((response) => {
+        this.orders = response.data.data;
+        console.log(this.orders);
+      });
     },
   },
 };
