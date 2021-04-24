@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Unauthorized from "../components/error/Unauthorized.vue";
+import NotFound from "../components/public/404.vue";
 import Orders from "../components/public/listOrder/proccessedOrders.vue";
 import Login from "../components/public/Login.vue";
+import CreateOrder from "../components/public/newOrder/CreateOrder.vue";
 import Register from "../components/public/Register.vue";
 import Secure from "../components/Secure.vue";
 import Trial from "../components/Trial.vue";
 import User from "../components/User.vue";
-
 const routes = [
   {
     path: "/register",
@@ -24,20 +25,12 @@ const routes = [
     path: "/",
     component: Secure,
     children: [
-      // {
-      //   path: "",
-      //   name: "AdminHome",
-      //   component: User,
-      //   meta: { authOnly: true },
-      // },
       {
         path: "/orders",
         name: "Orders",
         component: Orders,
         meta: { adminOnly: true },
       },
-    ],
-    children: [
       {
         path: "",
         name: "AdminHome",

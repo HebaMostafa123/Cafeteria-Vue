@@ -9,16 +9,20 @@
             <th scope="col">Name</th>
             <th scope="col">Room</th>
             <th scope="col">EXT</th>
+            <th scope="col">Order Total Price</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">{{ order.id }}</th>
-            <td>{{ order.created_at }}</td>
-            <td>{{ order.user.name }}</td>
-            <td>{{ order.room.number }}</td>
-            <td>{{ order.room.ext }}</td>
+            <td>{{ order.order.created_at }}</td>
+            <td>{{ order.order.user.name }}</td>
+            <td>{{ order.order.room.number }}</td>
+            <td>{{ order.order.room.ext }}</td>
+            <strong
+              ><td>{{ order.total_price }} EGP</td></strong
+            >
             <td>
               <button
                 type="submit"
@@ -32,7 +36,7 @@
         </tbody>
       </table>
       <div class="d-flex flex-row justify-content-around">
-        <div class="product" v-for="product of order.products">
+        <div class="product" v-for="product of order.order.products">
           <img class="product_image" :src="product.image" />
           <div class="product-info">
             <div class="product-price-btn">
@@ -40,12 +44,18 @@
                 <span>{{ product.price }}</span> EGP
                 <span> Quantity:{{ product.pivot.quantity }}</span>
               </p>
-              <!-- <span> Quantity:{{ product.pivot.quantity }}</span> -->
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="menu-footer mt-5">
+    <ul class="pagination">
+      <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+      <li>|</li>
+      <li><a type="button" @click="next" class="next">Next</a></li>
+    </ul>
   </div>
 </template>
 
@@ -57,12 +67,29 @@ export default {
   data() {
     return {
       orders: [],
+      page: 1,
+      lastPage: 0,
     };
   },
   methods: {
     changeStatus(order) {
       Orders.changeStatus(order.id, this.$router);
-      //   console.log(order.id);
+
+      Orders.getProcessingOrders().then((response) => {
+        this.orders = response.data.data;
+      });
+    },
+    async next() {
+      if (this.page === this.lastPage) return;
+      this.page++;
+      await this.loadOrders();
+    },
+    async prev() {
+      if (this.page === 1) return;
+      this.page--;
+      await this.loadOrders();
+    },
+    loadOrders() {
       Orders.getProcessingOrders().then((response) => {
         this.orders = response.data.data;
       });
@@ -71,8 +98,8 @@ export default {
   computed: {},
   mounted() {
     Orders.getProcessingOrders().then((response) => {
-      //   console.log(response.data.data);
-      this.orders = response.data.data;
+      this.orders = response.data;
+      console.log(response.data);
     });
   },
 };
@@ -121,5 +148,42 @@ span {
   height: 200px;
   margin: 0px;
   /* text-align: center; */
+}
+.menu-footer {
+  grid-area: menu-footer;
+}
+
+.pagination {
+  width: 8rem;
+  height: 3rem;
+  align-items: center;
+}
+ul {
+  position: relative;
+  background: #fff;
+  display: flex;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  margin: auto;
+}
+ul li:first-child {
+  margin-left: 1.2rem;
+  font-weight: 700;
+  font-size: 2rem;
+}
+ul li {
+  list-style: none;
+  line-height: 50px;
+  margin: 0 5px;
+}
+ul li a {
+  font-size: 1rem;
+  display: block;
+  text-decoration: none;
+  color: #383838;
+  font-weight: 600;
+  border-radius: 50%;
 }
 </style>
