@@ -13,63 +13,42 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <!--Start of admin navbar-->
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Home</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Products</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            v-if="user && user.is_admin"
-            to="/Showuser"
-            >Users</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Manual Orders</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Checks</router-link
-          >
-        </li>
-        <!--End of admin navbar-->
-        <!--Start of Normal User navbar-->
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && !user.is_admin" to="/"
-            >Home</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && !user.is_admin" to="/orders"
-            >My Orders</router-link
-          >
-        </li>
-        <!--End of Normal User navbar-->
-      </ul>
-      <ul class="nav navbar-nav">
-        <li v-if="user" class="nav-item">
-          <img :src="user.avatar" class="avatar" />
-        </li>
-        <li v-if="user" class="nav-item nav-link mt-2">
-          {{ user.name }}
-        </li>
-        <router-link
-          v-if="!user"
-          class="nav-item nav-link"
-          :to="{ name: 'Login' }"
-        >
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <!--Start of admin navbar-->
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Home</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Products</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Users</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Manual Orders</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/checks">Checks</router-link>
+      </li>
+      <!--End of admin navbar-->
+      <!--Start of Normal User navbar-->
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && !user.is_admin" to="/">Home</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && !user.is_admin" to="/">My Orders</router-link>
+      </li>
+      <!--End of Normal User navbar-->
+    </ul>
+    <ul class="nav navbar-nav"> 
+      <li v-if="user" class="nav-item">
+          <img :src="user.avatar" class="avatar"/>
+      </li>
+      <li v-if="user" class="nav-item nav-link mt-2">
+          {{user.name}}
+      </li>
+      <router-link v-if="!user" class="nav-item nav-link" :to="{ name: 'Login' }">
           Login
         </router-link>
         <router-link

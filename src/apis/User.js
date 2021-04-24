@@ -1,7 +1,7 @@
 import Api from './Api';
 
-export default {
-  async register(form) {
+export default{
+  async register(form){
     return Api.post("/register", form);
   },
   async getRooms() {
@@ -15,5 +15,8 @@ export default {
   },
   async auth() {
     return Api.get("/user");
+  },
+  async getAllUsers(){
+    return Api.get('/users');
   }
 }
