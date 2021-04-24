@@ -12,5 +12,8 @@ export default{
   },
   getUserOrders(user_id,from,to){
     return Api.get(`/orders/user/${user_id}?from=${from}&to=${to}`);
+  },
+  cancelOrder(id){
+    return Api.delete(`/orders/${id}`);
   }
 }
