@@ -1,11 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Register from '../components/public/Register.vue';
+import ProductsComponent from "@/components/products/ProductsComponent";
+import EditProductComponent from "@/components/products/EditProductComponent";
+
 
 const routes = [
   {
     path: '/register',
     component: Register
   },
+  { path: "/products", name: "products", component: ProductsComponent },
+    {path: "/product/:id", name: "editproduct",component: EditProductComponent,},
   {
     path: '/about',
     name: 'About',
