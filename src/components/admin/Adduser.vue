@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center">Please Register</h1>
+      <h1 class="text-center">Add New User</h1>
       <div class="card shadow">
         <div class="card-body">
           <div class="form-group">
@@ -66,7 +66,7 @@
           <div class="form-group">
             <label for="room_id">Room number</label>
             <select id="room_id" class="form-control" v-model="form.room_id">
-              <option v-for="room in rooms" :value="room.id">
+              <option v-for="room in rooms" :value="room.id" :key="room.id">
                 {{ room.number }}
               </option>
             </select>
@@ -116,10 +116,10 @@
 
           <button
             type="submit"
-            @click.prevent="register"
+            @click.prevent="adduser"
             class="btn btn-primary btn-block"
           >
-            Register
+            Add
           </button>
         </div>
       </div>
@@ -127,12 +127,12 @@
   </div>
 </template>
 
+
 <script>
-import User from "../../apis/User";
+import Admin from "../../apis/Admin";
 import Csrf from "../../apis/Csrf";
+import Uplode from "../../apis/Image";
 import axios from "axios";
-import Navbar from "../layout/Navigation.vue";
-axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
@@ -140,28 +140,38 @@ export default {
         name: "",
         email: "",
         password: "",
-        password_confirmation: "",
+        // password_confirmation: "",
         room_id: "",
         avatar: "",
       },
       rooms: [],
       errors: [],
+      success: "",
     };
   },
-  components: {
-    Navbar,
-  },
   mounted() {
-    User.getRooms().then((response) => {
+    Admin.getRooms().then((response) => {
       this.rooms = response.data;
     });
+    // axios
+    // .get("http://localhost:8000/api/rooms")
+    // .then((data) => (this.rooms = data.data))
+    // .catch(() => {
+    // console.log("Error...");
+    // });
   },
   methods: {
-    register() {
+    adduser() {
+      const formData = new FormData();
+      formData.append("name", this.form.name);
+      formData.append("email", this.form.email);
+      formData.append("password", this.form.password);
+      formData.append("room_id", this.form.room_id);
+      formData.append("avatar", this.form.avatar);
       Csrf.getCookie().then(() => {
-        User.register(this.form)
+        Admin.adduser(formData)
           .then(() => {
-            this.$router.push({ name: "Login" });
+            this.$router.push({ name: "Showuser" });
           })
           .catch((error) => {
             if (error.response.status === 422) {
@@ -170,6 +180,7 @@ export default {
           });
       });
     },
+
     getCurrentRoomExtension() {
       const currentRoom = this.rooms.find(
         (element) => element.id === this.form.room_id
@@ -192,17 +203,24 @@ export default {
         this.errors = error.response.data.errors;
       }
     },
+    // async changeImage(files) {
+    //   const file = files[0];
+
+    //   const data = new FormData();
+    //   data.append("avatar", file);
+
+    //   const response = await axios.post(
+    //     "http://localhost:8000/api/upload",
+    //     data
+    //   );
+    //   this.form.avatar = response.data.url;
+    // },
+    // catch (error) {
+    //   this.errors = error.response.data.errors;
+    // }
   },
 };
 </script>
 
-<style scoped>
-.home {
-  width: 100%;
-  height: 100%;
-  background-image: url("~@/assets/registration-background.jpeg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
+<style>
 </style>
