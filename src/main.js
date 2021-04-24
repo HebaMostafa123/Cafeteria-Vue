@@ -1,3 +1,4 @@
+import axios from 'axios';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { createApp } from 'vue';
@@ -10,6 +11,8 @@ import VueAxios from "vue-axios";
 import ProductsComponent from "@/components/products/ProductsComponent";
 import EditProductComponent from "@/components/products/EditProductComponent";
 
+axios.defaults.withCredentials = true;
+axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
 const routes = [
     { path: "/", name: "/", component: HelloWorld },
