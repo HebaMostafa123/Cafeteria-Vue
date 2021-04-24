@@ -30,7 +30,7 @@ export default {
 <style scoped>
 .home{
   width: 73.5rem;
-  height: 34.5rem;
+  height: 33.5rem;
   background-image: url('~@/assets/bg.png');
   background-position: center;
   background-repeat: no-repeat;
@@ -41,6 +41,6 @@ width:12.5rem;
 height:3.5rem;
   position:absolute;
   left:45.6rem;
-  top:23.6rem;
+  top:24.0rem;
 }
 </style>
