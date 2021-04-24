@@ -1,33 +1,33 @@
 <template>
   <div id="app" class="bg-light h-screen">
-    <Navbar :user='user'/>
-    <router-view/>
+    <Navbar :user="user" />
+    <router-view />
   </div>
 </template>
 
 <script>
-import Navbar from './layout/Navigation.vue'
-import User from '../apis/User'
+import Navbar from "./layout/Navigation.vue";
+import User from "../apis/User";
 export default {
-  data(){
-    return{
-      user: null
-    }
+  data() {
+    return {
+      user: null,
+    };
   },
-  components:{
-    Navbar
+  components: {
+    Navbar,
   },
-  mounted(){
-    User.auth().then((response)=>{
+  mounted() {
+    User.auth().then((response) => {
       this.user = response.data;
-    })
+    });
   },
-  destroyed(){
-    alert('hey');
-    localStorage.removeItem('auth');
-    localStorage.removeItem('is_admin');
-  }
-}
+  destroyed() {
+    alert("hey");
+    localStorage.removeItem("auth");
+    localStorage.removeItem("is_admin");
+  },
+};
 </script>
 
 <style>
@@ -51,5 +51,4 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
-
 </style>

@@ -31,6 +31,9 @@
       <li class="nav-item">
         <router-link class="nav-link" v-if="user && user.is_admin" to="/checks">Checks</router-link>
       </li>
+       <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/orders">Orders</router-link>
+      </li>
       <!--End of admin navbar-->
       <!--Start of Normal User navbar-->
       <li class="nav-item">
