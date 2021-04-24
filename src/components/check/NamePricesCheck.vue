@@ -22,7 +22,7 @@
       </tr>
       </tbody>
     </table>
-    <OrderPricesCheck :orders='orders'/>
+    <OrderPricesCheck :orders='orders' :userExpandedPage="userExpandedPage"/>
   </div>
 </template>
 <script>
@@ -32,7 +32,7 @@
 export default {
   data(){
     return({
-      expandedRow: '',
+      userExpandedPage: '',
       orders: []
     })
   },
@@ -51,10 +51,10 @@ export default {
     getOrders(user_id, dateFrom, dateTo){
       const clickedBtn = document.getElementById(user_id+'.user');
       const allBtns = document.getElementsByClassName("inputUserBtn")
-      if(user_id===this.expandedRow){
+      if(user_id===this.userExpandedPage){
         clickedBtn.value = '+';
         this.orders = [];
-        this.expandedRow = '';
+        this.userExpandedPage = '';
       }
       else{
         for(let btn of allBtns){
@@ -66,7 +66,7 @@ export default {
             this.orders = response.data.data;
           })
         })
-        this.expandedRow = user_id;
+        this.userExpandedPage = user_id;
       }
     },
     changeBtnValue(){

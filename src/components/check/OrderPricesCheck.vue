@@ -21,7 +21,7 @@
       </tr>
       </tbody>
     </table>
-    <ProductsCheck :products="products"/>
+    <ProductsCheck :products="products" :userExpandedPage="userExpandedPage" :orderExpandedPage="orderExpandedPage"/>
   </div>
 </template>
 
@@ -33,11 +33,12 @@ export default {
   data(){
     return({
       products: [],
-      expandedRow: ''
+      orderExpandedPage: ''
     })
   },
   props:{
-    orders:Object
+    orders:Object,
+    userExpandedPage:Number
   },
   components:{
     ProductsCheck
@@ -50,10 +51,10 @@ export default {
     getProducts(orderId){
       const clickedBtn = document.getElementById(orderId+'.order');
       const allBtns = document.getElementsByClassName("inputOrderBtn")
-      if(orderId===this.expandedRow){
+      if(orderId===this.orderExpandedPage){
         clickedBtn.value = '+';
-        this.orders = [];
-        this.expandedRow = '';
+        this.products = [];
+        this.orderExpandedPage = '';
       }
       else{
         for(let btn of allBtns){
@@ -65,7 +66,7 @@ export default {
             this.products = response.data.data;
           })
         })
-        this.expandedRow = orderId;
+        this.orderExpandedPage = orderId;
       }
     }
   }

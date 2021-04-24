@@ -1,5 +1,5 @@
 <template>
-  <div class="container border" v-if="isProductsExist()">
+  <div class="container border" v-if="isProductsExist() && isEnabled">
     <h4 class="p-3 font-weight-bold">Products</h4>
         <div class="container-fluid px-5 py-5 mx-auto">
     <div class="row px-4">
@@ -12,14 +12,31 @@
             <p class="my-3 prod-name">{{product.quantity}}</p> 
         </div>
     </div>
-</div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  data(){
+    return({
+        isEnabled: true
+    })
+  },
+
   props:{
-    products: Object
+    products: Object,
+    userExpandedPage: Number,
+    orderExpandedPage: Number
+  },
+  watch: { 
+    userExpandedPage(){
+        this.isEnabled = false;
+    },
+    orderExpandedPage(){
+        console.log("hereee");
+        this.isEnabled = true;
+    }
   },
   methods:{
     isProductsExist(){
