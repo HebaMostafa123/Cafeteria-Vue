@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Unauthorized from '../components/error/Unauthorized.vue';
-import Login from '../components/public/Login.vue';
 import NotFound from '../components/public/404.vue';
 import Login from '../components/public/Login.vue';
 import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
@@ -20,16 +19,7 @@ const routes = [
     component: Register,
     meta: { guestOnly: true }
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
-  },
+
 
 
 
@@ -45,12 +35,12 @@ const routes = [
     children: [
       { path: '', name: 'AdminHome', component: User, meta: { authOnly: true } },
       { path: '/order', name: 'CreateOrder', component: CreateOrder, meta: { authOnly: true } },
-      { path: '/Showuser', name: 'Showuser', component: Showuser, meta: { authOnly: true } },
+      { path: '/Showuser', name: 'Showuser', component: Showuser, meta: { adminOnly: true } },
       {
-        path: '/Edituser/:id', name: 'Edituser', component: Edituser, meta: { authOnly: true }
+        path: '/Edituser/:id', name: 'Edituser', component: Edituser, meta: { adminOnly: true }
       },
       {
-        path: '/Adduser', name: 'Adduser', component: Adduser, meta: { authOnly: true }
+        path: '/Adduser', name: 'Adduser', component: Adduser, meta: { adminOnly: true }
       },
 
     ]
