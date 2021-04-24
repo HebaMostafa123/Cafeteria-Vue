@@ -6,6 +6,7 @@ import Register from "../components/public/Register.vue";
 import Secure from "../components/Secure.vue";
 import Trial from "../components/Trial.vue";
 import User from "../components/User.vue";
+
 const routes = [
   {
     path: "/register",
@@ -23,6 +24,20 @@ const routes = [
     path: "/",
     component: Secure,
     children: [
+      // {
+      //   path: "",
+      //   name: "AdminHome",
+      //   component: User,
+      //   meta: { authOnly: true },
+      // },
+      {
+        path: "/orders",
+        name: "Orders",
+        component: Orders,
+        meta: { adminOnly: true },
+      },
+    ],
+    children: [
       {
         path: "",
         name: "AdminHome",
@@ -30,10 +45,10 @@ const routes = [
         meta: { authOnly: true },
       },
       {
-        path: "/orders",
-        name: "Orders",
-        component: Orders,
-        meta: { adminOnly: true },
+        path: "/order",
+        name: "CreateOrder",
+        component: CreateOrder,
+        meta: { authOnly: true },
       },
     ],
   },
@@ -48,6 +63,11 @@ const routes = [
     name: "Trial",
     component: Trial,
     meta: { adminOnly: true },
+  },
+  {
+    path: "/notfound",
+    name: "NotFound",
+    component: NotFound,
   },
 ];
 
