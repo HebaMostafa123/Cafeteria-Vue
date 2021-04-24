@@ -27,7 +27,10 @@
           >
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
+          <router-link
+            class="nav-link"
+            v-if="user && user.is_admin"
+            to="/Showuser"
             >Users</router-link
           >
         </li>
@@ -49,7 +52,7 @@
           >
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" v-if="user && !user.is_admin" to="/"
+          <router-link class="nav-link" v-if="user && !user.is_admin" to="/orders"
             >My Orders</router-link
           >
         </li>
