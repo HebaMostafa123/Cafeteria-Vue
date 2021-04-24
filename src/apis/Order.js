@@ -15,5 +15,8 @@ export default{
   },
   cancelOrder(id){
     return Api.delete(`/orders/${id}`);
+  },
+  getOrderProducts(id){
+    return Api.get(`/orders/products/${id}`);
   }
 }

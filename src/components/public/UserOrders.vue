@@ -84,7 +84,16 @@
         </thead>
         <tbody>
           <tr v-for="order in orders" :value="order.id">
-            <th scope="row">{{ order.created_at }}</th>
+            <th scope="row">
+              {{ order.created_at
+              }}<button
+                @click="toggleProducts"
+                :id="order.id"
+                class="toggle-btn ml-1 btn btn-info"
+              >
+                +
+              </button>
+            </th>
             <td>{{ order.status }}</td>
             <td>{{ order.total }}</td>
             <td>
@@ -101,16 +110,35 @@
         </tbody>
       </table>
     </div>
-    <p class="total">Total Price: <span style="color:orange;">{{getTotalPrice}}</span> EGP</p>
-            <div class="menu-footer ">
-          <ul class="pagination">
-            <li><a type="button" @click="prev" class="prev"> Prev</a></li>
-            <li style="color:black">|</li>
-            <li><a type="button" @click="next" class="next">Next</a></li>
-          </ul>
+    <p class="total">
+      Total Price: <span style="color:orange;">{{ getTotalPrice }}</span> EGP
+    </p>
+    <div class="menu-footer ">
+      <ul class="pagination">
+        <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+        <li style="color:black">|</li>
+        <li><a type="button" @click="next" class="next">Next</a></li>
+      </ul>
+    </div>
+    <div id="products" class="card m-4">
+              <div class="flex-products mb-3">
+      <div v-for="product in products" :value="product.id" class="wrapper">
+        <div class="product-text">
+          <h1 align="center">{{ product.name.slice(0, 18) }}</h1>
         </div>
-    <div class="card m-4">
-</div>
+        <div class="product-img">
+          <img :src="product.image" />
+        </div>
+        <div class="product-info">
+          <div class="product-price-btn">
+            <p align="center">
+              {{product.quantity}} items {{ product.price }}EGP
+            </p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -120,6 +148,7 @@
 .page {
   font-family: "Poppins", sans-serif;
   color: white;
+  height:50rem;
 }
 .page h1 {
   color: white;
@@ -143,7 +172,7 @@ ul {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
   font-family: "Poppins", sans-serif;
-  margin:auto;
+  margin: auto;
 }
 ul li:first-child {
   margin-left: 1.2rem;
@@ -259,8 +288,77 @@ ul li a {
   margin: 100px auto;
 }
 
-.total{
-    font-size:1.5rem;
+.total {
+  font-size: 1.5rem;
+}
+#products {
+  display: none;
+}
+
+.card p {
+  color: black;
+}
+
+.wrapper {
+  height: 11.1rem;
+  width: 7rem;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+}
+
+.product-img {
+  float: top;
+}
+
+.product-img img {
+  border-radius: 7px 7px 7px 7px;
+  height: 6rem;
+  width: 7rem;
+}
+
+.product-info {
+  float: left;
+  height: 1.5rem;
+  width: 7rem;
+  border-radius: 7px;
+  background-color: #ffffff;
+}
+
+.product-text {
+  height: 2.5rem;
+  width: 7rem;
+  background-color: #fcfcfc;
+}
+
+.product-text h1 {
+  font-size: 1.1rem;
+  color: #474747;
+}
+
+.product-price-btn {
+  height: 2rem;
+  width: 100%;
+  position: relative;
+}
+
+.product-price-btn p {
+  display: inline-block;
+  height: 7vh;
+  font-size: 1.0rem;
+}
+
+
+.flex-products {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+  align-items: flex-start;
+  padding-top: 1rem;
 }
 </style>
 
@@ -276,6 +374,7 @@ export default {
       error: "",
       orders: [],
       user_id: 0,
+      products: [],
       //   error: "Invalid Time Frame",
     };
   },
@@ -289,6 +388,21 @@ export default {
     });
   },
   methods: {
+    toggleProducts($event) {
+      const order = $event.currentTarget.id;
+      const btnText = $event.currentTarget.innerText;
+      $(".toggle-btn").text("+");
+      if (btnText === "-") {
+        $("#products").hide();
+      } else {
+        $(`#${order}`).text("-");
+        $("#products").show();
+        console.log(this.products);
+        Order.getOrderProducts(order).then(
+          (response) => this.products=response.data.data
+        );
+      }
+    },
     changeToDate($event) {
       this.error = "";
       this.toDate = event.currentTarget.value;
@@ -326,11 +440,11 @@ export default {
       });
     },
   },
-  computed :{
+  computed: {
     getTotalPrice: function() {
-       const orders_list = Object.values(this.orders);
+      const orders_list = Object.values(this.orders);
       return orders_list.reduce((total, obj) => obj.total + total, 0);
     },
-  }
+  },
 };
 </script>
