@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Check from '../components/check/Check.vue';
 import Unauthorized from '../components/error/Unauthorized.vue';
+import NotFound from '../components/public/404.vue';
 import Login from '../components/public/Login.vue';
+import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
 import Secure from '../components/Secure.vue';
 import Trial from '../components/Trial.vue';
@@ -27,6 +29,7 @@ const routes = [
     children:[
       {path:'', name:'AdminHome', component:User, meta:{authOnly: true}},
       {path:'/checks', name:'AdminChecks', component:Check, meta:{authOnly: true}}
+      {path:'/order', name:'CreateOrder', component:CreateOrder, meta:{authOnly: true}}
     ]
   },
   
@@ -40,6 +43,11 @@ const routes = [
     name: 'Trial',
     component: Trial,
     meta: {adminOnly: true}
+  },
+  {
+    path: '/notfound',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 
