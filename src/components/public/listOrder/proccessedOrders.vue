@@ -116,7 +116,8 @@ export default {
   padding-bottom: 20px;
 }
 .card-body {
-  padding-bottom: 0px;
+  margin-bottom: 15px;
+  border: 2px solid lightgray;
 }
 .product-info {
   /* float: left; */
