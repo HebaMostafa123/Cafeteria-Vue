@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-body" v-for="order in orders" :key="order.id">
+    <div class="card-body" v-for="order of orders.data">
       <table class="table table-hover">
         <thead>
           <tr>
@@ -16,10 +16,11 @@
         <tbody>
           <tr>
             <th scope="row">{{ order.id }}</th>
-            <td>{{ order.order.created_at }}</td>
-            <td>{{ order.order.user.name }}</td>
-            <td>{{ order.order.room.number }}</td>
-            <td>{{ order.order.room.ext }}</td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.user.name }}</td>
+            <td>{{ order.room.number }}</td>
+            <td>{{ order.room.ext }}</td>
+
             <strong
               ><td>{{ order.total_price }} EGP</td></strong
             >
@@ -36,7 +37,7 @@
         </tbody>
       </table>
       <div class="d-flex flex-row justify-content-around">
-        <div class="product" v-for="product of order.order.products">
+        <div class="product" v-for="product of order.products">
           <img class="product_image" :src="product.image" />
           <div class="product-info">
             <div class="product-price-btn">
@@ -61,7 +62,7 @@
 
 <script>
 import Orders from "../../../apis/Order";
-// import Router from "vue-router";
+// import axios from "axios";
 export default {
   /* Component's local data */
   data() {
@@ -72,32 +73,34 @@ export default {
     };
   },
   methods: {
-    changeStatus(order) {
+    async changeStatus(order) {
       Orders.changeStatus(order.id, this.$router);
 
-      Orders.getProcessingOrders().then((response) => {
-        this.orders = response.data.data;
+      await Orders.getProcessingOrders(this.page).then((response) => {
+        this.orders = response.data;
+        console.log(response.data);
       });
     },
     async next() {
       if (this.page === this.lastPage) return;
       this.page++;
-      await this.loadOrders();
+      await Orders.getProcessingOrders(this.page).then((response) => {
+        this.orders = response.data;
+        console.log(response.data);
+      });
     },
     async prev() {
       if (this.page === 1) return;
       this.page--;
-      await this.loadOrders();
-    },
-    loadOrders() {
-      Orders.getProcessingOrders().then((response) => {
-        this.orders = response.data.data;
+      await Orders.getProcessingOrders(this.page).then((response) => {
+        this.orders = response.data;
+        console.log(response.data);
       });
     },
   },
   computed: {},
   mounted() {
-    Orders.getProcessingOrders().then((response) => {
+    Orders.getProcessingOrders(this.page).then((response) => {
       this.orders = response.data;
       console.log(response.data);
     });
@@ -147,7 +150,6 @@ span {
   width: 200px;
   height: 200px;
   margin: 0px;
-  /* text-align: center; */
 }
 .menu-footer {
   grid-area: menu-footer;
