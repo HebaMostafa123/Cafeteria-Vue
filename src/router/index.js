@@ -28,7 +28,7 @@ const routes = [
     component: Secure,
     children:[
       {path:'', name:'AdminHome', component:User, meta:{authOnly: true}},
-      {path:'/checks', name:'AdminChecks', component:Check, meta:{authOnly: true}}
+      {path:'/checks', name:'AdminChecks', component:Check, meta:{authOnly: true}},
       {path:'/order', name:'CreateOrder', component:CreateOrder, meta:{authOnly: true}}
     ]
   },

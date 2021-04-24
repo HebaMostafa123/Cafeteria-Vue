@@ -51,7 +51,7 @@ export default {
     User.auth().then((response)=>{
       this.loggedUser = response.data;
     }).then(()=>{
-      const filteredUsers = this.users.filter((oneUser)=>oneUser.id!==this.loggedUser.id);
+      const filteredUsers = this.users.data.filter((oneUser)=>oneUser.id!==this.loggedUser.id);
       this.users = filteredUsers;
     });
   },

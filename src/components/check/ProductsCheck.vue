@@ -34,7 +34,6 @@ export default {
         this.isEnabled = false;
     },
     orderExpandedPage(){
-        console.log("hereee");
         this.isEnabled = true;
     }
   },
