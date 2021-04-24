@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Cafeteria</a>
+  <nav class="navbar navbar-expand-lg ">
+      <router-link class="navbar-brand nav-link" to="/">Cafeteria</router-link>
     <button
       class="navbar-toggler"
       type="button"
@@ -52,7 +52,7 @@
           >
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" v-if="user && !user.is_admin" to="/"
+          <router-link class="nav-link" v-if="user && !user.is_admin" to="/orders"
             >My Orders</router-link
           >
         </li>
@@ -121,9 +121,25 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
+
+nav {
+  font-family: "Poppins", sans-serif;
+  color: white;
+  background-color: #605d86;
+}
+
+nav a {
+  color: white;
+}
+nav a:hover {
+  color: #E03583;
+}
+
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-top:0.3rem;
   border-radius: 50px;
 }
 </style>
