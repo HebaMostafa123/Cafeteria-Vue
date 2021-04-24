@@ -20,4 +20,7 @@ export default {
   async getOrder() {
     return Api.get("/orders", Orders);
   },
+  async getAllUsers() {
+    return Api.get("/users");
+  },
 };

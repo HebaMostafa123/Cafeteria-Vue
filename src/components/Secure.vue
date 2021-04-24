@@ -20,8 +20,12 @@ export default {
   mounted() {
     User.auth().then((response) => {
       this.user = response.data;
-      // console.log(response.data);
     });
+  },
+  destroyed() {
+    alert("hey");
+    localStorage.removeItem("auth");
+    localStorage.removeItem("is_admin");
   },
 };
 </script>
