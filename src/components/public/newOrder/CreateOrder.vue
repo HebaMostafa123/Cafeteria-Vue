@@ -266,7 +266,7 @@ export default {
       .then(() => {
         if (!this.admin) this.getLatestItems();
       });
-    this.users = Order.getUsers().then((response) => {
+    this.users = Order.getUsernames().then((response) => {
       this.users = response.data.data;
     });
   },
