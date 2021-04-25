@@ -43,8 +43,8 @@
                   class=" quantity form-control"
                   type="number"
                   max="20"
-                  min="0"
-                  value="0"
+                  min="1"
+                  value="1"
                   :id="item.id"
                   @change="changeQuantity($event)"
                 />

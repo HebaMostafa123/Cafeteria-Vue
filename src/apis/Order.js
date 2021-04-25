@@ -10,8 +10,8 @@ export default{
   getUsers(){
     return Api.get(`/usernames`);
   },
-  getUserOrders(user_id,from,to){
-    return Api.get(`/orders/user/${user_id}?from=${from}&to=${to}`);
+  getUserOrders(page = 1,user_id,from,to){
+    return Api.get(`/orders/user/${user_id}?page=${page}&from=${from}&to=${to}`);
   },
   cancelOrder(id){
     return Api.delete(`/orders/${id}`);

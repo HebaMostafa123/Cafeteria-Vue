@@ -16,7 +16,7 @@
       <div class="modal-content">
         <div class="modal-header justify-content-center">
           <div class="icon-box">
-            <i class="material-icons">&#xe811;</i>
+            <i class="material-icons">&#xe5ca;</i>
           </div>
         </div>
         <div class="modal-body text-center">
@@ -29,6 +29,36 @@
           >
             <span>Ok</span>
             <i class="material-icons">&#xE5C8;</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    id="confirmation"
+    class="modal fade"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <div class="modal-dialog modal-confirm">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <div class="icon-box">
+            <i class="material-icons">&#xe811;</i>
+          </div>
+        </div>
+        <div class="modal-body text-center">
+          <h4>Cancel Order</h4>
+          <p>Are you sure you want to cancel this order?</p>
+          <button
+            @click="cancelOrder"
+            class="btn btn-danger mr-3"
+            data-dismiss="modal"
+          >
+            <span>Yes</span>
+          </button>
+          <button class="btn btn-secondary" data-dismiss="modal">
+            <span>No</span>
           </button>
         </div>
       </div>
@@ -95,10 +125,10 @@
               </button>
             </th>
             <td>{{ order.status }}</td>
-            <td>{{ order.total }}</td>
+            <td>{{ order.total }} EGP</td>
             <td>
               <button
-                @click="cancelOrder"
+                @click="confirm"
                 :id="order.id"
                 v-if="order.status == 'processing'"
                 class="btn btn-warning"
@@ -121,22 +151,22 @@
       </ul>
     </div>
     <div id="products" class="card m-4">
-              <div class="flex-products mb-3">
-      <div v-for="product in products" :value="product.id" class="wrapper">
-        <div class="product-text">
-          <h1 align="center">{{ product.name.slice(0, 18) }}</h1>
-        </div>
-        <div class="product-img">
-          <img :src="product.image" />
-        </div>
-        <div class="product-info">
-          <div class="product-price-btn">
-            <p align="center">
-              {{product.quantity}} items {{ product.price }}EGP
-            </p>
+      <div class="flex-products mb-3">
+        <div v-for="product in products" :value="product.id" class="wrapper">
+          <div class="product-text">
+            <h1 align="center">{{ product.name.slice(0, 18) }}</h1>
+          </div>
+          <div class="product-img">
+            <img :src="product.image" />
+          </div>
+          <div class="product-info">
+            <div class="product-price-btn">
+              <p align="center">
+                quantity: {{ product.quantity }}<br />{{ product.price }}EGP
+              </p>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
@@ -148,7 +178,7 @@
 .page {
   font-family: "Poppins", sans-serif;
   color: white;
-  height:50rem;
+  height: 60rem;
 }
 .page h1 {
   color: white;
@@ -209,7 +239,7 @@ ul li a {
   border: none;
 }
 .modal-confirm .modal-header {
-  background: orange;
+  background: green;
   border-bottom: none;
   position: relative;
   text-align: center;
@@ -217,6 +247,11 @@ ul li a {
   border-radius: 5px 5px 0 0;
   padding: 35px;
 }
+
+#confirmation .modal-confirm .modal-header {
+  background: #afbabc;
+}
+
 .modal-confirm h4 {
   text-align: center;
   font-size: 36px;
@@ -260,7 +295,6 @@ ul li a {
 .modal-confirm .btn:active {
   color: #fff;
   border-radius: 4px;
-  background: #eeb711 !important;
   text-decoration: none;
   transition: all 0.4s;
   line-height: normal;
@@ -271,7 +305,6 @@ ul li a {
 }
 .modal-confirm .btn:hover,
 .modal-confirm .btn:focus {
-  background: #eda645 !important;
   outline: none;
 }
 .modal-confirm .btn span {
@@ -302,6 +335,8 @@ ul li a {
 .wrapper {
   height: 11.1rem;
   width: 7rem;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
   border-radius: 5px;
   -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
@@ -346,9 +381,8 @@ ul li a {
 .product-price-btn p {
   display: inline-block;
   height: 7vh;
-  font-size: 1.0rem;
+  font-size: 1rem;
 }
-
 
 .flex-products {
   width: 100%;
@@ -375,13 +409,18 @@ export default {
       orders: [],
       user_id: 0,
       products: [],
-      //   error: "Invalid Time Frame",
+      page: 1,
+      lastPage: 0,
+      canceledOrder: -1,
     };
   },
   components: {},
   mounted() {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
     this.fromDate = "2021-04-01";
-    this.toDate = new Date().toJSON().slice(0, 10);
+    this.toDate = tomorrow.toJSON().slice(0, 10);
     User.auth().then((response) => {
       this.user_id = response.data.id;
       this.getOrders();
@@ -399,7 +438,7 @@ export default {
         $("#products").show();
         console.log(this.products);
         Order.getOrderProducts(order).then(
-          (response) => this.products=response.data.data
+          (response) => (this.products = response.data.data)
         );
       }
     },
@@ -423,8 +462,9 @@ export default {
         this.getOrders();
       }
     },
-    cancelOrder($event) {
-      Order.cancelOrder($event.currentTarget.id)
+    cancelOrder() {
+      console.log("HI");
+      Order.cancelOrder(this.canceledOrder)
         .then((response) => {
           if (response.status === 200) $("#myModal").modal();
         })
@@ -432,12 +472,28 @@ export default {
     },
     getOrders() {
       this.orders = Order.getUserOrders(
+        this.page,
         this.user_id,
         this.fromDate,
         this.toDate
       ).then((response) => {
         this.orders = response.data.data;
+        this.lastPage = response.data.meta.last_page;
       });
+    },
+    async next() {
+      if (this.page === this.lastPage) return;
+      this.page++;
+      await this.getOrders();
+    },
+    async prev() {
+      if (this.page === 1) return;
+      this.page--;
+      await this.getOrders();
+    },
+    confirm($event) {
+      this.canceledOrder = $event.currentTarget.id;
+      $("#confirmation").modal();
     },
   },
   computed: {

@@ -221,7 +221,7 @@ export default {
       const exists = this.orderItems.some((x) => x.id === +value);
       if (!exists) {
         const newItem = this.products.find((x) => x.id === +value);
-        newItem.quantity = 0;
+        newItem.quantity = 1;
         this.orderItems.push(newItem);
       }
     },
