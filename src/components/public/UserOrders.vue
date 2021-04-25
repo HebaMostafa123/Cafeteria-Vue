@@ -152,7 +152,7 @@
     </div>
     <div id="products" class="card m-4">
       <div class="flex-products mb-3">
-        <div v-for="product in products" :value="product.id" class="wrapper">
+        <div v-for="product in products" :value="product.id" class="m-auto wrapper">
           <div class="product-text">
             <h1 align="center">{{ product.name.slice(0, 18) }}</h1>
           </div>
@@ -389,7 +389,7 @@ ul li a {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-content: flex-start;
   align-items: flex-start;
   padding-top: 1rem;
