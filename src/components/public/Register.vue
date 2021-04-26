@@ -99,13 +99,8 @@
                 />
               </div>
               <div class="col-3">
-                <label class="btn btn-primary">
-                  Upload
-                  <input
-                    type="file"
-                    hidden
-                    @change="changeImage($event.target.files)"
-                  />
+                <label class="btn btn-warning">
+                  Upload <input type="file" hidden @change="changeImage($event.target.files)"/>
                 </label>
               </div>
             </div>
@@ -114,11 +109,7 @@
             </span>
           </div>
 
-          <button
-            type="submit"
-            @click.prevent="register"
-            class="btn btn-primary btn-block"
-          >
+          <button type="submit" @click.prevent="register" class="btn btn-info btn-block">
             Register
           </button>
         </div>
@@ -197,12 +188,12 @@ export default {
 </script>
 
 <style scoped>
-.home {
-  width: 100%;
-  height: 100%;
-  background-image: url("~@/assets/registration-background.jpeg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+.home{
+background-color: #605d86;
+  font-family: "Poppins", sans-serif;
+}
+
+.home h1{
+color: white;
 }
 </style>

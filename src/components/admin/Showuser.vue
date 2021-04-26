@@ -1,12 +1,12 @@
 <template>
   <!-- On tables -->
-
+<div id="users">
   <div class="container">
     <div class="row">
-      <div class="col-sm-12 col-md-10 col-md-offset-1">
+      <div class="m-auto col-sm-12 col-md-10 col-md-offset-1">
         <router-link
-          style="width: 15%; border: 1px solid #007bff; color: #007bff"
-          class="btn float-right m-3"
+          style="width: 15%; "
+          class="btn btn-info float-right m-3"
           :to="{
             name: 'Adduser',
           }"
@@ -15,15 +15,15 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-secondary">
-              <th style="color: #007bff" scope="col">Avatar</th>
-              <th style="color: #007bff" cscope="col">Name</th>
-              <th style="color: #007bff" scope="col">Email</th>
-              <th style="color: #007bff" scope="col">room_id</th>
-              <th style="color: #007bff" scope="col">Action</th>
+              <th style="color: #212529" scope="col">Avatar</th>
+              <th style="color: #212529" cscope="col">Name</th>
+              <th style="color: #212529" scope="col">Email</th>
+              <th style="color: #212529" scope="col">room_id</th>
+              <th style="color: #212529" scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="table-success" v-for="user in users" :key="user.id">
+            <tr class="table-light" v-for="user in users" :key="user.id">
               <td>
                 <img
                   v-bind:src="user.avatar"
@@ -71,19 +71,20 @@
     </div>
   </div>
   <nav>
-    <ul class="pagination" style="margin-left: 38%">
+    <ul class="pagination" style="margin-left: 45%">
       <li class="page-item">
-        <a class="page-link" href="javascript:void(0)" @click="prev">
+        <a style="color: #212529" class="page-link" href="javascript:void(0)" @click="prev">
           <strong> Prev </strong>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="javascript:void(0)" @click="next">
+        <a style="color: #212529" class="page-link" href="javascript:void(0)" @click="next">
           <strong> Next </strong>
         </a>
       </li>
     </ul>
   </nav>
+  </div>
 </template>
 
 <script lang="ts">
@@ -106,9 +107,7 @@ export default {
         `http://localhost:8000/api/pages?page=${page.value}`
       );
       users.value = response.data.data;
-      console.log(users.value);
-
-      lastpage.value = response.data.data.last_page;
+      lastpage.value = response.data.last_page;
     };
     onMounted(load);
     const next = async () => {
@@ -159,4 +158,8 @@ export default {
 </script>
 
 <style>
+
+#users{
+  height:40rem;
+}
 </style>

@@ -1,6 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Cafeteria</a>
+  <nav class="navbar navbar-expand-lg ">
+      <router-link class="navbar-brand nav-link" to="/">    <img src="~@/assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+Cafeteria</router-link>
+      
     <button
       class="navbar-toggler"
       type="button"
@@ -13,63 +15,45 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <!--Start of admin navbar-->
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Home</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Products</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            v-if="user && user.is_admin"
-            to="/Showuser"
-            >Users</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Manual Orders</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && user.is_admin" to="/"
-            >Checks</router-link
-          >
-        </li>
-        <!--End of admin navbar-->
-        <!--Start of Normal User navbar-->
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && !user.is_admin" to="/"
-            >Home</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="user && !user.is_admin" to="/"
-            >My Orders</router-link
-          >
-        </li>
-        <!--End of Normal User navbar-->
-      </ul>
-      <ul class="nav navbar-nav">
-        <li v-if="user" class="nav-item">
-          <img :src="user.avatar" class="avatar" />
-        </li>
-        <li v-if="user" class="nav-item nav-link mt-2">
-          {{ user.name }}
-        </li>
-        <router-link
-          v-if="!user"
-          class="nav-item nav-link"
-          :to="{ name: 'Login' }"
-        >
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <!--Start of admin navbar-->
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Home</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Products</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/Showuser">Users</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/order">New Order</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/checks">Checks</router-link>
+      </li>
+       <li class="nav-item">
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/adminorders">Orders</router-link>
+      </li>
+      <!--End of admin navbar-->
+      <!--Start of Normal User navbar-->
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && !user.is_admin" to="/">Home</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" v-if="user && !user.is_admin" to="/orders">Orders</router-link>
+      </li>
+      <!--End of Normal User navbar-->
+    </ul>
+    <ul class="nav navbar-nav"> 
+      <li v-if="user" class="nav-item">
+          <img :src="user.avatar" class="avatar"/>
+      </li>
+      <li v-if="user" class="nav-item nav-link mt-2">
+          {{user.name}}
+      </li>
+      <router-link v-if="!user" class="nav-item nav-link" :to="{ name: 'Login' }">
           Login
         </router-link>
         <router-link
@@ -121,9 +105,25 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
+
+nav {
+  font-family: "Poppins", sans-serif;
+  color: white;
+  background-color: #605d86;
+}
+
+nav a {
+  color: white;
+}
+nav a:hover {
+  color: #E03583;
+}
+
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-top:0.3rem;
   border-radius: 50px;
 }
 </style>

@@ -43,8 +43,8 @@
                   class=" quantity form-control"
                   type="number"
                   max="20"
-                  min="0"
-                  value="0"
+                  min="1"
+                  value="1"
                   :id="item.id"
                   @change="changeQuantity($event)"
                 />
@@ -170,9 +170,11 @@ export default {
           },
           products: this.items,
         };
-        Order.sendOrder(request).then((response) => {
-          if (response.status === 200) $("#myModal").modal();
-        }).catch(()=> this.$router.push("/notfound"));
+        Order.sendOrder(request)
+          .then((response) => {
+            if (response.status === 200) $("#myModal").modal();
+          })
+          .catch(() => this.$router.push("/notfound"));
       }
     },
     trackOrder() {
