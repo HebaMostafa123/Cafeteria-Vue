@@ -35,35 +35,6 @@
           </div>
 
           <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              placeholder="Password"
-              required
-              v-model="form.password"
-            />
-            <span class="text-danger" v-if="errors.password">
-              {{ errors.password[0] }}
-            </span>
-          </div>
-
-          <div class="form-group">
-            <label for="password_confirmation">Confirm Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password_confirmation"
-              placeholder="Password Confirmation"
-              v-model="form.password_confirmation"
-            />
-            <span class="text-danger" v-if="errors.password_confirmation">
-              {{ errors.password_confirmation[0] }}
-            </span>
-          </div>
-
-          <div class="form-group">
             <label for="room_id">Room number</label>
             <select id="room_id" class="form-control" v-model="form.room_id">
               <option v-for="room in rooms" :value="room.id" :key="room.id">
@@ -138,12 +109,12 @@ export default {
   data() {
     return {
       form: {
-        name: "",
-        email: "",
-        password: "",
+        name: this.$route.params.name,
+        email: this.$route.params.email,
+
         // password_confirmation: "",
-        room_id: "",
-        avatar: "",
+        room_id: this.$route.room_id,
+        avatar: this.$route.params.avatar,
       },
       rooms: [],
       errors: [],
