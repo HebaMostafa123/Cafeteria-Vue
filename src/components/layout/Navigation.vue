@@ -1,6 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg ">
-      <router-link class="navbar-brand nav-link" to="/">Cafeteria</router-link>
+      <router-link class="navbar-brand nav-link" to="/">    <img src="~@/assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+Cafeteria</router-link>
+      
     <button
       class="navbar-toggler"
       type="button"
@@ -23,7 +25,7 @@
         <router-link class="nav-link" v-if="user && user.is_admin" to="/">Products</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Users</router-link>
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/Showuser">Users</router-link>
       </li>
       <li class="nav-item">
         <router-link class="nav-link" v-if="user && user.is_admin" to="/order">New Order</router-link>
