@@ -1,5 +1,5 @@
 <template>
-<div class="container-fluid mt-2">
+<div class="check container-fluid mt-2">
   <form>
   <div class="form-row">
     <div class="form-group col-md-4">
@@ -17,7 +17,7 @@
           <option>All User</option>
           <option v-for="oneUser in users" :value="oneUser.id">{{oneUser.name}}</option>
         </select>
-        <button type="submit" @click.prevent="search" class="btn btn-primary ml-2">Search</button>
+        <button type="submit" @click.prevent="search" class="btn btn-info ml-2">Search</button>
       </div>
     </div>
   </div>
@@ -77,5 +77,21 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
 
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+label{
+  color:white;
+}
+
+form{
+  margin-top:3rem;
+}
+
+.check{
+  height:80rem;
+}
 </style>

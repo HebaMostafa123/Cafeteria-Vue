@@ -9,8 +9,8 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
   </head>
-
-  <div class="card m-4">
+<div id="create-order">
+  <div class="card m-4 ">
     <div class="grid-container">
       <div class="order-desc card m-4">
         <orderDesc
@@ -65,11 +65,14 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
-
+#create-order{
+  height:70rem;
+}
 h4 {
   font-family: "Poppins", sans-serif;
 }

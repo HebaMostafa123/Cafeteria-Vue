@@ -42,5 +42,7 @@ height:3.5rem;
   position:absolute;
   left:45.6rem;
   top:24.0rem;
+-webkit-box-shadow: -12px 21px 10px -6px rgba(0,0,0,0.28); 
+box-shadow: -12px 21px 10px -6px rgba(0,0,0,0.28);
 }
 </style>
