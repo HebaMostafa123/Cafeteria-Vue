@@ -335,8 +335,6 @@ ul li a {
 .wrapper {
   height: 11.1rem;
   width: 7rem;
-  margin-right: 2rem;
-  margin-bottom: 1rem;
   border-radius: 5px;
   -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);

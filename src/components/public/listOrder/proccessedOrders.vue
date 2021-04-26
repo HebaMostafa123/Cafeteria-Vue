@@ -1,4 +1,5 @@
 <template>
+<div id="orders">
   <div class="card">
     <div class="card-body" v-for="order of orders.data">
       <table class="table table-hover">
@@ -40,12 +41,10 @@
         <div class="product" v-for="product of order.products">
           <img class="product_image" :src="product.image" />
           <div class="product-info">
-            <div class="product-price-btn">
               <p align="center">
-                <span>{{ product.price }}</span> EGP
+                <span>{{ product.price }}</span> EGP <br>
                 <span> Quantity:{{ product.pivot.quantity }}</span>
               </p>
-            </div>
           </div>
         </div>
       </div>
@@ -57,6 +56,7 @@
       <li>|</li>
       <li><a type="button" @click="next" class="next">Next</a></li>
     </ul>
+  </div>
   </div>
 </template>
 
@@ -78,7 +78,6 @@ export default {
 
       await Orders.getProcessingOrders(this.page).then((response) => {
         this.orders = response.data;
-        console.log(response.data);
       });
     },
     async next() {
@@ -86,7 +85,6 @@ export default {
       this.page++;
       await Orders.getProcessingOrders(this.page).then((response) => {
         this.orders = response.data;
-        console.log(response.data);
       });
     },
     async prev() {
@@ -94,7 +92,6 @@ export default {
       this.page--;
       await Orders.getProcessingOrders(this.page).then((response) => {
         this.orders = response.data;
-        console.log(response.data);
       });
     },
   },
@@ -102,7 +99,7 @@ export default {
   mounted() {
     Orders.getProcessingOrders(this.page).then((response) => {
       this.orders = response.data;
-      console.log(response.data);
+      this.lastPage = response.data.meta.last_page;
     });
   },
 };
@@ -111,37 +108,21 @@ export default {
 .product_image {
   width: 100px;
   height: 100px;
-  margin-left: 50px;
-  padding-right: 30px;
-  padding-bottom: 20px;
+  border-radius: 1rem;
 }
 .card-body {
   margin-bottom: 15px;
   border: 2px solid lightgray;
 }
 .product-info {
-  /* float: left; */
-  height: 1.5rem;
-  width: 7rem;
+  height: 2rem;
+   width: 100%;
   border-radius: 7px;
   background-color: #ffffff;
-}
-
-.product-price-btn {
-  height: 2rem;
-  width: 100%;
   position: relative;
   align-content: center;
 }
-.product-price-btn p {
-  display: inline-block;
-  position: absolute;
-  height: 7vh;
-  width: 100%;
-  font-size: 0.9rem;
-  font-weight: lighter;
-  color: #474747;
-}
+
 span {
   display: inline-block;
   height: 7vh;
@@ -188,5 +169,9 @@ ul li a {
   color: #383838;
   font-weight: 600;
   border-radius: 50%;
+}
+
+#orders{
+  height:60rem;
 }
 </style>
