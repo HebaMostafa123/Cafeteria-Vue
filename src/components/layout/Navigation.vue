@@ -26,7 +26,7 @@
         <router-link class="nav-link" v-if="user && user.is_admin" to="/">Users</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Manual Orders</router-link>
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/order">New Order</router-link>
       </li>
       <li class="nav-item">
         <router-link class="nav-link" v-if="user && user.is_admin" to="/checks">Checks</router-link>

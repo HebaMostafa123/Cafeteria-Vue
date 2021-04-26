@@ -66,8 +66,8 @@
   </div>
 
   <div class="page">
-    <h1>My Orders</h1>
-    <form class=" date row">
+    <h1 class="pt-4">My Orders</h1>
+    <form class="pt-1 date row">
       <div class="col-6">
         <div class="form-group row">
           <label for="example-date-input" class="col-6 col-form-label"
@@ -140,8 +140,8 @@
         </tbody>
       </table>
     </div>
-    <p class="total">
-      Total Price: <span style="color:orange;">{{ getTotalPrice }}</span> EGP
+    <p class="pt-3 pb-2 total">
+      Total Amount: <span style="color:orange;">{{ getTotalPrice.toLocaleString() }}</span> EGP
     </p>
     <div class="menu-footer ">
       <ul class="pagination">
@@ -178,7 +178,7 @@
 .page {
   font-family: "Poppins", sans-serif;
   color: white;
-  height: 60rem;
+  height: 70rem;
 }
 .page h1 {
   color: white;
