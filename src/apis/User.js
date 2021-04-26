@@ -23,7 +23,6 @@ export default{
     return Api.get('authorize/facebook/redirect');
   },
   async loginUserFacebookCallback(ctx){
-    console.log('here',ctx);
     return Api.get('authorize/facebook/callback', {
       params: ctx
     });

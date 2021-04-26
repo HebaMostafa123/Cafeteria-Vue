@@ -18,7 +18,9 @@ export default {
     Navbar
   },
   mounted(){
+    console.log('hello');
     User.auth().then((response)=>{
+      console.log(response.data);
       this.user = response.data;
     })
   },

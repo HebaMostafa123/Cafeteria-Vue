@@ -13,10 +13,13 @@ export default {
       Csrf.getCookie().then(() => {
         User.loginUserFacebookCallback({
           code: this.$route.query.code
-        }).then((response)=>{
-          User.login(this.form)
-          .then((response) => {
-            localStorage.setItem("token", response.data.jwt);
+        }).then((response) => {
+            if(response.data.access_token){
+              localStorage.setItem("token", response.data.access_token);
+            }else{
+              reject(response);
+            }
+          Csrf.getCookie().then(() => {
             User.auth().then((response) => {
               localStorage.setItem("auth", "true");
               this.user = response.data;
@@ -26,10 +29,16 @@ export default {
               }
               this.$router.push({ name: "AdminHome" });
             });
+          });
+            
           })
-        })
-      })
-    }
+          .catch((errors) => {
+            if (errors.response.status === 422) {
+              this.errors = errors.response.data.errors;
+            }
+          });
+      });
+        }
   },
   created(){
     this.loginFacebookCallback();

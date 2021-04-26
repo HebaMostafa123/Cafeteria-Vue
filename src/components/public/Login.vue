@@ -65,19 +65,22 @@ export default {
         User.login(this.form)
           .then((response) => {
             if(response.data.access_token){
-              localStorage.setItem("token", response.data);
+              localStorage.setItem("token", response.data.access_token);
             }else{
               reject(response);
             }
-            // User.auth().then((response) => {
-            //   localStorage.setItem("auth", "true");
-            //   this.user = response.data;
-            //   if (response.data.is_admin) {
-            //     localStorage.setItem("is_admin", "true");
-            //     this.isAdmin = true;
-            //   }
-            //   this.$router.push({ name: "AdminHome" });
-            // });
+          Csrf.getCookie().then(() => {
+            User.auth().then((response) => {
+              localStorage.setItem("auth", "true");
+              this.user = response.data;
+              if (response.data.is_admin) {
+                localStorage.setItem("is_admin", "true");
+                this.isAdmin = true;
+              }
+              this.$router.push({ name: "AdminHome" });
+            });
+          });
+            
           })
           .catch((errors) => {
             if (errors.response.status === 422) {
@@ -95,15 +98,7 @@ export default {
         })
       })
     },
-    loginFacebookCallback(){
-      Csrf.getCookie().then(() => {
-        User.loginUserFacebookCallback().then((response)=>{
-          if(response.data.url){
-            window.location.href = response.data.url;
-          }
-        })
-      })
-    }
+    
   },
 };
 </script>
