@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar :user="user" />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center">Login</h1>
+      <h1 class="text-center">Forgot password</h1>
       <div class="card">
         <div class="card-body">
           <div class="form-group">
@@ -12,28 +12,14 @@
               v-model="form.email"
               class="form-control"
               id="email"
+              required
             />
             <span class="text-danger" v-if="errors.email">
               {{ errors.email[0] }}
             </span>
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              v-model="form.password"
-              class="form-control"
-              id="password"
-            />
-            <span class="text-danger" v-if="errors.password">
-              {{ errors.password[0] }}
-            </span>
-          </div>
-          <b-button @click.prevent="loginFacebook" class="btn btn-info btn-block">
-            Login with facebook
-          </b-button>
-          <button @click.prevent="login" class="btn btn-info btn-block">
-            Login
+          <button @click.prevent="sendForgotPassword" class="btn btn-info btn-block">
+            Send email
           </button>
         </div>
       </div>
@@ -50,9 +36,9 @@ export default {
     return {
       form: {
         email: "",
-        password: "",
       },
       errors: [],
+      message: '',
       user: null,
     };
   },
@@ -60,30 +46,19 @@ export default {
     Navbar,
   },
   methods: {
-    login() {
+    sendForgotPassword(){
+      console.log("here");
       Csrf.getCookie().then(() => {
-        User.login(this.form)
+        User.SendForgotPassword(this.form)
           .then((response) => {
-            if(response.data.access_token){
-              localStorage.setItem("token", response.data);
-            }else{
-              reject(response);
-            }
-            // User.auth().then((response) => {
-            //   localStorage.setItem("auth", "true");
-            //   this.user = response.data;
-            //   if (response.data.is_admin) {
-            //     localStorage.setItem("is_admin", "true");
-            //     this.isAdmin = true;
-            //   }
-            //   this.$router.push({ name: "AdminHome" });
-            // });
-          })
-          .catch((errors) => {
+            console.log(response.data);
+            this.message = 'Email sent successfully'
+          }).catch((errors) => {
             if (errors.response.status === 422) {
               this.errors = errors.response.data.errors;
+              this.message = 'Failed to send email'
             }
-          });
+          });  
       });
     },
     loginFacebook(){

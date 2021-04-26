@@ -18,5 +18,20 @@ export default{
   },
   async getAllUsers(){
     return Api.get('/users');
-  }
+  },
+  async loginUserFacebook(){
+    return Api.get('authorize/facebook/redirect');
+  },
+  async loginUserFacebookCallback(ctx){
+    console.log('here',ctx);
+    return Api.get('authorize/facebook/callback', {
+      params: ctx
+    });
+  },
+  async SendForgotPassword(form){
+    return Api.post("/forgot-password", form);
+  },
+  async sendResetPassword(form){
+    return Api.post("/reset-password", form);
+  },
 }

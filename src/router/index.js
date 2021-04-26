@@ -5,9 +5,12 @@ import Showuser from '../components/admin/Showuser.vue';
 import Check from '../components/check/Check.vue';
 import Unauthorized from '../components/error/Unauthorized.vue';
 import NotFound from '../components/public/404.vue';
+import ForgotPassword from '../components/public/ForgotPassword.vue';
 import Login from '../components/public/Login.vue';
+import LoginFacebook from '../components/public/LoginFacebook.vue';
 import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
+import ResetPassword from '../components/public/ResetPassword.vue';
 import Secure from '../components/Secure.vue';
 import Trial from '../components/Trial.vue';
 import User from '../components/User.vue';
@@ -20,10 +23,24 @@ const routes = [
     component: Register,
     meta: { guestOnly: true }
   },
-
-
-
-
+  {
+    path: '/forgot-password',
+    name: "forgotPassword",
+    component: ForgotPassword,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/reset-password',
+    name: "resettPassword",
+    component: ResetPassword,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/authorize/facebook/callback',
+    name: "LoginFacebook", 
+    component: LoginFacebook,
+    meta: { guestOnly: true }
+  },
   {
     path: "/login",
     name: "Login",
