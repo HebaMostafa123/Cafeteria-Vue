@@ -125,7 +125,7 @@
               </button>
             </th>
             <td>{{ order.status }}</td>
-            <td>{{ order.total }} EGP</td>
+            <td>{{ order.total.toLocaleString() }} EGP</td>
             <td>
               <button
                 @click="confirm"
