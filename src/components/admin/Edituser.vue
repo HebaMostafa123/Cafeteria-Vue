@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center">Update User Details</h1>
+      <h1 class="text-center" style="color: #605d86">Update User Details</h1>
       <div class="card shadow">
         <div class="card-body">
           <div class="form-group">
@@ -181,7 +181,7 @@ export default {
 </script>
 
 <style scoped>
-h1{
-  color:white;
+h1 {
+  color: white;
 }
 </style>
