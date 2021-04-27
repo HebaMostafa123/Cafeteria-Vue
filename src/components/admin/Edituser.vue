@@ -119,6 +119,7 @@ export default {
       rooms: [],
       errors: [],
       success: "",
+      baseURL: "http://localhost:8000/api/",
     };
   },
   mounted() {
@@ -142,17 +143,21 @@ export default {
       formData.append("room_id", this.form.room_id);
       formData.append("avatar", this.form.avatar);
       formData.append("_method", "PATCH");
-      Csrf.getCookie().then(() => {
-        Admin.edituser(`${this.$route.params.id}`, formData)
-          .then(() => {
-            this.$router.push({ name: "Showuser" });
-          })
-          .catch((error) => {
-            if (error.response.status === 422) {
-              this.errors = error.response.data.errors;
-            }
+
+      // Admin.edituser(`${this.$route.params.id}`, formData)
+
+      axios
+        .post(this.baseURL + `pages/${this.$route.params.id}`, formData)
+        .then((res) => {
+          this.$router.push({
+            name: "Showuser",
           });
-      });
+        })
+        .catch((e) => {
+          if (e.response.status === 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
     },
     getCurrentRoomExtension() {
       const currentRoom = this.rooms.find(
