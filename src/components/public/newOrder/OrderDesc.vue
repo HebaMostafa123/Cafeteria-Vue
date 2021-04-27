@@ -128,7 +128,7 @@ export default {
   /* Computed properties */
   computed: {
     getTotalPrice: function() {
-      return this.items.reduce((total, obj) => obj.price + total, 0);
+      return this.items.reduce((total, obj) => (obj.price*obj.quantity) + total, 0);
     },
   },
 
