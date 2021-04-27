@@ -58,7 +58,7 @@
               placeholder="Password Confirmation"
               v-model="form.confirm_password"
             />
-            'confirm_password'=>'required|same:password',
+
             <span class="text-danger" v-if="errors.confirm_password">
               {{ errors.confirm_password[0] }}
             </span>
