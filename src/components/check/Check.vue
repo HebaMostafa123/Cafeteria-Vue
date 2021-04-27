@@ -60,6 +60,7 @@ export default {
   },
   methods:{
     search(){
+      console.log('now', this.form);
       Csrf.getCookie().then(()=>{
         Check.searchUsersDate(this.form).then((response)=>{
           if(response.data.length === undefined){
