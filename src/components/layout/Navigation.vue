@@ -20,7 +20,7 @@
         <router-link class="nav-link" v-if="user && user.is_admin" to="/">Home</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" v-if="user && user.is_admin" to="/">Products</router-link>
+        <router-link class="nav-link" v-if="user && user.is_admin" to="/products">Products</router-link>
       </li>
       <li class="nav-item">
         <router-link class="nav-link" v-if="user && user.is_admin" to="/">Users</router-link>

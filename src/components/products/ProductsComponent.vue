@@ -1,5 +1,5 @@
 <template>
-  <addProduct @updateProducts="getAllProudct" />
+  <!-- <addProduct @updateProducts="getAllProudct" /> -->
   <table class="table table-borderd">
     <thead>
       <tr>
@@ -30,14 +30,62 @@
       </tr>
     </tbody>
   </table>
+  <div class="menu-footer mt-5">
+          <ul class="pagination">
+            <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+            <li>|</li>
+            <li><a type="button" @click="next" class="next">Next</a></li>
+          </ul>
+        </div>
 </template>
+
+<style scoped>
+.pagination {
+  width: 8rem;
+  height: 3rem;
+  align-items: center;
+}
+ul {
+  position: relative;
+  background: #fff;
+  display: flex;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  margin:auto;
+}
+ul li:first-child {
+  margin-left: 1.2rem;
+  font-weight: 700;
+  font-size: 2rem;
+}
+ul li {
+  list-style: none;
+  line-height: 50px;
+  margin: 0 5px;
+}
+
+ul li a {
+  font-size: 1rem;
+  display: block;
+  text-decoration: none;
+  color: #383838;
+  font-weight: 600;
+  border-radius: 50%;
+}
+</style>
 
 <script>
 import services from "../services/products";
 import addProduct from "./AddProductComponent";
+import Product from "../../apis/Product";
+
 export default {
   data: () => ({
-    products: null,
+    page: 1,
+    lastPage: 0,
+    products: [],
   }),
   oldProduct: {
     name: null,
@@ -61,6 +109,26 @@ export default {
         this.getAllProudct();
       }
     },
+    async next() {
+      if (this.page === this.lastPage) return;
+      this.page++;
+      await this.loadProducts();
+    },
+    async prev() {
+      if (this.page === 1) return;
+      this.page--;
+      await this.loadProducts();
+    },
+    loadProducts() {
+      Product.getProducts(this.page).then((response) => {
+        this.products = response.data.data;
+        this.lastPage = response.data.meta.last_page;
+        console.log(this.products)
+      });
+    },
+  },
+  mounted() {
+    this.loadProducts();
   },
   created() {
     this.getAllProudct();

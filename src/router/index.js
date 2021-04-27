@@ -8,7 +8,7 @@ import NotFound from '../components/public/404.vue';
 import Login from '../components/public/Login.vue';
 import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
-import ProductsComponent from "@/components/products/ProductsComponent";
+import ProductsComponent from "@/components/products/AddProductComponent";
 import EditProductComponent from "@/components/products/EditProductComponent";
 import Secure from '../components/Secure.vue';
 import Trial from '../components/Trial.vue';
