@@ -66,6 +66,7 @@
           <div class="form-group">
             <label for="room_id">Room number</label>
             <select id="room_id" class="form-control" v-model="form.room_id">
+              <option value="" disabled selected hidden>Select a room</option>
               <option v-for="room in rooms" :value="room.id">
                 {{ room.number }}
               </option>
@@ -82,6 +83,7 @@
               class="form-control"
               name="ext"
               :value="getCurrentRoomExtension()"
+              placeholder="room extension"
               readonly
             />
           </div>
@@ -96,6 +98,8 @@
                   name="Avatar"
                   readonly
                   v-model="form.avatar"
+                  placeholder="avatar"
+
                 />
               </div>
               <div class="col-3">
@@ -195,5 +199,9 @@ background-color: #605d86;
 
 .home h1{
 color: white;
+}
+
+label{
+  color:#495057;
 }
 </style>
