@@ -1,3 +1,5 @@
+import ProductsComponent from "@/components/products/AddProductComponent";
+import EditProductComponent from "@/components/products/EditProductComponent";
 import { createRouter, createWebHistory } from 'vue-router';
 import Adduser from '../components/admin/Adduser.vue';
 import Edituser from '../components/admin/Edituser.vue';
@@ -56,12 +58,6 @@ const routes = [
         meta: { authOnly: true },
       },
       {
-        path: "",
-        name: "AdminHome",
-        component: User,
-        meta: { authOnly: true },
-      },
-      {
         path: "/checks",
         name: "AdminChecks",
         component: Check,
@@ -91,6 +87,8 @@ const routes = [
         component: Adduser,
         meta: { adminOnly: true },
       },
+      {path: "/products", name: "products", component: ProductsComponent, meta:{authOnly: true}},
+      {path: "/product/:id", name: "editproduct",component: EditProductComponent, meta:{authOnly: true}},
     ],
   },
 

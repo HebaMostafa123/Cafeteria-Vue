@@ -16,6 +16,7 @@
     "popper.js": "^1.16.1",
     "tiny-emitter": "^2.1.0",
     "vue": "^3.0.0",
+    "vue-axios": "^3.2.4",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
