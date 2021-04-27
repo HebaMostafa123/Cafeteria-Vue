@@ -38,10 +38,9 @@ const routes = [
       { path: '/orders', name: 'UserOrders', component: UserOrders, meta: { authOnly: true } },
       { path: '/Showuser', name: 'Showuser', component: Showuser, meta: { adminOnly: true } },
       {
-        path: "/adminorders",
-        name: "Orders",
-        component: Orders,
-        meta: { adminOnly: true },
+        path: '/Edituser/:id/:name/:email/:room_id/:avatar/', name: 'Edituser', component: Edituser, meta: { adminOnly: true }
+
+
       },
       {
         path: "",
