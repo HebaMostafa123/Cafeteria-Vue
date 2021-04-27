@@ -1,89 +1,99 @@
 <template>
   <!-- On tables -->
-<div id="users">
-  <div class="container">
-    <div class="row">
-      <div class="m-auto col-sm-12 col-md-10 col-md-offset-1">
-        <router-link
-          style="width: 15%; "
-          class="btn btn-info float-right m-3"
-          :to="{
-            name: 'Adduser',
-          }"
-          ><strong>Add User</strong></router-link
-        >
-        <table class="table table-hover">
-          <thead>
-            <tr class="table-secondary">
-              <th style="color: #212529" scope="col">Avatar</th>
-              <th style="color: #212529" cscope="col">Name</th>
-              <th style="color: #212529" scope="col">Email</th>
-              <th style="color: #212529" scope="col">room_id</th>
-              <th style="color: #212529" scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-light" v-for="user in users" :key="user.id">
-              <td>
-                <img
-                  v-bind:src="user.avatar"
-                  class="profile-user-img img-fluid img-circle"
-                  style="width: 50px; height: 50px; border-radius: 25px"
-                />
-              </td>
-              <td class="text-center">
-                <strong> {{ user.name }}</strong>
-              </td>
-              <td class="text-center">
-                <strong> {{ user.email }}</strong>
-              </td>
+  <div id="users">
+    <div class="container">
+      <div class="row">
+        <div class="m-auto col-sm-12 col-md-10 col-md-offset-1">
+          <router-link
+            style="width: 15%"
+            class="btn btn-info float-right m-3"
+            :to="{
+              name: 'Adduser',
+            }"
+            ><strong>Add User</strong></router-link
+          >
+          <table class="table table-hover">
+            <thead>
+              <tr class="table-secondary">
+                <th style="color: #212529" scope="col">Avatar</th>
+                <th style="color: #212529" cscope="col">Name</th>
+                <th style="color: #212529" scope="col">Email</th>
+                <th style="color: #212529" scope="col">room_id</th>
+                <th style="color: #212529" scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-light" v-for="user in users" :key="user.id">
+                <td>
+                  <img
+                    v-bind:src="user.avatar"
+                    class="profile-user-img img-fluid img-circle"
+                    style="width: 50px; height: 50px; border-radius: 25px"
+                  />
+                </td>
+                <td class="text-center">
+                  <strong> {{ user.name }}</strong>
+                </td>
+                <td class="text-center">
+                  <strong> {{ user.email }}</strong>
+                </td>
 
-              <td class="text-center">
-                <strong> {{ user.room_id }}</strong>
-              </td>
-              <td>
-                <router-link
-                  class="btn btn-warning m-2"
-                  style="border-radius: 25px; width: 35%; color: white"
-                  :to="{
-                    name: 'Edituser',
-                    params: {
-                      id: user.id,
-                      name: user.name,
-                      email: user.email,
-                      room_id: user.room_id,
-                      avatar: user.avatar,
-                    },
-                  }"
-                  >Edit</router-link
-                >
-                <a
-                  class="btn btn-danger"
-                  @click="deleteuser(user.id)"
-                  style="border-radius: 25px"
-                  >Remove</a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <td class="text-center">
+                  <strong> {{ user.room.number }}</strong>
+                </td>
+                <td>
+                  <router-link
+                    class="btn btn-warning m-2"
+                    style="border-radius: 25px; width: 35%; color: white"
+                    :to="{
+                      name: 'Edituser',
+                      params: {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        room_id: user.room_id,
+                        avatar: user.avatar,
+                      },
+                    }"
+                    >Edit</router-link
+                  >
+                  <a
+                    class="btn btn-danger"
+                    @click="deleteuser(user.id)"
+                    style="border-radius: 25px"
+                    >Remove</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
-  <nav>
-    <ul class="pagination" style="margin-left: 45%">
-      <li class="page-item">
-        <a style="color: #212529" class="page-link" href="javascript:void(0)" @click="prev">
-          <strong> Prev </strong>
-        </a>
-      </li>
-      <li class="page-item">
-        <a style="color: #212529" class="page-link" href="javascript:void(0)" @click="next">
-          <strong> Next </strong>
-        </a>
-      </li>
-    </ul>
-  </nav>
+    <nav>
+      <ul class="pagination" style="margin-left: 45%">
+        <li class="page-item">
+          <a
+            style="color: #212529"
+            class="page-link"
+            href="javascript:void(0)"
+            @click="prev"
+          >
+            <strong> Prev </strong>
+          </a>
+        </li>
+        <li class="page-item">
+          <a
+            style="color: #212529"
+            class="page-link"
+            href="javascript:void(0)"
+            @click="next"
+          >
+            <strong> Next </strong>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -158,8 +168,7 @@ export default {
 </script>
 
 <style>
-
-#users{
-  height:40rem;
+#users {
+  height: 40rem;
 }
 </style>
