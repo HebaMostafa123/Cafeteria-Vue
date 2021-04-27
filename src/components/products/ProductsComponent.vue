@@ -36,7 +36,6 @@
 import services from "../services/products";
 import addProduct from "./AddProductComponent";
 import Product from "../../apis/Product";
-
 export default {
   data() {
     return {
@@ -58,10 +57,7 @@ export default {
       });
     },
     async deleteProduct(id) {
-      const res = await services.deleteProduct(id);
-      if (res.data.status == "success") {
-        this.getAllProudct();
-      }
+      await Product.deleteProduct(id, this.products);
     },
     loadProducts() {
       this.$emit("loadProducts");

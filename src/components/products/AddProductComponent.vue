@@ -75,6 +75,11 @@
       <li>|</li>
       <li><a type="button" @click="next" class="next">Next</a></li>
     </ul>
+    <!-- async getProduct(id) { Product.getProduct(id).then((response) => {
+    this.product.name = response.data.data.name; this.product.price =
+    response.data.data.price; this.product.id = response.data.data.id;
+    this.product.category_id = response.data.data.category_id;
+    this.product.image = response.data.data.image; }); -->
   </div>
 </template>
 
