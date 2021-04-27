@@ -1,7 +1,7 @@
 <template>
 <div id="orders">
-  <div class="card">
-    <div class="card-body" v-for="order of orders.data">
+  <div class="card ml-4  mr-4 mt-4">
+    <div class="card-body p-0" v-for="order of orders.data">
       <table class="table table-hover">
         <thead>
           <tr>
@@ -105,12 +105,17 @@ export default {
 };
 </script>
 <style scoped>
+
+.card{
+  background-color:#605d86;
+}
 .product_image {
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   border-radius: 1rem;
 }
 .card-body {
+  background-color:white;
   margin-bottom: 15px;
   border: 2px solid lightgray;
 }
@@ -126,11 +131,11 @@ export default {
 span {
   display: inline-block;
   height: 7vh;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
 }
 .product {
   width: 200px;
-  height: 200px;
+  height: 150px;
   margin: 0px;
 }
 .menu-footer {
