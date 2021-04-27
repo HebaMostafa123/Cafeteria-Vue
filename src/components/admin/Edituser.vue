@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center">Update User Details</h1>
+      <h1 class="text-center" style="color: #605d86">Update User Details</h1>
       <div class="card shadow">
         <div class="card-body">
           <div class="form-group">
@@ -31,35 +31,6 @@
             />
             <span class="text-danger" v-if="errors.email">
               {{ errors.email[0] }}
-            </span>
-          </div>
-
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              placeholder="Password"
-              required
-              v-model="form.password"
-            />
-            <span class="text-danger" v-if="errors.password">
-              {{ errors.password[0] }}
-            </span>
-          </div>
-
-          <div class="form-group">
-            <label for="password_confirmation">Confirm Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password_confirmation"
-              placeholder="Password Confirmation"
-              v-model="form.password_confirmation"
-            />
-            <span class="text-danger" v-if="errors.password_confirmation">
-              {{ errors.password_confirmation[0] }}
             </span>
           </div>
 
@@ -138,12 +109,12 @@ export default {
   data() {
     return {
       form: {
-        name: "",
-        email: "",
-        password: "",
+        name: this.$route.params.name,
+        email: this.$route.params.email,
+
         // password_confirmation: "",
-        room_id: "",
-        avatar: "",
+        room_id: this.$route.room_id,
+        avatar: this.$route.params.avatar,
       },
       rooms: [],
       errors: [],
@@ -210,4 +181,7 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  color: white;
+}
 </style>

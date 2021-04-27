@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center">Add New User</h1>
+      <h1 class="text-center" style="color: #605d86">Add New User</h1>
       <div class="card shadow">
         <div class="card-body">
           <div class="form-group">
@@ -56,10 +56,11 @@
               class="form-control"
               id="password_confirmation"
               placeholder="Password Confirmation"
-              v-model="form.password_confirmation"
+              v-model="form.confirm_password"
             />
-            <span class="text-danger" v-if="errors.password_confirmation">
-              {{ errors.password_confirmation[0] }}
+
+            <span class="text-danger" v-if="errors.confirm_password">
+              {{ errors.confirm_password[0] }}
             </span>
           </div>
 
@@ -140,6 +141,7 @@ export default {
         name: "",
         email: "",
         password: "",
+        confirm_password: "",
         // password_confirmation: "",
         room_id: "",
         avatar: "",
@@ -166,19 +168,25 @@ export default {
       formData.append("name", this.form.name);
       formData.append("email", this.form.email);
       formData.append("password", this.form.password);
+      formData.append("confirm_password", this.form.confirm_password);
       formData.append("room_id", this.form.room_id);
       formData.append("avatar", this.form.avatar);
-      Csrf.getCookie().then(() => {
-        Admin.adduser(formData)
-          .then(() => {
-            this.$router.push({ name: "Showuser" });
-          })
-          .catch((error) => {
-            if (error.response.status === 422) {
-              this.errors = error.response.data.errors;
-            }
+
+      ///////////////////////////////////////////////////
+
+      // Admin.adduser(formData);
+      axios
+        .post("http://localhost:8000/api/pages", formData)
+        .then((res) => {
+          this.$router.push({
+            name: "Showuser",
           });
-      });
+        })
+        .catch((e) => {
+          if (e.response.status === 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
     },
 
     getCurrentRoomExtension() {
@@ -203,24 +211,16 @@ export default {
         this.errors = error.response.data.errors;
       }
     },
-    // async changeImage(files) {
-    //   const file = files[0];
-
-    //   const data = new FormData();
-    //   data.append("avatar", file);
-
-    //   const response = await axios.post(
-    //     "http://localhost:8000/api/upload",
-    //     data
-    //   );
-    //   this.form.avatar = response.data.url;
-    // },
-    // catch (error) {
-    //   this.errors = error.response.data.errors;
-    // }
+    is_conferm(val) {
+      if (val === user.password) return true;
+      else return false;
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+h1 {
+  color: white;
+}
 </style>

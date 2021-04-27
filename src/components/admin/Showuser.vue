@@ -1,12 +1,12 @@
 <template>
   <!-- On tables -->
-
+<div id="users">
   <div class="container">
     <div class="row">
-      <div class="col-sm-12 col-md-10 col-md-offset-1">
+      <div class="m-auto col-sm-12 col-md-10 col-md-offset-1">
         <router-link
-          style="width: 15%; border: 1px solid #007bff; color: #007bff"
-          class="btn float-right m-3"
+          style="width: 15%; "
+          class="btn btn-info float-right m-3"
           :to="{
             name: 'Adduser',
           }"
@@ -15,15 +15,15 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-secondary">
-              <th style="color: #007bff" scope="col">Avatar</th>
-              <th style="color: #007bff" cscope="col">Name</th>
-              <th style="color: #007bff" scope="col">Email</th>
-              <th style="color: #007bff" scope="col">room_id</th>
-              <th style="color: #007bff" scope="col">Action</th>
+              <th style="color: #212529" scope="col">Avatar</th>
+              <th style="color: #212529" cscope="col">Name</th>
+              <th style="color: #212529" scope="col">Email</th>
+              <th style="color: #212529" scope="col">room_id</th>
+              <th style="color: #212529" scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="table-success" v-for="user in users" :key="user.id">
+            <tr class="table-light" v-for="user in users" :key="user.id">
               <td>
                 <img
                   v-bind:src="user.avatar"
@@ -47,7 +47,13 @@
                   style="border-radius: 25px; width: 35%; color: white"
                   :to="{
                     name: 'Edituser',
-                    params: { id: user.id },
+                    params: {
+                      id: user.id,
+                      name: user.name,
+                      email: user.email,
+                      room_id: user.room_id,
+                      avatar: user.avatar,
+                    },
                   }"
                   >Edit</router-link
                 >
@@ -65,25 +71,30 @@
     </div>
   </div>
   <nav>
-    <ul class="pagination" style="margin-left: 38%">
+    <ul class="pagination" style="margin-left: 45%">
       <li class="page-item">
-        <a class="page-link" href="javascript:void(0)" @click="prev">
+        <a style="color: #212529" class="page-link" href="javascript:void(0)" @click="prev">
           <strong> Prev </strong>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="javascript:void(0)" @click="next">
+        <a style="color: #212529" class="page-link" href="javascript:void(0)" @click="next">
           <strong> Next </strong>
         </a>
       </li>
     </ul>
   </nav>
+  </div>
 </template>
 
 <script lang="ts">
 import Admin from "../../apis/Admin";
 import Csrf from "../../apis/Csrf";
 import { ref, onMounted } from "@vue/runtime-core";
+import Vue from "vue";
+import VueSwal from "vue-swal";
+
+// Vue.use(VueSwal)
 
 import axios from "axios";
 export default {
@@ -96,9 +107,7 @@ export default {
         `http://localhost:8000/api/pages?page=${page.value}`
       );
       users.value = response.data.data;
-      console.log(users.value);
-
-      lastpage.value = response.data.data.last_page;
+      lastpage.value = response.data.last_page;
     };
     onMounted(load);
     const next = async () => {
@@ -123,12 +132,34 @@ export default {
   methods: {
     deleteuser(id) {
       // Csrf.getCookie().then(()=>{
-      Admin.deleteuser(id, this.users);
-      // })
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+          if (result.value) {
+            Admin.deleteuser(id, this.users);
+            this.$swal.fire(
+              "Deleted!",
+              "Product is deleted successfully",
+              "success"
+            );
+          }
+        });
     },
   },
 };
 </script>
 
 <style>
+
+#users{
+  height:40rem;
+}
 </style>
