@@ -29,12 +29,16 @@
               {{ errors.password[0] }}
             </span>
           </div>
-          <b-button @click.prevent="loginFacebook" class="btn btn-info btn-block">
+          <b-button @click.prevent="loginProvider('facebook')" class="btn btn-info btn-block">
             Login with facebook
+          </b-button>
+          <b-button @click.prevent="loginProvider('google')" class="btn btn-info btn-block">
+            Login with google
           </b-button>
           <button @click.prevent="login" class="btn btn-info btn-block">
             Login
           </button>
+          <router-link to="/forgot-password">Forgot password?</router-link>
         </div>
       </div>
     </div>
@@ -89,9 +93,9 @@ export default {
           });
       });
     },
-    loginFacebook(){
+    loginProvider(provider){
       Csrf.getCookie().then(() => {
-        User.loginUserFacebook().then((response)=>{
+        User.loginUserProvider(provider).then((response)=>{
           if(response.data.url){
             window.location.href = response.data.url;
           }

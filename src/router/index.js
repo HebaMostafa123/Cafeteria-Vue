@@ -7,7 +7,7 @@ import Unauthorized from '../components/error/Unauthorized.vue';
 import NotFound from '../components/public/404.vue';
 import ForgotPassword from '../components/public/ForgotPassword.vue';
 import Login from '../components/public/Login.vue';
-import LoginFacebook from '../components/public/LoginFacebook.vue';
+import LoginProvider from '../components/public/LoginProvider.vue';
 import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
 import ResetPassword from '../components/public/ResetPassword.vue';
@@ -38,7 +38,13 @@ const routes = [
   {
     path: '/authorize/facebook/callback',
     name: "LoginFacebook", 
-    component: LoginFacebook,
+    component: LoginProvider,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/authorize/google/callback',
+    name: "LoginGoogle", 
+    component: LoginProvider,
     meta: { guestOnly: true }
   },
   {

@@ -19,11 +19,11 @@ export default{
   async getAllUsers(){
     return Api.get('/users');
   },
-  async loginUserFacebook(){
-    return Api.get('authorize/facebook/redirect');
+  async loginUserProvider(provider){
+    return Api.get(`authorize/${provider}/redirect`);
   },
-  async loginUserFacebookCallback(ctx){
-    return Api.get('authorize/facebook/callback', {
+  async loginUserProviderCallback(ctx,path){
+    return Api.get(path, {
       params: ctx
     });
   },

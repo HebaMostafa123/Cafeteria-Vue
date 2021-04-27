@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Login with facebook, please wait!</h1>
+    <h1 v-if="path==='/authorize/facebook/callback'">Login with facebook, please wait!</h1>
+    <h1 v-if="path==='/authorize/google/callback'">Login with google, please wait!</h1>
   </div>
 </template>
 
@@ -8,12 +9,19 @@
 import User from "../../apis/User";
 import Csrf from "../../apis/Csrf";
 export default {
+  data(){
+    return({
+      path: ''
+    })
+  },
   methods: {
-    loginFacebookCallback(){
+    loginProviderCallback(){
+      this.path = this.$route.path;
+      console.log('here',this.$route.path);
       Csrf.getCookie().then(() => {
-        User.loginUserFacebookCallback({
+        User.loginUserProviderCallback({
           code: this.$route.query.code
-        }).then((response) => {
+        }, this.$route.path).then((response) => {
             if(response.data.access_token){
               localStorage.setItem("token", response.data.access_token);
             }else{
@@ -41,7 +49,7 @@ export default {
         }
   },
   created(){
-    this.loginFacebookCallback();
+    this.loginProviderCallback();
   }
 };
 </script>
