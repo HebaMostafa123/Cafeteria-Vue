@@ -1,15 +1,15 @@
 <template>
-  <div class="container border" v-if="isProductsExist() && isEnabled">
-    <h4 class="p-3 font-weight-bold">Products</h4>
+  <div class="container-fluid border mt-5" style="border-radius: 10px;background-color:white;" v-if="isProductsExist() && isEnabled">
+    <h4 class="p-3 font-weight-bold">Order Items</h4>
         <div class="container-fluid px-5 py-5 mx-auto">
-    <div class="row px-4">
+    <div class="row px-4" >
         <div class="text-center col-3" v-for="product in products" >
             <p class="my-3 prod-name font-weight-bold">{{product.name}}</p> 
             <img class="image" :src="product.image"/>
-            <div class="price text-center pt-3">
-                <h6 class="h6">L.E {{product.price}}</h6>
+            <div class="price text-center pt-2">
+                <h6 class="h6">{{product.price}} EGP</h6>
             </div>
-            <p class="my-3 prod-name">{{product.quantity}}</p> 
+            <p class="my-3 prod-name"> quantity: {{product.quantity}}</p> 
         </div>
     </div>
     </div>
@@ -47,8 +47,9 @@ export default {
 </script>
 
 <style scoped>
+
 body {
-    color: #000;
+    color: white;
     overflow-x: hidden;
     height: 100%;
     background-color: #FFFF00;
@@ -82,12 +83,12 @@ body {
 .price {
     position: absolute;
     background-color: #E0E0E0;
-    padding: 25px 10px;
+    padding: 25px 1px;
     top: 20%;
     left: 60%;
     border-radius: 50%;
-    width: 40%;
-    height: 20%;
+    width: 35%;
+    height: 15%;
 }
 
 .price.active {
@@ -98,12 +99,15 @@ body {
 .image {
     width: 50%;
     height: 50%;
+    border-radius:1rem;
 }
 
 .prod-name {
     font-size: 20px
 }
-
+.table{
+        color: white;
+}
 @media screen and (max-width: 992px) {
     .block {
         width: 48%

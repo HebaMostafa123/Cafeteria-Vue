@@ -1,8 +1,10 @@
 <template>
-  <div class="contianer-fluid">
+  <div class="contianer-fluid mt-4" v-if="isDataExist()">
+    <hr />
+    <h3 class="mt-3">Users</h3>
     <table
       class="table table-bordered border-5 table-striped mt-2 text-center"
-      v-if="isDataExist()"
+      style="background-color:white"
     >
       <thead>
         <th>Name</th>
@@ -134,5 +136,8 @@ ul li a {
   color: #383838;
   font-weight: 600;
   border-radius: 50%;
+}
+h3 {
+  color: orange;
 }
 </style>
