@@ -9,69 +9,70 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
   </head>
-<div id="create-order">
-  <div class="card m-4 ">
-    <div class="grid-container">
-      <div class="order-desc card m-4">
-        <orderDesc
-          :items="orderItems"
-          :userId="user_id"
-          @removeProduct="removeProductFromOrder"
-        ></orderDesc>
-      </div>
-      <div class="card latest-order mt-4 mb-2 mr-4 ">
-        <div class="select-user" v-if="admin">
-          <form>
-            <h5>Select a User</h5>
-            <select @change="setUserId($event)" class="form-control" required>
-              <option value="" disabled selected hidden>Select User</option>
-              <option v-for="user in users" :value="user.id">
-                {{ user.name }}
-              </option>
-            </select>
-          </form>
+  <div id="create-order">
+    <div class="card m-4 ">
+      <div class="grid-container">
+        <div class="order-desc card m-4">
+          <orderDesc
+            :items="orderItems"
+            :userId="user_id"
+            @removeProduct="removeProductFromOrder"
+            :admin="admin"
+          ></orderDesc>
         </div>
-        <div v-else>
-          <h4 class="mb-0">Latest Order</h4>
-          <div class="flex-products mb-3">
+        <div class="card latest-order mt-4 mb-2 mr-4 ">
+          <div class="select-user" v-if="admin">
+            <form>
+              <h5>Select a User</h5>
+              <select @change="setUserId($event)" class="form-control" required>
+                <option value="" disabled selected hidden>Select User</option>
+                <option v-for="user in users" :value="user.id">
+                  {{ user.name }}
+                </option>
+              </select>
+            </form>
+          </div>
+          <div v-else>
+            <h4 class="mb-0">Latest Order</h4>
+            <div class="flex-products mb-3">
+              <product-card
+                class="flex-item ml-2 mt-2 latest-item"
+                v-for="item in latestOrderItems"
+                v-bind:product="item"
+                @addProduct="addProductToOrder"
+              ></product-card>
+            </div>
+          </div>
+        </div>
+        <div class="products ml-3 mr-3">
+          <div class="menu-header">
+            <h4>Menu</h4>
+          </div>
+          <div class="menu-items flex-products">
             <product-card
-              class="flex-item ml-2 mt-2 latest-item"
-              v-for="item in latestOrderItems"
-              v-bind:product="item"
+              class="flex-item ml-2 mt-2"
+              v-for="product in products"
+              v-bind:product="product"
               @addProduct="addProductToOrder"
             ></product-card>
           </div>
-        </div>
-      </div>
-      <div class="products ml-3 mr-3">
-        <div class="menu-header">
-          <h4>Menu</h4>
-        </div>
-        <div class="menu-items flex-products">
-          <product-card
-            class="flex-item ml-2 mt-2"
-            v-for="product in products"
-            v-bind:product="product"
-            @addProduct="addProductToOrder"
-          ></product-card>
-        </div>
-        <div class="menu-footer mt-5">
-          <ul class="pagination">
-            <li><a type="button" @click="prev" class="prev"> Prev</a></li>
-            <li>|</li>
-            <li><a type="button" @click="next" class="next">Next</a></li>
-          </ul>
+          <div class="menu-footer mt-5">
+            <ul class="pagination">
+              <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+              <li>|</li>
+              <li><a type="button" @click="next" class="next">Next</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
-#create-order{
-  height:70rem;
+#create-order {
+  height: 70rem;
 }
 h4 {
   font-family: "Poppins", sans-serif;
@@ -93,7 +94,7 @@ h4 {
 }
 .order-desc {
   grid-area: order-desc;
-    background-color: #e7f1f9;
+  background-color: #e7f1f9;
 }
 .latest-order {
   grid-area: latest-order;
@@ -152,7 +153,7 @@ ul {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
   font-family: "Poppins", sans-serif;
-  margin:auto;
+  margin: auto;
 }
 ul li:first-child {
   margin-left: 1.2rem;
@@ -268,6 +269,7 @@ export default {
       })
       .then(() => {
         if (!this.admin) this.getLatestItems();
+        else this.user_id = -1;
       });
     this.users = Order.getUsernames().then((response) => {
       this.users = response.data.data;
