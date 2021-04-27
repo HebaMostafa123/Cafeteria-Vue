@@ -2,33 +2,18 @@
   <div class="home">
     <Navbar />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center">Please Register</h1>
+      <h1 class="text-center">Reset password</h1>
       <div class="card shadow">
         <div class="card-body">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              placeholder="Name"
-              required
-              v-model="form.name"
-            />
-            <span class="text-danger" v-if="errors.name">
-              {{ errors.name[0] }}
-            </span>
-          </div>
 
           <div class="form-group">
             <label for="email">Email address</label>
             <input
               type="email"
+              v-model="form.email"
               class="form-control"
               id="email"
-              placeholder="Email address"
               required
-              v-model="form.email"
             />
             <span class="text-danger" v-if="errors.email">
               {{ errors.email[0] }}
@@ -65,58 +50,8 @@
             </span>
           </div>
 
-          <div class="form-group">
-            <label for="room_id">Room number</label>
-            <select id="room_id" class="form-control" v-model="form.room_id">
-              <option value="" disabled selected hidden>Select a room</option>
-              <option v-for="room in rooms" :value="room.id">
-                {{ room.number }}
-              </option>
-            </select>
-            <span class="text-danger" v-if="errors.room_id">
-              {{ errors.room_id[0] }}
-            </span>
-          </div>
-
-          <div class="form-group">
-            <label for="ext">Extension</label>
-            <input
-              type="text"
-              class="form-control"
-              name="ext"
-              :value="getCurrentRoomExtension()"
-              placeholder="room extension"
-              readonly
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="avatar">Avatar</label>
-            <div class="row">
-              <div class="col-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  name="Avatar"
-                  readonly
-                  v-model="form.avatar"
-                  placeholder="avatar"
-
-                />
-              </div>
-              <div class="col-3">
-                <label class="btn btn-warning">
-                  Upload <input type="file" accept="image/*" hidden @change="changeImage($event.target.files)"/>
-                </label>
-              </div>
-            </div>
-            <span class="text-danger" v-if="errors.avatar">
-              {{ errors.avatar[0] }}
-            </span>
-          </div>
-
-          <button type="submit" @click.prevent="register" class="btn btn-info btn-block">
-            Register
+          <button type="submit" @click.prevent="sendResetPassword" class="btn btn-info btn-block">
+            Reset password
           </button>
         </div>
       </div>
@@ -134,12 +69,10 @@ export default {
   data() {
     return {
       form: {
-        name: "",
         email: "",
         password: "",
         password_confirmation: "",
-        room_id: "",
-        avatar: "",
+        token: ''
       },
       rooms: [],
       errors: [],
@@ -148,12 +81,18 @@ export default {
   components: {
     Navbar,
   },
-  mounted() {
-    User.getRooms().then((response) => {
-      this.rooms = response.data;
-    });
-  },
   methods: {
+    sendResetPassword(){
+      console.log(this.$route.query.token);
+        this.form.token = this.$route.query.token;console.log(this.form);
+      Csrf.getCookie().then(() => {
+        }).then(()=>{
+          User.sendResetPassword(this.form).then(()=>{
+          this.$router.push({ name: "Login" });
+        })
+      })
+
+    },
     register() {
       Csrf.getCookie().then(() => {
         User.register(this.form)
@@ -201,9 +140,5 @@ background-color: #605d86;
 
 .home h1{
 color: white;
-}
-
-label{
-  color:#495057;
 }
 </style>

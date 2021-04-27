@@ -1,6 +1,6 @@
 <template>
   <div class="check container-fluid mt-2">
-    <form @submit.prevent @submit="search" >
+    <form @submit.prevent @submit="search">
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="dateFrom">Date From</label>
@@ -37,10 +37,7 @@
                 oneUser.name
               }}</option>
             </select>
-            <button
-              type="submit"
-              class="btn btn-info ml-2"
-            >
+            <button type="submit" class="btn btn-info ml-2">
               Search
             </button>
           </div>
@@ -92,20 +89,20 @@ export default {
   methods: {
     search() {
       this.error = "";
-      // Csrf.getCookie().then(() => {
-      if (this.form.date_to < this.form.date_from) {
-        this.error = "Invalid time frame";
-      } else {
-        Check.searchUsersDate(this.form).then((response) => {
-          if (response.data.length === undefined) {
-            this.usersPrices = [];
-            this.usersPrices.push(response.data);
-          } else {
-            this.usersPrices = response.data;
-          }
-        });
-      }
-      // });
+      Csrf.getCookie().then(() => {
+        if (this.form.date_to < this.form.date_from) {
+          this.error = "Invalid time frame";
+        } else {
+          Check.searchUsersDate(this.form).then((response) => {
+            if (response.data.length === undefined) {
+              this.usersPrices = [];
+              this.usersPrices.push(response.data);
+            } else {
+              this.usersPrices = response.data;
+            }
+          });
+        }
+      });
     },
   },
 };

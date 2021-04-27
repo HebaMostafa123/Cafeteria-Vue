@@ -16,11 +16,21 @@ export default {
   async auth() {
     return Api.get("/user");
   },
-  //admin page list proccessed orders
-  async getOrder() {
-    return Api.get("/orders", Orders);
+  async getAllUsers(){
+    return Api.get('/users');
   },
-  async getAllUsers() {
-    return Api.get("/users");
+  async loginUserProvider(provider){
+    return Api.get(`authorize/${provider}/redirect`);
   },
-};
+  async loginUserProviderCallback(ctx,path){
+    return Api.get(path, {
+      params: ctx
+    });
+  },
+  async SendForgotPassword(form){
+    return Api.post("/forgot-password", form);
+  },
+  async sendResetPassword(form){
+    return Api.post("/reset-password", form);
+  },
+}
