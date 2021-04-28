@@ -55,17 +55,16 @@ export default {
   },
   methods: {
     updateProduct(product) {
+      const formData = new FormData();
+      formData.append("is_available", product.is_available);
       product.is_available = product.is_available ? 0 : 1;
-      Product.updateProduct(product.id, {
-        is_available: String(product.is_available),
-      });
+      Product.updateAvailabilityProduct(product.id, formData);
     },
 
     loadProducts() {
       this.$emit("loadProducts");
     },
     deleteProduct(id) {
-      // Csrf.getCookie().then(()=>{
       this.$swal
         .fire({
           title: "Are you sure?",

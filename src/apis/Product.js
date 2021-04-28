@@ -18,6 +18,9 @@ export default {
   async updateProduct(id, product) {
     return Api.patch(`products/${id}`, product);
   },
+  async updateAvailabilityProduct(id) {
+    return Api.patch(`allproducts/${id}`);
+  },
 
   async getProduct(id) {
     return Api.get(`products/${id}`);
