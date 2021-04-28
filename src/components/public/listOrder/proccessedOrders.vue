@@ -28,7 +28,7 @@
             <td>
               <button
                 type="submit"
-                class="btn btn-primary btn-lg"
+                class="btn btn-primary"
                 @click="changeStatus(order)"
               >
                 Deliver
@@ -37,6 +37,7 @@
           </tr>
         </tbody>
       </table>
+      <hr>
       <div class="d-flex flex-row justify-content-around">
         <div class="product" v-for="product of order.products">
           <img class="product_image" :src="product.image" />
