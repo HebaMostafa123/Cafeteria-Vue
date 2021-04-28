@@ -100,7 +100,10 @@
                 />
               </div>
               <div class="col-3">
-                <label class="btn btn-primary">
+                <label
+                  class="btn"
+                  style="background-color: #e0a800; border-color: #d39e00"
+                >
                   Upload
                   <input
                     type="file"
@@ -119,6 +122,7 @@
             type="submit"
             @click.prevent="adduser"
             class="btn btn-primary btn-block"
+            style="background-color: #17a2b8; border-color: #17a2b8"
           >
             Add
           </button>
@@ -220,7 +224,14 @@ export default {
 </script>
 
 <style scoped>
+.card {
+  border: 1px solid #605d86;
+}
 h1 {
-  color: white;
+  margin-bottom: 5%;
+}
+.home {
+  margin: 0%;
+  padding: 0%;
 }
 </style>

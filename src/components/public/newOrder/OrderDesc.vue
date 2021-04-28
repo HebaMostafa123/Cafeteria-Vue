@@ -110,6 +110,7 @@ export default {
     product: Object,
     items: Array,
     userId: Number,
+    admin: Boolean,
   },
 
   /* Component's local data */
@@ -128,7 +129,10 @@ export default {
   /* Computed properties */
   computed: {
     getTotalPrice: function() {
-      return this.items.reduce((total, obj) => obj.price + total, 0);
+      return this.items.reduce(
+        (total, obj) => obj.price * obj.quantity + total,
+        0
+      );
     },
   },
 
@@ -178,7 +182,8 @@ export default {
       }
     },
     trackOrder() {
-      this.$router.push("/orders");
+      if (this.admin) this.$router.push("/adminorders");
+      else this.$router.push("/orders");
     },
   },
   created() {},

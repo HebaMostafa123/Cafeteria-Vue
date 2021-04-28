@@ -70,7 +70,10 @@
                 />
               </div>
               <div class="col-3">
-                <label class="btn btn-primary">
+                <label
+                  class="btn"
+                  style="background-color: #e0a800; border-color: #d39e00"
+                >
                   Upload
                   <input
                     type="file"
@@ -89,6 +92,7 @@
             type="submit"
             @click.prevent="Edituser"
             class="btn btn-primary btn-block"
+            style="background-color: #17a2b8; border-color: #17a2b8"
           >
             Update
           </button>
@@ -119,6 +123,7 @@ export default {
       rooms: [],
       errors: [],
       success: "",
+      baseURL: "http://localhost:8000/api/",
     };
   },
   mounted() {
@@ -142,17 +147,21 @@ export default {
       formData.append("room_id", this.form.room_id);
       formData.append("avatar", this.form.avatar);
       formData.append("_method", "PATCH");
-      Csrf.getCookie().then(() => {
-        Admin.edituser(`${this.$route.params.id}`, formData)
-          .then(() => {
-            this.$router.push({ name: "Showuser" });
-          })
-          .catch((error) => {
-            if (error.response.status === 422) {
-              this.errors = error.response.data.errors;
-            }
+
+      // Admin.edituser(`${this.$route.params.id}`, formData)
+
+      axios
+        .post(this.baseURL + `pages/${this.$route.params.id}`, formData)
+        .then((res) => {
+          this.$router.push({
+            name: "Showuser",
           });
-      });
+        })
+        .catch((e) => {
+          if (e.response.status === 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
     },
     getCurrentRoomExtension() {
       const currentRoom = this.rooms.find(
@@ -181,7 +190,14 @@ export default {
 </script>
 
 <style scoped>
+.card {
+  border: 1px solid #605d86;
+}
 h1 {
-  color: white;
+  margin-bottom: 5%;
+}
+.home {
+  margin: 0%;
+  padding: 0%;
 }
 </style>

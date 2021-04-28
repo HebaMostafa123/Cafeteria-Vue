@@ -29,9 +29,16 @@
               {{ errors.password[0] }}
             </span>
           </div>
+          <b-button @click.prevent="loginProvider('facebook')" class="btn btn-info btn-block">
+            Login with facebook
+          </b-button>
+          <b-button @click.prevent="loginProvider('google')" class="btn btn-info btn-block">
+            Login with google
+          </b-button>
           <button @click.prevent="login" class="btn btn-info btn-block">
             Login
           </button>
+          <router-link to="/forgot-password">Forgot password?</router-link>
         </div>
       </div>
     </div>
@@ -61,7 +68,12 @@ export default {
       Csrf.getCookie().then(() => {
         User.login(this.form)
           .then((response) => {
-            localStorage.setItem("token", response.data.jwt);
+            if(response.data.access_token){
+              localStorage.setItem("token", response.data.access_token);
+            }else{
+              reject(response);
+            }
+          Csrf.getCookie().then(() => {
             User.auth().then((response) => {
               localStorage.setItem("auth", "true");
               this.user = response.data;
@@ -71,6 +83,8 @@ export default {
               }
               this.$router.push({ name: "AdminHome" });
             });
+          });
+            
           })
           .catch((errors) => {
             if (errors.response.status === 422) {
@@ -79,6 +93,16 @@ export default {
           });
       });
     },
+    loginProvider(provider){
+      Csrf.getCookie().then(() => {
+        User.loginUserProvider(provider).then((response)=>{
+          if(response.data.url){
+            window.location.href = response.data.url;
+          }
+        })
+      })
+    },
+    
   },
 };
 </script>

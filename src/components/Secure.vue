@@ -17,8 +17,8 @@ export default {
   components: {
     Navbar,
   },
-  mounted() {
-    User.auth().then((response) => {
+  mounted(){
+    User.auth().then((response)=>{
       this.user = response.data;
     });
   },
