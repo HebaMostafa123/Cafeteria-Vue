@@ -8,11 +8,13 @@ import Check from "../components/check/Check.vue";
 import Unauthorized from '../components/error/Unauthorized.vue';
 import NotFound from '../components/public/404.vue';
 import ForgotPassword from '../components/public/ForgotPassword.vue';
+import Orders from "../components/public/listOrder/proccessedOrders.vue";
 import Login from '../components/public/Login.vue';
 import LoginProvider from '../components/public/LoginProvider.vue';
 import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
 import Register from '../components/public/Register.vue';
 import ResetPassword from '../components/public/ResetPassword.vue';
+import UserOrders from "../components/public/UserOrders.vue";
 import Secure from '../components/Secure.vue';
 import Trial from '../components/Trial.vue';
 import User from '../components/User.vue';
@@ -26,28 +28,28 @@ const routes = [
     meta: { guestOnly: true },
   },
   {
-    path: '/forgot-password',
+    path: "/forgot-password",
     name: "forgotPassword",
     component: ForgotPassword,
-    meta: { guestOnly: true }
+    meta: { guestOnly: true },
   },
   {
-    path: '/reset-password',
+    path: "/reset-password",
     name: "resettPassword",
     component: ResetPassword,
-    meta: { guestOnly: true }
+    meta: { guestOnly: true },
   },
   {
-    path: '/authorize/facebook/callback',
-    name: "LoginFacebook", 
+    path: "/authorize/facebook/callback",
+    name: "LoginFacebook",
     component: LoginProvider,
-    meta: { guestOnly: true }
+    meta: { guestOnly: true },
   },
   {
-    path: '/authorize/google/callback',
-    name: "LoginGoogle", 
+    path: "/authorize/google/callback",
+    name: "LoginGoogle",
     component: LoginProvider,
-    meta: { guestOnly: true }
+    meta: { guestOnly: true },
   },
   {
     path: "/login",

@@ -1,6 +1,6 @@
 <template>
   <!-- <addProduct @updateProducts="getAllProudct" /> -->
-  <table class="table table-borderd">
+  <table class="table table-borderd table-light">
     <thead>
       <tr>
         <th>Proudct</th>
@@ -20,7 +20,9 @@
           <button class="btn btn-link" @click="updateProduct(product)">
             {{ product.is_available ? "available" : "unavailable" }}
           </button>
-          <router-link :to="'/product/' + product.id">
+          <router-link
+            :to="'/product/' + product.id + '/' + product.is_available"
+          >
             <button class="btn btn-link">edit</button>
           </router-link>
           <button class="btn btn-link" @click="deleteProduct(product.id)">
@@ -30,111 +32,62 @@
       </tr>
     </tbody>
   </table>
-  <div class="menu-footer mt-5">
-          <ul class="pagination">
-            <li><a type="button" @click="prev" class="prev"> Prev</a></li>
-            <li>|</li>
-            <li><a type="button" @click="next" class="next">Next</a></li>
-          </ul>
-        </div>
 </template>
 
-<style scoped>
-.pagination {
-  width: 8rem;
-  height: 3rem;
-  align-items: center;
-}
-ul {
-  position: relative;
-  background: #fff;
-  display: flex;
-  border-radius: 50px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  font-family: "Poppins", sans-serif;
-  margin:auto;
-}
-ul li:first-child {
-  margin-left: 1.2rem;
-  font-weight: 700;
-  font-size: 2rem;
-}
-ul li {
-  list-style: none;
-  line-height: 50px;
-  margin: 0 5px;
-}
-
-ul li a {
-  font-size: 1rem;
-  display: block;
-  text-decoration: none;
-  color: #383838;
-  font-weight: 600;
-  border-radius: 50%;
-}
-</style>
-
 <script>
-import services from "../services/products";
 import addProduct from "./AddProductComponent";
 import Product from "../../apis/Product";
-
+import VueSwal from "vue-swal";
 export default {
-  data: () => ({
-    page: 1,
-    lastPage: 0,
-    products: [],
-  }),
-  oldProduct: {
-    name: null,
-    price: null,
+  data() {
+    return {
+      page: 1,
+      lastPage: 0,
+      oldProduct: {
+        name: null,
+        price: null,
+      },
+    };
+  },
+
+  props: {
+    products: Array,
   },
   methods: {
-    async getAllProudct() {
-      const res = await services.getAllProudct();
-      const data = await res.json();
-      this.products = data["data"];
-    },
     updateProduct(product) {
+      const formData = new FormData();
+      formData.append("is_available", product.is_available);
       product.is_available = product.is_available ? 0 : 1;
-      services.updateProudct(product.id, {
-        is_available: String(product.is_available),
-      });
+      Product.updateAvailabilityProduct(product.id, formData);
     },
-    async deleteProduct(id) {
-      const res = await services.deleteProduct(id);
-      if (res.data.status == "success") {
-        this.getAllProudct();
-      }
-    },
-    async next() {
-      if (this.page === this.lastPage) return;
-      this.page++;
-      await this.loadProducts();
-    },
-    async prev() {
-      if (this.page === 1) return;
-      this.page--;
-      await this.loadProducts();
-    },
+
     loadProducts() {
-      Product.getProducts(this.page).then((response) => {
-        this.products = response.data.data;
-        this.lastPage = response.data.meta.last_page;
-        console.log(this.products)
-      });
+      this.$emit("loadProducts");
+    },
+    deleteProduct(id) {
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+          if (result.value) {
+            Product.deleteProduct(id, this.products);
+            this.$swal.fire(
+              "Deleted!",
+              "Product is deleted successfully",
+              "success"
+            );
+          }
+        });
     },
   },
-  mounted() {
-    this.loadProducts();
-  },
-  created() {
-    this.getAllProudct();
-  },
-  components: {
-    addProduct,
-  },
+  mounted() {},
+  created() {},
 };
 </script>

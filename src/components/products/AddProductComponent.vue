@@ -46,7 +46,11 @@
               v-on:change="changeImage($event.target.files)"
             />
           </div>
-          <input type="Submit" class="btn btn-success btn-sm" />
+          <input
+            type="Submit"
+            @click="loadProducts"
+            class="btn btn-success btn-sm"
+          />
         </form>
         <p class="errors">
           <span v-if="'name' in errors">
@@ -61,14 +65,61 @@
       </div>
     </div>
   </div>
-  <products-component></products-component>
+  <products-component
+    @loadProducts="loadProducts"
+    v-bind:products="products"
+  ></products-component>
+  <div class="menu-footer mt-5">
+    <ul class="pagination">
+      <li><a type="button" @click="prev" class="prev"> Prev</a></li>
+      <li>|</li>
+      <li><a type="button" @click="next" class="next">Next</a></li>
+    </ul>
+  </div>
 </template>
 
+<style scoped>
+.pagination {
+  width: 8rem;
+  height: 3rem;
+  align-items: center;
+}
+ul {
+  position: relative;
+  background: #fff;
+  display: flex;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  margin: auto;
+}
+ul li:first-child {
+  margin-left: 1.2rem;
+  font-weight: 700;
+  font-size: 2rem;
+}
+ul li {
+  list-style: none;
+  line-height: 50px;
+  margin: 0 5px;
+}
+
+ul li a {
+  font-size: 1rem;
+  display: block;
+  text-decoration: none;
+  color: #383838;
+  font-weight: 600;
+  border-radius: 50%;
+}
+</style>
 <script>
-import Csrf from "../../apis/Csrf"
+import Csrf from "../../apis/Csrf";
 import Product from "../../apis/Product";
-import axios from "axios"
-import ProductsComponent from './ProductsComponent.vue';
+import axios from "axios";
+import ProductsComponent from "./ProductsComponent.vue";
+import $ from "jquery";
 export default {
   components: { ProductsComponent },
   data: () => ({
@@ -80,32 +131,22 @@ export default {
     },
     errors: {},
     categories: [],
+    page: 1,
+    lastPage: 0,
+    products: [],
   }),
   methods: {
-    // uploadImage(e) {
-    //   this.product.image = e.target.files[0];
-    // },
-
     async changeImage(files) {
-      // try {
-        console.log(files);
-        const file = files['0'];
-        console.log(file);
-        const data = new FormData();
-        data.append("avatar", file);
-        console.log(data.getAll("avatar"));
-        const response = await axios.post(
-          "http://localhost:8000/api/upload",
-          data
-        );
-        this.product.image = response.data.url;
-        console.log(response.data);
-      // } 
-      // catch (error) {
-      //   this.errors = error.response.data.errors;
-      // }
+      const file = files["0"];
+      const data = new FormData();
+      data.append("avatar", file);
+      const response = await axios.post(
+        "http://localhost:8000/api/upload",
+        data
+      );
+      this.product.image = response.data.url;
     },
-    
+
     validateForm() {
       this.errors = {};
       for (const key in this.product) {
@@ -114,47 +155,46 @@ export default {
       return Object.keys(this.errors).length == 0 ? true : false;
     },
     createProduct() {
-      
-        console.log(this.product);
       Csrf.getCookie().then(() => {
-        // this.changeImage(this.image).then((response)=>{
-        //   console.log(response);
-        // })
-        console.log(this.product);
         Product.createProduct(this.product).then((response) => {
-          console.log(response);
-          })
-      })
-
-      // if (this.validateForm()) {
-      //   let formData = new FormData();
-      //   for (const [key, value] of Object.entries(this.product)) {
-      //     formData.append(key, value);
-      //   }
-      //   const response = await services.createProudct(formData);
-      //   if (response.data.status == "success") {
-      //     this.$emit("updateProducts");
-      //     // e.target.reset();
-      //   } else {
-      //     this.errors = response.data.message;
-      //   }
-      // }
+          $(".form-control").val("");
+          this.product.name = null;
+          this.product.price = null;
+          this.product.category_id = null;
+          this.product.image = null;
+        });
+      });
     },
+    async next() {
+      if (this.page === this.lastPage) return;
+      this.page++;
+      await this.loadProducts();
+    },
+    async prev() {
+      if (this.page === 1) return;
+      this.page--;
+      await this.loadProducts();
+    },
+    loadProducts() {
+      Product.getAllProducts(this.page).then((response) => {
+        this.products = response.data.data;
 
+        this.lastPage = response.data.last_page;
+      });
+    },
   },
-
   mounted() {
     Csrf.getCookie().then(() => {
-        Product.getCategories().then((response) => {
-            this.categories = response.data;
-          })
-      })
-  }
+      Product.getCategories().then((response) => {
+        this.categories = response.data;
+      });
+    });
+    this.loadProducts();
+  },
 };
 </script>
 
-
-<style >
+<style>
 .errors {
   color: red;
 }
