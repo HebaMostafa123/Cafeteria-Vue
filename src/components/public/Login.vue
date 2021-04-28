@@ -13,7 +13,7 @@
               class="form-control"
               id="email"
             />
-            <span class="text-danger" v-if="errors.email">
+            <span class="text-danger" style="color:orange" v-if="errors.email">
               {{ errors.email[0] }}
             </span>
           </div>
@@ -25,7 +25,7 @@
               class="form-control"
               id="password"
             />
-            <span class="text-danger" v-if="errors.password">
+            <span class="text-danger" style="color:orange" v-if="errors.password">
               {{ errors.password[0] }}
             </span>
           </div>
