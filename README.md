@@ -20,7 +20,6 @@
   - [Setup Your Environment](#setup-your-environment)
 - [Configurations](#configurations)
 - [Dependencies](#dependencies)
-- [Limitations](#limitations)
 - [Possible Improvements](#possible-improvements)
 - [About Us](#about-us)
   <!-- /TOC -->
@@ -45,6 +44,8 @@
 ---
 
 To use and run this project you need to:
+
+#### Setup Your Environment
 
 Before executing the following commands, please install **Laravel 8.37.0** and **Vue 3.0.11** as stated in the following setup:
 
