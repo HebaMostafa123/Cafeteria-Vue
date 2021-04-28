@@ -1,21 +1,24 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Adduser from "../components/admin/Adduser.vue";
-import Edituser from "../components/admin/Edituser.vue";
-import Showuser from "../components/admin/Showuser.vue";
+import ProductsComponent from "@/components/products/AddProductComponent";
+import EditProductComponent from "@/components/products/EditProductComponent";
+import { createRouter, createWebHistory } from 'vue-router';
+import Adduser from '../components/admin/Adduser.vue';
+import Edituser from '../components/admin/Edituser.vue';
+import Showuser from '../components/admin/Showuser.vue';
 import Check from "../components/check/Check.vue";
-import Unauthorized from "../components/error/Unauthorized.vue";
-import NotFound from "../components/public/404.vue";
-import ForgotPassword from "../components/public/ForgotPassword.vue";
+import Unauthorized from '../components/error/Unauthorized.vue';
+import NotFound from '../components/public/404.vue';
+import ForgotPassword from '../components/public/ForgotPassword.vue';
 import Orders from "../components/public/listOrder/proccessedOrders.vue";
-import Login from "../components/public/Login.vue";
-import LoginProvider from "../components/public/LoginProvider.vue";
-import CreateOrder from "../components/public/newOrder/CreateOrder.vue";
-import Register from "../components/public/Register.vue";
-import ResetPassword from "../components/public/ResetPassword.vue";
+import Login from '../components/public/Login.vue';
+import LoginProvider from '../components/public/LoginProvider.vue';
+import CreateOrder from '../components/public/newOrder/CreateOrder.vue';
+import Register from '../components/public/Register.vue';
+import ResetPassword from '../components/public/ResetPassword.vue';
 import UserOrders from "../components/public/UserOrders.vue";
-import Secure from "../components/Secure.vue";
-import Trial from "../components/Trial.vue";
-import User from "../components/User.vue";
+import Secure from '../components/Secure.vue';
+import Trial from '../components/Trial.vue';
+import User from '../components/User.vue';
+
 
 const routes = [
   {
@@ -57,91 +60,20 @@ const routes = [
   {
     path: "/",
     component: Secure,
-    children: [
-      {
-        path: "",
-        name: "AdminHome",
-        component: User,
-        meta: { authOnly: true },
-      },
-      {
-        path: "/order",
-        name: "CreateOrder",
-        component: CreateOrder,
-        meta: { authOnly: true },
-      },
-      {
-        path: "/orders",
-        name: "UserOrders",
-        component: UserOrders,
-        meta: { authOnly: true },
-      },
-      {
-        path: "/adminorders",
-        name: "Orders",
-        component: Orders,
-        meta: { adminOnly: true },
-      },
-      {
-        path: "/Showuser",
-        name: "Showuser",
-        component: Showuser,
-        meta: { adminOnly: true },
-      },
-      {
-        path: "/Edituser/:id/:name/:email/:room_id/:avatar/",
-        name: "Edituser",
-        component: Edituser,
-        meta: { adminOnly: true },
-      },
-      {
-        path: "",
-        name: "AdminHome",
-        component: User,
-        meta: { authOnly: true },
-      },
-      {
-        path: "/order",
-        name: "CreateOrder",
-        component: CreateOrder,
-        meta: { authOnly: true },
-      },
-      {
-        path: "",
-        name: "AdminHome",
-        component: User,
-        meta: { authOnly: true },
-      },
-      {
-        path: "/checks",
-        name: "AdminChecks",
-        component: Check,
-        meta: { authOnly: true },
-      },
-      {
-        path: "/order",
-        name: "CreateOrder",
-        component: CreateOrder,
-        meta: { authOnly: true },
-      },
-      {
-        path: "/Showuser",
-        name: "Showuser",
-        component: Showuser,
-        meta: { adminOnly: true },
-      },
-      {
-        path: "/Edituser/:id",
-        name: "Edituser",
-        component: Edituser,
-        meta: { adminOnly: true },
-      },
-      {
-        path: "/Adduser",
-        name: "Adduser",
-        component: Adduser,
-        meta: { adminOnly: true },
-      },
+    children:[
+      {path:'', name:'AdminHome', component:User, meta:{authOnly: true}},
+      {path:'/checks', name:'AdminChecks', component:Check, meta:{authOnly: true}},
+      {path:'/order', name:'CreateOrder', component:CreateOrder, meta:{authOnly: true}},
+      {path: '/Showuser', name: 'Showuser', component: Showuser, meta: { adminOnly: true }},
+      {path: '/Edituser/:id', name: 'Edituser', component: Edituser, meta: { adminOnly: true }},
+      {path: '/Adduser', name: 'Adduser', component: Adduser, meta: { adminOnly: true }},
+      {path: "/products", name: "products", component: ProductsComponent, meta:{authOnly: true}},
+      {path: "/product/:id", name: "editproduct",component: EditProductComponent, meta:{authOnly: true}},
+      { path: '', name: 'AdminHome', component: User, meta: { authOnly: true } },
+      { path: '/order', name: 'CreateOrder', component: CreateOrder, meta: { authOnly: true } },
+      { path: '/orders', name: 'UserOrders', component: UserOrders, meta: { authOnly: true } },
+      { path: "/adminorders", name: "Orders", component: Orders, meta: { adminOnly: true } },
+      { path: '/Edituser/:id/:name/:email/:room_id/:avatar/', name: 'Edituser', component: Edituser, meta: { adminOnly: true }},
     ],
   },
 
