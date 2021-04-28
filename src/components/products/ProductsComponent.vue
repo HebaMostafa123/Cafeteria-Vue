@@ -20,7 +20,9 @@
           <button class="btn btn-link" @click="updateProduct(product)">
             {{ product.is_available ? "available" : "unavailable" }}
           </button>
-          <router-link :to="'/product/' + product.id">
+          <router-link
+            :to="'/product/' + product.id + '/' + product.is_available"
+          >
             <button class="btn btn-link">edit</button>
           </router-link>
           <button class="btn btn-link" @click="deleteProduct(product.id)">
@@ -33,12 +35,14 @@
 </template>
 
 <script>
-import services from "../services/products";
 import addProduct from "./AddProductComponent";
 import Product from "../../apis/Product";
+import VueSwal from "vue-swal";
 export default {
   data() {
     return {
+      page: 1,
+      lastPage: 0,
       oldProduct: {
         name: null,
         price: null,
@@ -52,15 +56,36 @@ export default {
   methods: {
     updateProduct(product) {
       product.is_available = product.is_available ? 0 : 1;
-      Product.updateProudct(product.id, {
+      Product.updateProduct(product.id, {
         is_available: String(product.is_available),
       });
     },
-    async deleteProduct(id) {
-      await Product.deleteProduct(id, this.products);
-    },
+
     loadProducts() {
       this.$emit("loadProducts");
+    },
+    deleteProduct(id) {
+      // Csrf.getCookie().then(()=>{
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+          if (result.value) {
+            Product.deleteProduct(id, this.products);
+            this.$swal.fire(
+              "Deleted!",
+              "Product is deleted successfully",
+              "success"
+            );
+          }
+        });
     },
   },
   mounted() {},

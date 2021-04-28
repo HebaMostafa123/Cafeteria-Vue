@@ -75,11 +75,6 @@
       <li>|</li>
       <li><a type="button" @click="next" class="next">Next</a></li>
     </ul>
-    <!-- async getProduct(id) { Product.getProduct(id).then((response) => {
-    this.product.name = response.data.data.name; this.product.price =
-    response.data.data.price; this.product.id = response.data.data.id;
-    this.product.category_id = response.data.data.category_id;
-    this.product.image = response.data.data.image; }); -->
   </div>
 </template>
 
@@ -181,9 +176,10 @@ export default {
       await this.loadProducts();
     },
     loadProducts() {
-      Product.getProducts(this.page).then((response) => {
+      Product.getAllProducts(this.page).then((response) => {
         this.products = response.data.data;
-        this.lastPage = response.data.meta.last_page;
+
+        this.lastPage = response.data.last_page;
       });
     },
   },

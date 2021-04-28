@@ -4,7 +4,9 @@ export default {
   getProducts(page = 1) {
     return Api.get(`/products?page=${page}`);
   },
-
+  getAllProducts(page = 1) {
+    return Api.get(`/allproducts?page=${page}`);
+  },
   async getCategories() {
     return Api.get("/categories");
   },
@@ -20,9 +22,6 @@ export default {
   async getProduct(id) {
     return Api.get(`products/${id}`);
   },
-  // async deleteProduct(id) {
-  //   return Api.delete(`products/${id}`);
-  // },
   deleteProduct(id, products) {
     let i = products.map((data) => data.id).indexOf(id);
     products.splice(i, 1);

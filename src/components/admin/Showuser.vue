@@ -47,7 +47,13 @@
                   style="border-radius: 25px; width: 35%; color: white"
                   :to="{
                     name: 'Edituser',
-                    params: { id: user.id },
+                    params: {
+                      id: user.id,
+                      name: user.name,
+                      email: user.email,
+                      room_id: user.room_id,
+                      avatar: user.avatar,
+                    },
                   }"
                   >Edit</router-link
                 >
@@ -85,6 +91,10 @@
 import Admin from "../../apis/Admin";
 import Csrf from "../../apis/Csrf";
 import { ref, onMounted } from "@vue/runtime-core";
+import Vue from "vue";
+import VueSwal from "vue-swal";
+
+// Vue.use(VueSwal)
 
 import axios from "axios";
 export default {
@@ -122,8 +132,26 @@ export default {
   methods: {
     deleteuser(id) {
       // Csrf.getCookie().then(()=>{
-      Admin.deleteuser(id, this.users);
-      // })
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+          if (result.value) {
+            Admin.deleteuser(id, this.users);
+            this.$swal.fire(
+              "Deleted!",
+              "Product is deleted successfully",
+              "success"
+            );
+          }
+        });
     },
   },
 };

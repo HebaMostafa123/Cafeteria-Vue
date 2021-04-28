@@ -54,18 +54,32 @@
                   {{ errors["category_id"] + "" }}
                 </p>
               </div>
-              <div class="form-group m-1">
-                <label for="">image</label>
-                <input
-                  class="form-control"
-                  type="file"
-                  accept="image/*"
-                  image="image"
-                  v-on:change="uploadImage"
-                />
-                <p class="errors" v-if="'image' in errors">
-                  {{ errors["image"] + "" }}
-                </p>
+              <div class="form-group">
+                <label for="avatar">Avatar</label>
+                <div class="row">
+                  <div class="col-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="Avatar"
+                      readonly
+                      v-model="product.image"
+                    />
+                  </div>
+                  <div class="col-3">
+                    <label class="btn btn-primary">
+                      Upload
+                      <input
+                        type="file"
+                        hidden
+                        @change="changeImage($event.target.files)"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <span class="text-danger" v-if="errors.avatar">
+                  {{ errors.avatar[0] }}
+                </span>
               </div>
               <input type="Submit" class="btn btn-success btn-sm" />
             </form>
@@ -88,9 +102,10 @@ h2 {
 
 <script>
 import Product from "../../apis/Product";
-
+import axios from "axios";
 export default {
   data: () => ({
+    baseURL: "http://localhost:8000/api/",
     product: {
       id: null,
       name: null,
@@ -98,7 +113,7 @@ export default {
       category_id: null,
       image: null,
     },
-    errors: {},
+    errors: [],
     hasImage: false,
     categories: null,
   }),
@@ -117,9 +132,23 @@ export default {
         (response) => (this.categories = response.data)
       );
     },
-    uploadImage(e) {
-      this.product.image = e.target.files[0];
-      this.hasImage = true;
+    async changeImage(files) {
+      try {
+        const file = files[0];
+
+        const data = new FormData();
+        data.append("avatar", file);
+
+        const response = await axios.post(
+          "http://localhost:8000/api/upload",
+          data
+        );
+
+        this.product.image = response.data.url;
+        // console.log(response.data);
+      } catch (error) {
+        this.errors = error.response.data.errors;
+      }
     },
     validateForm() {
       this.errors = {};
@@ -128,27 +157,28 @@ export default {
       }
       return Object.keys(this.errors).length == 0 ? true : false;
     },
-    async updateProduct() {
-      if (this.validateForm()) {
-        let response;
-        if (this.hasImage) {
-          let formData = new FormData();
-          for (const [key, value] of Object.entries(this.product)) {
-            formData.append(key, value);
-          }
-          Product.updateProduct(this.product.id, formData).then((response) => {
-            console.log(response.data.status);
-            response.data.status == "success"
-              ? this.$router.push("/products")
-              : (this.errors = response.data.message);
+
+    updateProduct() {
+      const formData = new FormData();
+      formData.append("name", this.product.name);
+      formData.append("price", this.product.price);
+      formData.append("category_id", this.product.category_id);
+      formData.append("is_available", this.$route.params.is_available);
+      formData.append("image", this.product.image);
+      formData.append("_method", "PATCH");
+      axios
+        .post(this.baseURL + `products/${this.$route.params.id}`, formData)
+        .then((res) => {
+          // console.log(res);
+          this.$router.push({
+            name: "products",
           });
-        } else {
-          response = await Product.updateProduct(this.product.id, this.product);
-          response.data.status == "success"
-              ? this.$router.push("/products")
-              : (this.errors = response.data.message);
-        }
-      }
+        })
+        .catch((e) => {
+          if (e.response.status === 422) {
+            this.errors = e.response.data.errors;
+          }
+        });
     },
   },
   mounted() {
