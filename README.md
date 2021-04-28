@@ -1,7 +1,8 @@
 # ITI-Cafeteria
 
+![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/landingPage.png)
 
- **ITI-Cafetria** is a simple application that allows ITI students to order availavle products from cafetria, and allows cafetria owner to respond to thier orders and control products. The project is developed using  **Laravel**,  **Vue.js** frameworks and  **MySQL** database.
+ **ITI-Cafetria** is a simple application that allows ITI students to order food and drinks from the cafeteria without having to go all the way to the cafeteria, using an online interface to choose available products and make orders! Moreover, It allows cafetria administration to respond to their orders and control products. The project is developed using  **Laravel**,  **Vue.js** frameworks and  **MySQL** database.
 
 ---
 
@@ -25,19 +26,37 @@
   <!-- /TOC -->
 
   ## Features
-
 ---
+### User
+- Sign in with your Google / Facebook accounts.
+- Change your password in case you forgot it.
+- Create an order.
+- Track your orders.
+- Cancel your order if it is still processing.
 
-- Sign in with your Google / Facebook accounts
-- Create an order
-- View orders
-- Cancel orders with processing status
-- Admin create an order for a user 
-- Admin can view all products and add remove them
-- Admin can view the users and edit, delete them
-- Admin can add products
-- Admin can check all the checks he has
-- Admin can check the current orders he has to finish 
+### Admin
+- Admin can create an order for a user.
+- Admin can view all products,add ,update and remove them.
+- Admin can view users, add, edit and delete them.
+- Admin can view all the checks and filter them by date or user.
+- Admin can track incoming orders and change their status.
+
+## Demo
+
+### Create new order.
+![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/newOrder.gif)
+
+### Track your orders and filter them by date.
+![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/userOrders.gif)
+
+### Administration can track orders and control their status.
+![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/ordersAdmin.png)
+
+### Administration can create and update products.
+![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/products.png)
+
+### Administration can create and update users.
+![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/users.png)
 
 ## Getting Started
 
