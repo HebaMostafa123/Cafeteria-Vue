@@ -1,6 +1,10 @@
 <template>
-  <div class="contianer-fluid">
-    <table class="table table-bordered border-5 table-striped mt-2 text-center" v-if="isDataExist()">
+
+  <div class="contianer-fluid mt-4" v-if="isDataExist()">
+    <hr>
+    <h3 class="mt-3" >Users</h3>
+    <table class="table table-bordered border-5 table-striped mt-2 text-center" style="background-color:white" >
+
       <thead>
         <th>Name</th>
         <th>Total amount</th>
@@ -77,5 +81,7 @@ export default {
 </script>
 
 <style>
-
+h3{
+  color:orange;
+}
 </style>
