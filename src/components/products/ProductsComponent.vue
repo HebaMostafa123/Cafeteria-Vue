@@ -1,6 +1,7 @@
 <template>
   <!-- <addProduct @updateProducts="getAllProudct" /> -->
-  <table class="table table-borderd table-light">
+  <div class="card mr-4 ml-4 mt-5">
+  <table class="table table-striped">
     <thead>
       <tr>
         <th>Proudct</th>
@@ -14,25 +15,37 @@
         <td>{{ product.name }}</td>
         <td>{{ product.price }}</td>
         <td>
-          <img style="width: 50px" :src="product.image" alt="" />
+          <img :src="product.image" alt="" />
         </td>
         <td>
-          <button class="btn btn-link" @click="updateProduct(product)">
+          <button class="btn btn-info mr-1" @click="updateProduct(product)">
             {{ product.is_available ? "available" : "unavailable" }}
           </button>
           <router-link
             :to="'/product/' + product.id + '/' + product.is_available"
           >
-            <button class="btn btn-link">edit</button>
+            <button class="btn btn-warning mr-1">edit</button>
           </router-link>
-          <button class="btn btn-link" @click="deleteProduct(product.id)">
+          <button class="btn btn-danger" @click="deleteProduct(product.id)">
             delete
           </button>
         </td>
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
+
+<style scoped>
+
+img{
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1rem;
+}
+
+
+</style>
 
 <script>
 import addProduct from "./AddProductComponent";

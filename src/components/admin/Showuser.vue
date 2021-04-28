@@ -18,7 +18,7 @@
                 <th style="color: #212529" scope="col">Avatar</th>
                 <th style="color: #212529" cscope="col">Name</th>
                 <th style="color: #212529" scope="col">Email</th>
-                <th style="color: #212529" scope="col">room_id</th>
+                <th style="color: #212529" scope="col">Room number</th>
                 <th style="color: #212529" scope="col">Action</th>
               </tr>
             </thead>
@@ -39,12 +39,11 @@
                 </td>
 
                 <td class="text-center">
-                  <strong> {{ user.room.number }}</strong>
+                  <strong> {{ user.room_id }}</strong>
                 </td>
-                <td>
+                <td width="190px">
                   <router-link
-                    class="btn btn-warning m-2"
-                    style="border-radius: 25px; width: 35%; color: white"
+                    class="btn btn-warning m-1"
                     :to="{
                       name: 'Edituser',
                       params: {
@@ -60,7 +59,6 @@
                   <a
                     class="btn btn-danger"
                     @click="deleteuser(user.id)"
-                    style="border-radius: 25px"
                     >Remove</a
                   >
                 </td>
@@ -103,9 +101,6 @@ import Csrf from "../../apis/Csrf";
 import { ref, onMounted } from "@vue/runtime-core";
 import Vue from "vue";
 import VueSwal from "vue-swal";
-
-// Vue.use(VueSwal)
-
 import axios from "axios";
 export default {
   setup() {
@@ -117,6 +112,7 @@ export default {
         `http://localhost:8000/api/pages?page=${page.value}`
       );
       users.value = response.data.data;
+      console.log(users.value);
       lastpage.value = response.data.last_page;
     };
     onMounted(load);
@@ -133,15 +129,12 @@ export default {
 
     return {
       users,
-      // userspage,
       next,
       prev,
-      // id: 0,
     };
   },
   methods: {
     deleteuser(id) {
-      // Csrf.getCookie().then(()=>{
       this.$swal
         .fire({
           title: "Are you sure?",

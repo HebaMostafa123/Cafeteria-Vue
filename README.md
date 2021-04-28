@@ -58,6 +58,10 @@
 ### Administration can create and update users.
 ![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/users.png)
 
+### Administration can view checks and filter them by date and user.
+![alt text](https://github.com/HebaMostafa123/Cafeteria-Vue/blob/feat-readme/demo/checks.png)
+
+
 ## Getting Started
 
 ---

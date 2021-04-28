@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar />
     <div class="col-5 mx-auto py-5 mt-5">
-      <h1 class="text-center" style="color: #605d86">Add New User</h1>
+      <h1 class="text-center" style="color: white">Add New User</h1>
       <div class="card shadow">
         <div class="card-body">
           <div class="form-group">
@@ -132,7 +132,6 @@
   </div>
 </template>
 
-
 <script>
 import Admin from "../../apis/Admin";
 import Csrf from "../../apis/Csrf";
@@ -159,12 +158,6 @@ export default {
     Admin.getRooms().then((response) => {
       this.rooms = response.data;
     });
-    // axios
-    // .get("http://localhost:8000/api/rooms")
-    // .then((data) => (this.rooms = data.data))
-    // .catch(() => {
-    // console.log("Error...");
-    // });
   },
   methods: {
     adduser() {
@@ -175,8 +168,6 @@ export default {
       formData.append("confirm_password", this.form.confirm_password);
       formData.append("room_id", this.form.room_id);
       formData.append("avatar", this.form.avatar);
-
-      ///////////////////////////////////////////////////
 
       // Admin.adduser(formData);
       axios
@@ -233,5 +224,8 @@ h1 {
 .home {
   margin: 0%;
   padding: 0%;
+}
+label {
+  color: #495057;
 }
 </style>

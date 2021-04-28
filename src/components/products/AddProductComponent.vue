@@ -1,8 +1,9 @@
 <template>
+<div class="page">
   <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <form class="form-inline" @submit.prevent="createProduct">
+    <div class="row ">
+      <div class="col-12 ">
+        <form class="form-inline justify-content-center" @submit.prevent="createProduct">
           <div class="form-group m-1">
             <input
               v-model="product.name"
@@ -76,9 +77,14 @@
       <li><a type="button" @click="next" class="next">Next</a></li>
     </ul>
   </div>
+  </div>
 </template>
 
 <style scoped>
+
+.page{
+  height:60rem;
+}
 .pagination {
   width: 8rem;
   height: 3rem;
