@@ -28,7 +28,7 @@
             <td>
               <button
                 type="submit"
-                class="btn btn-primary"
+                class="btn btn-info"
                 @click="changeStatus(order)"
               >
                 Deliver
