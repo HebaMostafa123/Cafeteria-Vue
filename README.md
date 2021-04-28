@@ -6,9 +6,6 @@
 
 ---
 
-## Deployment
-
----
 
 ## Table of Contents
 
